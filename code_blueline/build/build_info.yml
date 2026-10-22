@@ -1,7 +1,7 @@
 cmake:
   application:
-    configuration-dir: '/Users/hansgelke/Documents/BLUELINE/code_blueline'
-    source-dir: '/Users/hansgelke/Documents/BLUELINE/code_blueline'
+    configuration-dir: '/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline'
+    source-dir: '/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline'
   board:
     name: 'rpi_pico2'
     path:
@@ -13,7 +13,7 @@ cmake:
      - '/Users/hansgelke/zephyrproject/zephyr/dts/bindings'
     files:
      - '/Users/hansgelke/zephyrproject/zephyr/boards/raspberrypi/rpi_pico2/rpi_pico2_rp2350a_m33.dts'
-     - '/Users/hansgelke/Documents/BLUELINE/code_blueline/boards/rpi_pico2_rp2350a_m33.overlay'
+     - '/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/boards/rpi_pico2_rp2350a_m33.overlay'
     include-dirs:
      - '/Users/hansgelke/zephyrproject/modules/hal/ambiq/dts'
      - '/Users/hansgelke/zephyrproject/modules/hal/atmel/include'
@@ -41,13 +41,13 @@ cmake:
      - '/Users/hansgelke/zephyrproject/zephyr/dts/arc'
      - '/Users/hansgelke/zephyrproject/zephyr/dts'
     user-files:
-     - '/Users/hansgelke/Documents/BLUELINE/code_blueline/boards/rpi_pico2_rp2350a_m33.overlay'
+     - '/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/boards/rpi_pico2_rp2350a_m33.overlay'
   kconfig:
     files:
      - '/Users/hansgelke/zephyrproject/zephyr/boards/raspberrypi/rpi_pico2/rpi_pico2_rp2350a_m33_defconfig'
-     - '/Users/hansgelke/Documents/BLUELINE/code_blueline/prj.conf'
+     - '/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/prj.conf'
     user-files:
-     - '/Users/hansgelke/Documents/BLUELINE/code_blueline/prj.conf'
+     - '/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/prj.conf'
   toolchain:
     name: 'zephyr'
     path: '/Users/hansgelke/zephyr-sdk-0.17.4'

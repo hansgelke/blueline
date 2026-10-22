@@ -54,36 +54,23 @@
     null
   ],
   [
-    "CONFIG_SHELL_STACK_SIZE",
-    "y",
-    "int",
-    "2048",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      50
-    ]
-  ],
-  [
     "CONFIG_SERIAL",
     "y",
     "bool",
     "y",
-    "select",
+    "assign",
     [
-      "SHELL_BACKEND_SERIAL && SHELL_BACKENDS && SHELL"
+      "/Users/hansgelke/zephyrproject/zephyr/boards/raspberrypi/rpi_pico2/rpi_pico2_rp2350a_m33_defconfig",
+      10
     ]
   ],
   [
     "CONFIG_SPI",
     "y",
     "bool",
-    "y",
-    "assign",
-    [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/prj.conf",
-      2
-    ]
+    null,
+    "unset",
+    null
   ],
   [
     "CONFIG_MIPI_DSI",
@@ -114,9 +101,10 @@
     "y",
     "bool",
     "y",
-    "select",
+    "assign",
     [
-      "SHELL_BACKEND_SERIAL_API_INTERRUPT_DRIVEN && SERIAL_SUPPORT_INTERRUPT && <choice SHELL_BACKEND_SERIAL_API>"
+      "/Users/hansgelke/zephyrproject/zephyr/boards/raspberrypi/rpi_pico2/rpi_pico2_rp2350a_m33_defconfig",
+      12
     ]
   ],
   [
@@ -458,21 +446,19 @@
     "CONFIG_INIT_STACKS",
     "y",
     "bool",
-    "y",
-    "imply",
-    [
-      "KERNEL_SHELL && SHELL"
-    ]
+    null,
+    "unset",
+    null
   ],
   [
     "CONFIG_TIMESLICE_SIZE",
     "y",
     "int",
-    "10",
-    "assign",
+    "20",
+    "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/prj.conf",
-      15
+      "/Users/hansgelke/zephyrproject/zephyr/kernel/Kconfig",
+      672
     ]
   ],
   [
@@ -598,8 +584,8 @@
     "y",
     "assign",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/prj.conf",
-      6
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/prj.conf",
+      2
     ]
   ],
   [
@@ -660,17 +646,6 @@
     [
       "/Users/hansgelke/zephyrproject/zephyr/subsys/logging/Kconfig.misc",
       124
-    ]
-  ],
-  [
-    "CONFIG_SHELL_BACKEND_SERIAL",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/backends/Kconfig.backends",
-      19
     ]
   ],
   [
@@ -903,7 +878,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       978
     ]
   ],
@@ -914,7 +889,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       1063
     ]
   ],
@@ -925,7 +900,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       1243
     ]
   ],
@@ -936,7 +911,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       1248
     ]
   ],
@@ -947,7 +922,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       1318
     ]
   ],
@@ -958,7 +933,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       2833
     ]
   ],
@@ -969,7 +944,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       2838
     ]
   ],
@@ -980,7 +955,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       5168
     ]
   ],
@@ -991,7 +966,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       8558
     ]
   ],
@@ -1002,7 +977,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       8563
     ]
   ],
@@ -1013,7 +988,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       8568
     ]
   ],
@@ -1024,7 +999,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       8578
     ]
   ],
@@ -1035,7 +1010,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       8583
     ]
   ],
@@ -1046,7 +1021,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       8588
     ]
   ],
@@ -1057,7 +1032,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       8593
     ]
   ],
@@ -1068,7 +1043,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       8598
     ]
   ],
@@ -1079,7 +1054,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       8603
     ]
   ],
@@ -1090,7 +1065,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       8618
     ]
   ],
@@ -1101,7 +1076,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       8628
     ]
   ],
@@ -1112,7 +1087,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       8633
     ]
   ],
@@ -1123,7 +1098,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       8643
     ]
   ],
@@ -1134,7 +1109,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       8658
     ]
   ],
@@ -1145,7 +1120,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       8663
     ]
   ],
@@ -1156,7 +1131,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       8673
     ]
   ],
@@ -1167,7 +1142,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       8678
     ]
   ],
@@ -1178,7 +1153,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       8683
     ]
   ],
@@ -1189,7 +1164,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       10863
     ]
   ],
@@ -1200,7 +1175,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       10938
     ]
   ],
@@ -1211,7 +1186,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
       13718
     ]
   ],
@@ -1238,7 +1213,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       5
     ]
   ],
@@ -1249,7 +1224,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       11
     ]
   ],
@@ -1270,7 +1245,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       17
     ]
   ],
@@ -1289,7 +1264,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       23
     ]
   ],
@@ -1308,7 +1283,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       29
     ]
   ],
@@ -1337,7 +1312,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       35
     ]
   ],
@@ -1348,7 +1323,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       39
     ]
   ],
@@ -1359,7 +1334,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       44
     ]
   ],
@@ -1370,7 +1345,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       53
     ]
   ],
@@ -1381,7 +1356,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       57
     ]
   ],
@@ -1392,7 +1367,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       62
     ]
   ],
@@ -1403,7 +1378,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       68
     ]
   ],
@@ -1422,7 +1397,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       77
     ]
   ],
@@ -1433,7 +1408,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       83
     ]
   ],
@@ -1444,7 +1419,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       89
     ]
   ],
@@ -1463,7 +1438,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       98
     ]
   ],
@@ -1474,7 +1449,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       102
     ]
   ],
@@ -1485,7 +1460,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       107
     ]
   ],
@@ -1496,7 +1471,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       114
     ]
   ],
@@ -1507,7 +1482,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       119
     ]
   ],
@@ -1518,7 +1493,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       126
     ]
   ],
@@ -1529,7 +1504,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       129
     ]
   ],
@@ -1540,7 +1515,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       132
     ]
   ],
@@ -1572,7 +1547,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       140
     ]
   ],
@@ -1583,7 +1558,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       146
     ]
   ],
@@ -1594,7 +1569,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       152
     ]
   ],
@@ -1605,7 +1580,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       161
     ]
   ],
@@ -1616,7 +1591,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       165
     ]
   ],
@@ -1627,7 +1602,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       173
     ]
   ],
@@ -1646,7 +1621,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       179
     ]
   ],
@@ -1657,7 +1632,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       183
     ]
   ],
@@ -1668,7 +1643,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       188
     ]
   ],
@@ -1679,7 +1654,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       192
     ]
   ],
@@ -1690,7 +1665,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       195
     ]
   ],
@@ -1709,7 +1684,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       200
     ]
   ],
@@ -1720,7 +1695,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       206
     ]
   ],
@@ -1731,7 +1706,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       210
     ]
   ],
@@ -1742,7 +1717,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       213
     ]
   ],
@@ -1753,7 +1728,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       218
     ]
   ],
@@ -1780,7 +1755,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       224
     ]
   ],
@@ -1791,7 +1766,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       230
     ]
   ],
@@ -1802,7 +1777,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       236
     ]
   ],
@@ -1821,7 +1796,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       242
     ]
   ],
@@ -1832,7 +1807,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       248
     ]
   ],
@@ -1859,7 +1834,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       252
     ]
   ],
@@ -1870,7 +1845,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       255
     ]
   ],
@@ -1881,7 +1856,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       260
     ]
   ],
@@ -1900,7 +1875,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       266
     ]
   ],
@@ -1919,7 +1894,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       273
     ]
   ],
@@ -1938,7 +1913,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       278
     ]
   ],
@@ -1957,7 +1932,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       284
     ]
   ],
@@ -1976,7 +1951,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       290
     ]
   ],
@@ -1987,7 +1962,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       296
     ]
   ],
@@ -2016,7 +1991,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       302
     ]
   ],
@@ -2035,7 +2010,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       308
     ]
   ],
@@ -2046,7 +2021,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       314
     ]
   ],
@@ -2057,7 +2032,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       320
     ]
   ],
@@ -2076,7 +2051,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
       324
     ]
   ],
@@ -2782,14 +2757,6 @@
     null
   ],
   [
-    "CONFIG_ISR_TABLE_SHELL",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
     "CONFIG_ARCH_SUPPORTS_ROM_OFFSET",
     "n",
     "bool",
@@ -3356,22 +3323,12 @@
     "CONFIG_THREAD_STACK_INFO",
     "y",
     "bool",
-    "y",
-    "imply",
-    [
-      "KERNEL_SHELL && SHELL"
-    ]
-  ],
-  [
-    "CONFIG_THREAD_CUSTOM_DATA",
-    "y",
-    "bool",
     null,
     "unset",
     null
   ],
   [
-    "CONFIG_DYNAMIC_THREAD",
+    "CONFIG_THREAD_CUSTOM_DATA",
     "y",
     "bool",
     null,
@@ -3517,20 +3474,19 @@
     "CONFIG_THREAD_MONITOR",
     "y",
     "bool",
-    "y",
-    "imply",
-    [
-      "KERNEL_SHELL && SHELL"
-    ]
+    null,
+    "unset",
+    null
   ],
   [
     "CONFIG_THREAD_NAME",
     "y",
     "bool",
     "y",
-    "imply",
+    "assign",
     [
-      "KERNEL_SHELL && SHELL"
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/prj.conf",
+      3
     ]
   ],
   [
@@ -3623,21 +3579,21 @@
     "y",
     "bool",
     "y",
-    "assign",
+    "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/prj.conf",
-      14
+      "/Users/hansgelke/zephyrproject/zephyr/kernel/Kconfig",
+      664
     ]
   ],
   [
     "CONFIG_TIMESLICE_PRIORITY",
     "y",
     "int",
-    "5",
-    "assign",
+    "0",
+    "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/prj.conf",
-      16
+      "/Users/hansgelke/zephyrproject/zephyr/kernel/Kconfig",
+      683
     ]
   ],
   [
@@ -3687,11 +3643,9 @@
     "CONFIG_EVENTS",
     "y",
     "bool",
-    "y",
-    "select",
-    [
-      "SHELL"
-    ]
+    null,
+    "unset",
+    null
   ],
   [
     "CONFIG_HEAP_MEM_POOL_SIZE",
@@ -3810,11 +3764,9 @@
     "CONFIG_DEVICE_DT_METADATA",
     "y",
     "bool",
-    "y",
-    "imply",
-    [
-      "SHELL_DEVICE_HELPERS && SHELL"
-    ]
+    null,
+    "unset",
+    null
   ],
   [
     "CONFIG_DEVICE_DEINIT_SUPPORT",
@@ -4451,14 +4403,6 @@
     ]
   ],
   [
-    "CONFIG_GPIO_SHELL",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
     "CONFIG_GPIO_GET_DIRECTION",
     "y",
     "bool",
@@ -4513,169 +4457,9 @@
     "CONFIG_I2C",
     "y",
     "bool",
-    "y",
-    "assign",
-    [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/prj.conf",
-      1
-    ]
-  ],
-  [
-    "CONFIG_I2C_SHELL",
-    "y",
-    "bool",
-    "y",
-    "assign",
-    [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/prj.conf",
-      5
-    ]
-  ],
-  [
-    "CONFIG_I2C_CALLBACK",
-    "y",
-    "bool",
     null,
     "unset",
     null
-  ],
-  [
-    "CONFIG_I2C_RTIO",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_I2C_TARGET",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_I2C_DW",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/drivers/i2c/Kconfig.dw",
-      6
-    ]
-  ],
-  [
-    "CONFIG_I2C_DW_CLOCK_SPEED",
-    "y",
-    "int",
-    "32",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/drivers/i2c/Kconfig.dw",
-      16
-    ]
-  ],
-  [
-    "CONFIG_I2C_DW_LPSS_DMA",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_I2C_DW_RW_TIMEOUT_MS",
-    "y",
-    "int",
-    "100",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/drivers/i2c/Kconfig.dw",
-      31
-    ]
-  ],
-  [
-    "CONFIG_I2C_DW_EXTENDED_SUPPORT",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_I2C_INIT_PRIORITY",
-    "y",
-    "int",
-    "50",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/drivers/i2c/Kconfig",
-      174
-    ]
-  ],
-  [
-    "CONFIG_I2C_LOG_LEVEL_OFF",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_I2C_LOG_LEVEL_ERR",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_I2C_LOG_LEVEL_WRN",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_I2C_LOG_LEVEL_INF",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_I2C_LOG_LEVEL_DBG",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_I2C_LOG_LEVEL_DEFAULT",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/logging/Kconfig.template.log_config",
-      5
-    ]
-  ],
-  [
-    "CONFIG_I2C_LOG_LEVEL",
-    "n",
-    "int",
-    "3",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/logging/Kconfig.template.log_config",
-      36
-    ]
   ],
   [
     "CONFIG_I2S",
@@ -4887,9 +4671,7 @@
     [
       "CLOCK_CONTROL_RPI_PICO && DT_HAS_RASPBERRYPI_PICO_CLOCK_CONTROLLER_ENABLED && CLOCK_CONTROL",
       "GPIO_RPI_PICO && DT_HAS_RASPBERRYPI_PICO_GPIO_PORT_ENABLED && GPIO",
-      "I2C_DW && DT_HAS_SNPS_DESIGNWARE_I2C_ENABLED && I2C",
-      "UART_PL011 && (DT_HAS_ARM_PL011_ENABLED || DT_HAS_ARM_SBSA_UART_ENABLED) && SERIAL",
-      "SPI_PL022 && DT_HAS_ARM_PL022_ENABLED && SPI"
+      "UART_PL011 && (DT_HAS_ARM_PL011_ENABLED || DT_HAS_ARM_SBSA_UART_ENABLED) && SERIAL"
     ]
   ],
   [
@@ -5228,14 +5010,6 @@
     null
   ],
   [
-    "CONFIG_UART_SHELL",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
     "CONFIG_UART_NPCX_FIFO_EX",
     "y",
     "bool",
@@ -5264,157 +5038,6 @@
   ],
   [
     "CONFIG_SMBUS",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SPI_SHELL",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SPI_ASYNC",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SPI_RTIO",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SPI_SLAVE",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SPI_EXTENDED_MODES",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SPI_INIT_PRIORITY",
-    "y",
-    "int",
-    "50",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/drivers/spi/Kconfig",
-      77
-    ]
-  ],
-  [
-    "CONFIG_SPI_COMPLETION_TIMEOUT_TOLERANCE",
-    "y",
-    "int",
-    "200",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/drivers/spi/Kconfig",
-      83
-    ]
-  ],
-  [
-    "CONFIG_SPI_LOG_LEVEL_OFF",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SPI_LOG_LEVEL_ERR",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SPI_LOG_LEVEL_WRN",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SPI_LOG_LEVEL_INF",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SPI_LOG_LEVEL_DBG",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SPI_LOG_LEVEL_DEFAULT",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/logging/Kconfig.template.log_config",
-      5
-    ]
-  ],
-  [
-    "CONFIG_SPI_LOG_LEVEL",
-    "n",
-    "int",
-    "3",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/logging/Kconfig.template.log_config",
-      36
-    ]
-  ],
-  [
-    "CONFIG_SPI_PL022",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/drivers/spi/Kconfig.pl022",
-      5
-    ]
-  ],
-  [
-    "CONFIG_SPI_PL022_INTERRUPT",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SPI_PL022_DMA",
     "y",
     "bool",
     null,
@@ -6055,8 +5678,7 @@
     "y",
     "select",
     [
-      "LOG_MODE_DEFERRED && <choice LOG_MODE>",
-      "SHELL_LOG_BACKEND && LOG && !LOG_MODE_MINIMAL && SHELL"
+      "LOG_MODE_DEFERRED && <choice LOG_MODE>"
     ]
   ],
   [
@@ -6390,9 +6012,7 @@
     "y",
     "select",
     [
-      "POSIX_AEP_CHOICE_ZEPHYR && <choice POSIX_AEP_CHOICE>",
-      "SHELL_WILDCARD && SHELL",
-      "DEVMEM_SHELL && SHELL"
+      "POSIX_AEP_CHOICE_ZEPHYR && <choice POSIX_AEP_CHOICE>"
     ]
   ],
   [
@@ -6413,17 +6033,6 @@
   ],
   [
     "CONFIG_SMF",
-    "y",
-    "bool",
-    "y",
-    "assign",
-    [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/prj.conf",
-      8
-    ]
-  ],
-  [
-    "CONFIG_SMF_ANCESTOR_SUPPORT",
     "y",
     "bool",
     null,
@@ -6456,8 +6065,7 @@
     "y",
     "select",
     [
-      "MULTITHREADING",
-      "SHELL_BACKEND_SERIAL && SHELL_BACKENDS && SHELL"
+      "MULTITHREADING"
     ]
   ],
   [
@@ -6886,8 +6494,11 @@
     "y",
     "bool",
     "y",
-    "assign",
-    null
+    "default",
+    [
+      "/Users/hansgelke/zephyrproject/zephyr/subsys/logging/Kconfig.mode",
+      9
+    ]
   ],
   [
     "CONFIG_LOG_MODE_IMMEDIATE",
@@ -6952,22 +6563,19 @@
     "CONFIG_LOG_RUNTIME_FILTERING",
     "y",
     "bool",
-    "y",
-    "assign",
-    [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/prj.conf",
-      11
-    ]
+    null,
+    "unset",
+    null
   ],
   [
     "CONFIG_LOG_DEFAULT_LEVEL",
     "y",
     "int",
     "3",
-    "assign",
+    "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/prj.conf",
-      7
+      "/Users/hansgelke/zephyrproject/zephyr/subsys/logging/Kconfig.filtering",
+      15
     ]
   ],
   [
@@ -7240,6 +6848,27 @@
     ]
   ],
   [
+    "CONFIG_LOG_BACKEND_SUPPORTS_FORMAT_TIMESTAMP",
+    "n",
+    "bool",
+    "y",
+    "select",
+    [
+      "LOG_BACKEND_UART && UART_CONSOLE && !LOG_FRONTEND_ONLY && !LOG_MODE_MINIMAL && LOG"
+    ]
+  ],
+  [
+    "CONFIG_LOG_BACKEND_FORMAT_TIMESTAMP",
+    "y",
+    "bool",
+    "y",
+    "default",
+    [
+      "/Users/hansgelke/zephyrproject/zephyr/subsys/logging/Kconfig.formatting",
+      187
+    ]
+  ],
+  [
     "CONFIG_LOG_OUTPUT_FORMAT_TIME_TIMESTAMP",
     "y",
     "bool",
@@ -7286,15 +6915,48 @@
     "CONFIG_LOG_BACKEND_UART",
     "y",
     "bool",
-    "n",
-    "assign",
+    "y",
+    "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/prj.conf",
-      10
+      "/Users/hansgelke/zephyrproject/zephyr/subsys/logging/backends/Kconfig.uart",
+      7
     ]
   ],
   [
-    "CONFIG_LOG_BACKEND_IPC_SERVICE",
+    "CONFIG_LOG_BACKEND_UART_BUFFER_SIZE",
+    "y",
+    "int",
+    "1",
+    "default",
+    [
+      "/Users/hansgelke/zephyrproject/zephyr/subsys/logging/backends/Kconfig.uart",
+      22
+    ]
+  ],
+  [
+    "CONFIG_LOG_BACKEND_UART_AUTOSTART",
+    "y",
+    "bool",
+    "y",
+    "default",
+    [
+      "/Users/hansgelke/zephyrproject/zephyr/subsys/logging/backends/Kconfig.uart",
+      33
+    ]
+  ],
+  [
+    "CONFIG_LOG_BACKEND_UART_OUTPUT_TEXT",
+    "y",
+    "bool",
+    "y",
+    "default",
+    [
+      "/Users/hansgelke/zephyrproject/zephyr/subsys/logging/Kconfig.template.log_format_config",
+      6
+    ]
+  ],
+  [
+    "CONFIG_LOG_BACKEND_UART_OUTPUT_DICTIONARY",
     "y",
     "bool",
     null,
@@ -7302,7 +6964,26 @@
     null
   ],
   [
-    "CONFIG_LOG_CMDS",
+    "CONFIG_LOG_BACKEND_UART_OUTPUT_CUSTOM",
+    "y",
+    "bool",
+    null,
+    "unset",
+    null
+  ],
+  [
+    "CONFIG_LOG_BACKEND_UART_OUTPUT_DEFAULT",
+    "n",
+    "int",
+    "0",
+    "default",
+    [
+      "/Users/hansgelke/zephyrproject/zephyr/subsys/logging/Kconfig.template.log_format_config",
+      42
+    ]
+  ],
+  [
+    "CONFIG_LOG_BACKEND_IPC_SERVICE",
     "y",
     "bool",
     null,
@@ -7403,7 +7084,7 @@
     "y",
     "select",
     [
-      "SHELL_LOG_BACKEND && LOG && !LOG_MODE_MINIMAL && SHELL"
+      "LOG_BACKEND_UART_OUTPUT_TEXT && <choice LOG_BACKEND_UART_OUTPUT>"
     ]
   ],
   [
@@ -7464,14 +7145,6 @@
   ],
   [
     "CONFIG_PM_POLICY_LATENCY_STANDALONE",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_PM_CPU_SHELL",
     "y",
     "bool",
     null,
@@ -7571,815 +7244,6 @@
   ],
   [
     "CONFIG_SHELL",
-    "y",
-    "bool",
-    "y",
-    "assign",
-    [
-      "/Users/hansgelke/Documents/BLUELINE/code_blueline/prj.conf",
-      4
-    ]
-  ],
-  [
-    "CONFIG_SHELL_LOG_LEVEL_OFF",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SHELL_LOG_LEVEL_ERR",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SHELL_LOG_LEVEL_WRN",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SHELL_LOG_LEVEL_INF",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SHELL_LOG_LEVEL_DBG",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SHELL_LOG_LEVEL_DEFAULT",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/logging/Kconfig.template.log_config",
-      5
-    ]
-  ],
-  [
-    "CONFIG_SHELL_LOG_LEVEL",
-    "n",
-    "int",
-    "3",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/logging/Kconfig.template.log_config",
-      36
-    ]
-  ],
-  [
-    "CONFIG_SHELL_BACKENDS",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/backends/Kconfig.backends",
-      8
-    ]
-  ],
-  [
-    "CONFIG_SHELL_BACKEND_SERIAL_INIT_PRIORITY",
-    "y",
-    "int",
-    "90",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/backends/Kconfig.backends",
-      29
-    ]
-  ],
-  [
-    "CONFIG_SHELL_PROMPT_UART",
-    "y",
-    "string",
-    "uart:~$ ",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/backends/Kconfig.backends",
-      37
-    ]
-  ],
-  [
-    "CONFIG_SHELL_BACKEND_SERIAL_INTERRUPT_DRIVEN",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/backends/Kconfig.backends",
-      44
-    ]
-  ],
-  [
-    "CONFIG_SHELL_BACKEND_SERIAL_API_POLLING",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SHELL_BACKEND_SERIAL_API_INTERRUPT_DRIVEN",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/backends/Kconfig.backends",
-      57
-    ]
-  ],
-  [
-    "CONFIG_SHELL_BACKEND_SERIAL_FORCE_TX_BLOCKING_MODE",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SHELL_BACKEND_SERIAL_TX_RING_BUFFER_SIZE",
-    "y",
-    "int",
-    "8",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/backends/Kconfig.backends",
-      83
-    ]
-  ],
-  [
-    "CONFIG_SHELL_BACKEND_SERIAL_RX_RING_BUFFER_SIZE",
-    "y",
-    "int",
-    "64",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/backends/Kconfig.backends",
-      93
-    ]
-  ],
-  [
-    "CONFIG_SHELL_BACKEND_SERIAL_LOG_MESSAGE_QUEUE_TIMEOUT",
-    "y",
-    "int",
-    "100",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig.template.shell_log_queue_timeout",
-      5
-    ]
-  ],
-  [
-    "CONFIG_SHELL_BACKEND_SERIAL_LOG_MESSAGE_QUEUE_SIZE",
-    "y",
-    "int",
-    "512",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig.template.shell_log_queue_size",
-      5
-    ]
-  ],
-  [
-    "CONFIG_SHELL_BACKEND_SERIAL_LOG_LEVEL_DEFAULT",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/backends/Kconfig.backends",
-      162
-    ]
-  ],
-  [
-    "CONFIG_SHELL_BACKEND_SERIAL_LOG_LEVEL_DBG",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SHELL_BACKEND_SERIAL_LOG_LEVEL_INF",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SHELL_BACKEND_SERIAL_LOG_LEVEL_WRN",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SHELL_BACKEND_SERIAL_LOG_LEVEL_ERR",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SHELL_BACKEND_SERIAL_LOG_LEVEL_NONE",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SHELL_BACKEND_SERIAL_LOG_LEVEL",
-    "n",
-    "int",
-    "5",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/backends/Kconfig.backends",
-      191
-    ]
-  ],
-  [
-    "CONFIG_SHELL_BACKEND_DUMMY",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SHELL_MINIMAL",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SHELL_DEVICE_HELPERS",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      31
-    ]
-  ],
-  [
-    "CONFIG_SHELL_THREAD_PRIORITY_OVERRIDE",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SHELL_BACKSPACE_MODE_DELETE",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      57
-    ]
-  ],
-  [
-    "CONFIG_SHELL_PROMPT_CHANGE",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      65
-    ]
-  ],
-  [
-    "CONFIG_SHELL_PROMPT_BUFF_SIZE",
-    "y",
-    "int",
-    "20",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      76
-    ]
-  ],
-  [
-    "CONFIG_SHELL_CMD_BUFF_SIZE",
-    "y",
-    "int",
-    "256",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      84
-    ]
-  ],
-  [
-    "CONFIG_SHELL_PRINTF_BUFF_SIZE",
-    "y",
-    "int",
-    "30",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      91
-    ]
-  ],
-  [
-    "CONFIG_SHELL_PRINTF_AUTOFLUSH",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      99
-    ]
-  ],
-  [
-    "CONFIG_SHELL_DEFAULT_TERMINAL_WIDTH",
-    "y",
-    "int",
-    "80",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      107
-    ]
-  ],
-  [
-    "CONFIG_SHELL_DEFAULT_TERMINAL_HEIGHT",
-    "y",
-    "int",
-    "24",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      113
-    ]
-  ],
-  [
-    "CONFIG_SHELL_ARGC_MAX",
-    "y",
-    "int",
-    "20",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      119
-    ]
-  ],
-  [
-    "CONFIG_SHELL_TAB",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      125
-    ]
-  ],
-  [
-    "CONFIG_SHELL_TAB_AUTOCOMPLETION",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      134
-    ]
-  ],
-  [
-    "CONFIG_SHELL_ASCII_FILTER",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      141
-    ]
-  ],
-  [
-    "CONFIG_SHELL_WILDCARD",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      150
-    ]
-  ],
-  [
-    "CONFIG_SHELL_MSG_CMD_NOT_FOUND",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      156
-    ]
-  ],
-  [
-    "CONFIG_SHELL_MSG_SPECIFY_SUBCOMMAND",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      162
-    ]
-  ],
-  [
-    "CONFIG_SHELL_ECHO_STATUS",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      168
-    ]
-  ],
-  [
-    "CONFIG_SHELL_START_OBSCURED",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SHELL_VT100_COMMANDS",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      180
-    ]
-  ],
-  [
-    "CONFIG_SHELL_VT100_COLORS",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      187
-    ]
-  ],
-  [
-    "CONFIG_SHELL_GETOPT",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SHELL_METAKEYS",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      202
-    ]
-  ],
-  [
-    "CONFIG_SHELL_HELP",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      210
-    ]
-  ],
-  [
-    "CONFIG_SHELL_HELP_OPT_PARSE",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      218
-    ]
-  ],
-  [
-    "CONFIG_SHELL_HELP_ON_WRONG_ARGUMENT_COUNT",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      227
-    ]
-  ],
-  [
-    "CONFIG_SHELL_HISTORY",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      231
-    ]
-  ],
-  [
-    "CONFIG_SHELL_HISTORY_BUFFER",
-    "y",
-    "int",
-    "512",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      239
-    ]
-  ],
-  [
-    "CONFIG_SHELL_STATS",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      246
-    ]
-  ],
-  [
-    "CONFIG_SHELL_CMDS",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      250
-    ]
-  ],
-  [
-    "CONFIG_SHELL_CMDS_RESIZE",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      258
-    ]
-  ],
-  [
-    "CONFIG_SHELL_CMDS_SELECT",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SHELL_CMD_ROOT",
-    "y",
-    "string",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SHELL_LOG_BACKEND",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      283
-    ]
-  ],
-  [
-    "CONFIG_SHELL_LOG_BACKEND_CUSTOM",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SHELL_LOG_FORMAT_TIMESTAMP",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      301
-    ]
-  ],
-  [
-    "CONFIG_SHELL_AUTOSTART",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      308
-    ]
-  ],
-  [
-    "CONFIG_SHELL_CMDS_RETURN_VALUE",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      315
-    ]
-  ],
-  [
-    "CONFIG_SHELL_CUSTOM_HEADER",
-    "y",
-    "bool",
-    null,
-    "unset",
-    null
-  ],
-  [
-    "CONFIG_SHELL_TX_TIMEOUT_MS",
-    "y",
-    "int",
-    "500",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/Kconfig",
-      330
-    ]
-  ],
-  [
-    "CONFIG_DEVICE_SHELL",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/modules/Kconfig",
-      8
-    ]
-  ],
-  [
-    "CONFIG_DEVICE_SHELL_INIT_CMD",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/modules/Kconfig",
-      15
-    ]
-  ],
-  [
-    "CONFIG_DATE_SHELL",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/modules/Kconfig",
-      25
-    ]
-  ],
-  [
-    "CONFIG_DEVMEM_SHELL",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/modules/Kconfig",
-      31
-    ]
-  ],
-  [
-    "CONFIG_KERNEL_SHELL",
-    "y",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/modules/kernel_service/Kconfig",
-      8
-    ]
-  ],
-  [
-    "CONFIG_KERNEL_THREAD_SHELL",
-    "n",
-    "bool",
-    "y",
-    "select",
-    [
-      "KERNEL_THREAD_SHELL_LIST && INIT_STACKS && THREAD_MONITOR && THREAD_STACK_INFO && KERNEL_SHELL && SHELL",
-      "KERNEL_THREAD_SHELL_STACKS && INIT_STACKS && THREAD_MONITOR && THREAD_STACK_INFO && KERNEL_SHELL && SHELL",
-      "KERNEL_THREAD_SHELL_SUSPEND && THREAD_MONITOR && KERNEL_SHELL && SHELL",
-      "KERNEL_THREAD_SHELL_RESUME && THREAD_MONITOR && KERNEL_SHELL && SHELL",
-      "KERNEL_THREAD_SHELL_KILL && THREAD_MONITOR && KERNEL_SHELL && SHELL"
-    ]
-  ],
-  [
-    "CONFIG_KERNEL_THREAD_SHELL_LIST",
-    "n",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/modules/kernel_service/thread/Kconfig",
-      15
-    ]
-  ],
-  [
-    "CONFIG_KERNEL_THREAD_SHELL_STACKS",
-    "n",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/modules/kernel_service/thread/Kconfig",
-      25
-    ]
-  ],
-  [
-    "CONFIG_KERNEL_THREAD_SHELL_SUSPEND",
-    "n",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/modules/kernel_service/thread/Kconfig",
-      59
-    ]
-  ],
-  [
-    "CONFIG_KERNEL_THREAD_SHELL_RESUME",
-    "n",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/modules/kernel_service/thread/Kconfig",
-      67
-    ]
-  ],
-  [
-    "CONFIG_KERNEL_THREAD_SHELL_KILL",
-    "n",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/zephyrproject/zephyr/subsys/shell/modules/kernel_service/thread/Kconfig",
-      75
-    ]
-  ],
-  [
-    "CONFIG_KERNEL_SHELL_PANIC_CMD",
     "y",
     "bool",
     null,
