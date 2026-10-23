@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Courier; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Courier; -webkit-text-stroke: #000000; min-height: 16.0px}
+    span.s1 {font-kerning: none}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1"># Created by https://www.toptal.com/developers/gitignore/api/macos,kicad,c</span></p>
+<p class="p1"><span class="s1"># Edit at https://www.toptal.com/developers/gitignore?templates=macos,kicad,c</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">### C ###</span></p>
+<p class="p1"><span class="s1"># Prerequisites</span></p>
+<p class="p1"><span class="s1">*.d</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"># Object files</span></p>
+<p class="p1"><span class="s1">*.o</span></p>
+<p class="p1"><span class="s1">*.ko</span></p>
+<p class="p1"><span class="s1">*.obj</span></p>
+<p class="p1"><span class="s1">*.elf</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"># Linker output</span></p>
+<p class="p1"><span class="s1">*.ilk</span></p>
+<p class="p1"><span class="s1">*.map</span></p>
+<p class="p1"><span class="s1">*.exp</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"># Precompiled Headers</span></p>
+<p class="p1"><span class="s1">*.gch</span></p>
+<p class="p1"><span class="s1">*.pch</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"># Libraries</span></p>
+<p class="p1"><span class="s1">*.lib</span></p>
+<p class="p1"><span class="s1">*.a</span></p>
+<p class="p1"><span class="s1">*.la</span></p>
+<p class="p1"><span class="s1">*.lo</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"># Shared objects (inc. Windows DLLs)</span></p>
+<p class="p1"><span class="s1">*.dll</span></p>
+<p class="p1"><span class="s1">*.so</span></p>
+<p class="p1"><span class="s1">*.so.*</span></p>
+<p class="p1"><span class="s1">*.dylib</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"># Executables</span></p>
+<p class="p1"><span class="s1">*.exe</span></p>
+<p class="p1"><span class="s1">*.out</span></p>
+<p class="p1"><span class="s1">*.app</span></p>
+<p class="p1"><span class="s1">*.i*86</span></p>
+<p class="p1"><span class="s1">*.x86_64</span></p>
+<p class="p1"><span class="s1">*.hex</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"># Debug files</span></p>
+<p class="p1"><span class="s1">*.dSYM/</span></p>
+<p class="p1"><span class="s1">*.su</span></p>
+<p class="p1"><span class="s1">*.idb</span></p>
+<p class="p1"><span class="s1">*.pdb</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"># Kernel Module Compile Results</span></p>
+<p class="p1"><span class="s1">*.mod*</span></p>
+<p class="p1"><span class="s1">*.cmd</span></p>
+<p class="p1"><span class="s1">.tmp_versions/</span></p>
+<p class="p1"><span class="s1">modules.order</span></p>
+<p class="p1"><span class="s1">Module.symvers</span></p>
+<p class="p1"><span class="s1">Mkfile.old</span></p>
+<p class="p1"><span class="s1">dkms.conf</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">### KiCad ###</span></p>
+<p class="p1"><span class="s1"># For PCBs designed using KiCad: https://www.kicad.org/</span></p>
+<p class="p1"><span class="s1"># Format documentation: https://kicad.org/help/file-formats/</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"># Temporary files</span></p>
+<p class="p1"><span class="s1">*.000</span></p>
+<p class="p1"><span class="s1">*.bak</span></p>
+<p class="p1"><span class="s1">*.bck</span></p>
+<p class="p1"><span class="s1">*.kicad_pcb-bak</span></p>
+<p class="p1"><span class="s1">*.kicad_sch-bak</span></p>
+<p class="p1"><span class="s1">*-backups</span></p>
+<p class="p1"><span class="s1">*.kicad_prl</span></p>
+<p class="p1"><span class="s1">*.sch-bak</span></p>
+<p class="p1"><span class="s1">*~</span></p>
+<p class="p1"><span class="s1">_autosave-*</span></p>
+<p class="p1"><span class="s1">*.tmp</span></p>
+<p class="p1"><span class="s1">*-save.pro</span></p>
+<p class="p1"><span class="s1">*-save.kicad_pcb</span></p>
+<p class="p1"><span class="s1">fp-info-cache</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"># Netlist files (exported from Eeschema)</span></p>
+<p class="p1"><span class="s1">*.net</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"># Autorouter files (exported from Pcbnew)</span></p>
+<p class="p1"><span class="s1">*.dsn</span></p>
+<p class="p1"><span class="s1">*.ses</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"># Exported BOM files</span></p>
+<p class="p1"><span class="s1">*.xml</span></p>
+<p class="p1"><span class="s1">*.csv</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">### KiCad Patch ###</span></p>
+<p class="p1"><span class="s1">rescue-backup/</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">*.tsv</span></p>
+<p class="p1"><span class="s1">bom/</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"># Gerber export output</span></p>
+<p class="p1"><span class="s1">out/</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">### macOS ###</span></p>
+<p class="p1"><span class="s1"># General</span></p>
+<p class="p1"><span class="s1">.DS_Store</span></p>
+<p class="p1"><span class="s1">.AppleDouble</span></p>
+<p class="p1"><span class="s1">.LSOverride</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"># Icon must end with two \r</span></p>
+<p class="p1"><span class="s1">Icon</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"># Thumbnails</span></p>
+<p class="p1"><span class="s1">._*</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"># Files that might appear in the root of a volume</span></p>
+<p class="p1"><span class="s1">.DocumentRevisions-V100</span></p>
+<p class="p1"><span class="s1">.fseventsd</span></p>
+<p class="p1"><span class="s1">.Spotlight-V100</span></p>
+<p class="p1"><span class="s1">.TemporaryItems</span></p>
+<p class="p1"><span class="s1">.Trashes</span></p>
+<p class="p1"><span class="s1">.VolumeIcon.icns</span></p>
+<p class="p1"><span class="s1">.com.apple.timemachine.donotpresent</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"># Directories potentially created on remote AFP share</span></p>
+<p class="p1"><span class="s1">.AppleDB</span></p>
+<p class="p1"><span class="s1">.AppleDesktop</span></p>
+<p class="p1"><span class="s1">Network Trash Folder</span></p>
+<p class="p1"><span class="s1">Temporary Items</span></p>
+<p class="p1"><span class="s1">.apdisk</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">### macOS Patch ###</span></p>
+<p class="p1"><span class="s1"># iCloud generated files</span></p>
+<p class="p1"><span class="s1">*.icloud</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"># End of https://www.toptal.com/developers/gitignore/api/macos,kicad,c</span></p>
+</body>
+</html>
