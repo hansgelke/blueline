@@ -584,7 +584,7 @@
     "y",
     "assign",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/prj.conf",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/prj.conf",
       2
     ]
   ],
@@ -878,7 +878,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       978
     ]
   ],
@@ -889,7 +889,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       1063
     ]
   ],
@@ -900,19 +900,8 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       1243
-    ]
-  ],
-  [
-    "CONFIG_DT_HAS_ARM_PL022_ENABLED",
-    "n",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
-      1248
     ]
   ],
   [
@@ -922,19 +911,8 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       1318
-    ]
-  ],
-  [
-    "CONFIG_DT_HAS_GPIO_KEYS_ENABLED",
-    "n",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
-      2833
     ]
   ],
   [
@@ -944,7 +922,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       2838
     ]
   ],
@@ -955,7 +933,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       5168
     ]
   ],
@@ -966,7 +944,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       8558
     ]
   ],
@@ -977,7 +955,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       8563
     ]
   ],
@@ -988,7 +966,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       8568
     ]
   ],
@@ -999,7 +977,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       8578
     ]
   ],
@@ -1010,7 +988,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       8583
     ]
   ],
@@ -1021,7 +999,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       8588
     ]
   ],
@@ -1032,7 +1010,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       8593
     ]
   ],
@@ -1043,7 +1021,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       8598
     ]
   ],
@@ -1054,7 +1032,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       8603
     ]
   ],
@@ -1065,7 +1043,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       8618
     ]
   ],
@@ -1076,7 +1054,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       8628
     ]
   ],
@@ -1087,19 +1065,8 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       8633
-    ]
-  ],
-  [
-    "CONFIG_DT_HAS_RASPBERRYPI_PICO_SPI_ENABLED",
-    "n",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
-      8643
     ]
   ],
   [
@@ -1109,7 +1076,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       8658
     ]
   ],
@@ -1120,7 +1087,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       8663
     ]
   ],
@@ -1131,7 +1098,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       8673
     ]
   ],
@@ -1142,7 +1109,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       8678
     ]
   ],
@@ -1153,7 +1120,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       8683
     ]
   ],
@@ -1164,7 +1131,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       10863
     ]
   ],
@@ -1175,19 +1142,8 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.dts",
       10938
-    ]
-  ],
-  [
-    "CONFIG_DT_HAS_VND_SPI_DEVICE_ENABLED",
-    "n",
-    "bool",
-    "y",
-    "default",
-    [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.dts",
-      13718
     ]
   ],
   [
@@ -1213,7 +1169,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       5
     ]
   ],
@@ -1224,7 +1180,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       11
     ]
   ],
@@ -1245,7 +1201,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       17
     ]
   ],
@@ -1264,7 +1220,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       23
     ]
   ],
@@ -1283,7 +1239,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       29
     ]
   ],
@@ -1312,7 +1268,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       35
     ]
   ],
@@ -1323,7 +1279,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       39
     ]
   ],
@@ -1334,7 +1290,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       44
     ]
   ],
@@ -1345,7 +1301,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       53
     ]
   ],
@@ -1356,7 +1312,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       57
     ]
   ],
@@ -1367,7 +1323,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       62
     ]
   ],
@@ -1378,7 +1334,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       68
     ]
   ],
@@ -1397,7 +1353,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       77
     ]
   ],
@@ -1408,7 +1364,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       83
     ]
   ],
@@ -1419,7 +1375,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       89
     ]
   ],
@@ -1438,7 +1394,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       98
     ]
   ],
@@ -1449,7 +1405,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       102
     ]
   ],
@@ -1460,7 +1416,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       107
     ]
   ],
@@ -1471,7 +1427,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       114
     ]
   ],
@@ -1482,7 +1438,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       119
     ]
   ],
@@ -1493,7 +1449,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       126
     ]
   ],
@@ -1504,7 +1460,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       129
     ]
   ],
@@ -1515,7 +1471,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       132
     ]
   ],
@@ -1547,7 +1503,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       140
     ]
   ],
@@ -1558,7 +1514,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       146
     ]
   ],
@@ -1569,7 +1525,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       152
     ]
   ],
@@ -1580,7 +1536,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       161
     ]
   ],
@@ -1591,7 +1547,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       165
     ]
   ],
@@ -1602,7 +1558,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       173
     ]
   ],
@@ -1621,7 +1577,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       179
     ]
   ],
@@ -1632,7 +1588,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       183
     ]
   ],
@@ -1643,7 +1599,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       188
     ]
   ],
@@ -1654,7 +1610,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       192
     ]
   ],
@@ -1665,7 +1621,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       195
     ]
   ],
@@ -1684,7 +1640,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       200
     ]
   ],
@@ -1695,7 +1651,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       206
     ]
   ],
@@ -1706,7 +1662,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       210
     ]
   ],
@@ -1717,7 +1673,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       213
     ]
   ],
@@ -1728,7 +1684,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       218
     ]
   ],
@@ -1755,7 +1711,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       224
     ]
   ],
@@ -1766,7 +1722,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       230
     ]
   ],
@@ -1777,7 +1733,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       236
     ]
   ],
@@ -1796,7 +1752,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       242
     ]
   ],
@@ -1807,7 +1763,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       248
     ]
   ],
@@ -1834,7 +1790,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       252
     ]
   ],
@@ -1845,7 +1801,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       255
     ]
   ],
@@ -1856,7 +1812,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       260
     ]
   ],
@@ -1875,7 +1831,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       266
     ]
   ],
@@ -1894,7 +1850,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       273
     ]
   ],
@@ -1913,7 +1869,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       278
     ]
   ],
@@ -1932,7 +1888,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       284
     ]
   ],
@@ -1951,7 +1907,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       290
     ]
   ],
@@ -1962,7 +1918,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       296
     ]
   ],
@@ -1991,7 +1947,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       302
     ]
   ],
@@ -2010,7 +1966,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       308
     ]
   ],
@@ -2021,7 +1977,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       314
     ]
   ],
@@ -2032,7 +1988,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       320
     ]
   ],
@@ -2051,7 +2007,7 @@
     "y",
     "default",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/Kconfig/Kconfig.modules",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/Kconfig/Kconfig.modules",
       324
     ]
   ],
@@ -3485,7 +3441,7 @@
     "y",
     "assign",
     [
-      "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/prj.conf",
+      "/Users/hansgelke/Documents/BLUELINE/blueline/code/prj.conf",
       3
     ]
   ],

@@ -39,77 +39,77 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/drivers/disk/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/drivers/disk/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/drivers/firmware/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/drivers/firmware/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/drivers/interrupt_controller/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/drivers/interrupt_controller/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/drivers/misc/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/drivers/misc/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/drivers/pcie/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/drivers/pcie/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/drivers/usb/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/drivers/usb/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/drivers/usb_c/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/drivers/usb_c/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/drivers/clock_control/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/drivers/clock_control/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/drivers/console/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/drivers/console/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/drivers/gpio/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/drivers/gpio/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/drivers/pinctrl/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/drivers/pinctrl/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/drivers/reset/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/drivers/reset/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/drivers/serial/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/drivers/serial/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/drivers/timer/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/drivers/timer/cmake_install.cmake")
 endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/drivers/install_local_manifest.txt"
+  file(WRITE "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/drivers/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

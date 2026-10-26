@@ -1,12 +1,12 @@
 linker_zephyr_pre0.cmd: \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/arch/arm/cortex_m/scripts/linker.ld \
- /Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/include/generated/zephyr/autoconf.h \
+ /Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/include/generated/zephyr/autoconf.h \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/sections.h \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/section_tags.h \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/toolchain.h \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/toolchain/gcc.h \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/devicetree.h \
- /Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/include/generated/zephyr/devicetree_generated.h \
+ /Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/include/generated/zephyr/devicetree_generated.h \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/irq_multilevel.h \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/sys/util.h \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/sys/util_macro.h \
@@ -36,7 +36,7 @@ linker_zephyr_pre0.cmd: \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/devicetree_regions.h \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/linker-defs.h \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/toolchain/common.h \
- /Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/include/generated/zephyr/offsets.h \
+ /Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/include/generated/zephyr/offsets.h \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/linker-tool.h \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/linker-tool-gcc.h \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/kernel/mm.h \
@@ -44,7 +44,7 @@ linker_zephyr_pre0.cmd: \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/linker-devnull.h \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/rel-sections.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/llext-sections.ld \
- /Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/include/generated/snippets-rom-start.ld \
+ /Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/include/generated/snippets-rom-start.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/../arch/common/rom_start_address.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/../arch/common/fill_with_zeros.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/../arch/common/rom_start_offset.ld \
@@ -57,7 +57,7 @@ linker_zephyr_pre0.cmd: \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/common-rom/common-rom-kernel-devices.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/iterable_sections.h \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/device-deps.ld \
- /Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/include/generated/device-api-sections.ld \
+ /Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/include/generated/device-api-sections.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/common-rom/common-rom-ztest.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/common-rom/common-rom-init.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/common-rom/common-rom-net.ld \
@@ -66,24 +66,24 @@ linker_zephyr_pre0.cmd: \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/common-rom/common-rom-debug.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/common-rom/common-rom-interrupt-controllers.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/common-rom/common-rom-misc.ld \
- /Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/include/generated/snippets-rom-sections.ld \
+ /Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/include/generated/snippets-rom-sections.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/thread-local-storage.ld \
- /Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/include/generated/snippets-rodata.ld \
+ /Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/include/generated/snippets-rodata.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/../arch/arm/core/swi_tables.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/kobject-rom.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/cplusplus-rom.ld \
- /Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/include/generated/snippets-ram-sections.ld \
+ /Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/include/generated/snippets-ram-sections.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/../arch/common/ramfunc.ld \
- /Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/include/generated/snippets-ramfunc-section.ld \
- /Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/include/generated/snippets-rwdata.ld \
+ /Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/include/generated/snippets-ramfunc-section.ld \
+ /Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/include/generated/snippets-rwdata.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/common-ram.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/kobject-data.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/cplusplus-ram.ld \
- /Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/include/generated/snippets-data-sections.ld \
- /Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/include/generated/snippets-sections.ld \
+ /Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/include/generated/snippets-data-sections.ld \
+ /Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/include/generated/snippets-sections.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/intlist.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/debug-sections.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/common-noinit.ld \
- /Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/include/generated/snippets-noinit.ld \
+ /Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/include/generated/snippets-noinit.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/kobject-priv-stacks.ld \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/linker/ram-end.ld

@@ -6,16 +6,25 @@
 #ifndef FSM_MAIN_H
 #define FSM_MAIN_H
 
-/* FSM states. C identifiers cannot start with a digit, so "1_idle" becomes STATE_1_IDLE. */
+/* FSM timer timeouts */
+#define PULSE_TIMER_MS    500
+#define HANGUP_TIMER_MS   500
+
+/* FSM states */
 typedef enum {
-	STATE_1_IDLE = 0,
-	STATE_2_OFFHOOK,
+	STATE_S0_IDLE = 0,
+	STATE_S1_OFFHOOK,
+	STATE_S2_OPEN,
+	STATE_S3_CLOSED,
 	STATE_COUNT
 } fsm_state_t;
 
-/* Events delivered to the FSM (e.g. from interrupt service routines) */
+/* Events delivered to the FSM (from ISRs and timer expiry functions) */
 typedef enum {
-	FSM_EV_SHK_PRESSED = 0,
+	EVT_SHK_ACTIVE = 0,
+	EVT_SHK_INACTIVE,
+	EVT_PULSE_TIMEOUT,
+	EVT_HANGUP_TIMEOUT,
 	FSM_EV_COUNT
 } fsm_event_t;
 

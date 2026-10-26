@@ -39,347 +39,347 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/arch/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/arch/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/lib/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/lib/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/soc/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/soc/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/boards/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/boards/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/subsys/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/subsys/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/drivers/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/drivers/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/acpica/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/acpica/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/cmsis/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/cmsis/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/cmsis-dsp/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/cmsis-dsp/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/cmsis-nn/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/cmsis-nn/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/cmsis_6/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/cmsis_6/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/fatfs/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/fatfs/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/adi/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/adi/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/hal_afbr/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/hal_afbr/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/hal_ambiq/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/hal_ambiq/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/atmel/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/atmel/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/hal_bouffalolab/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/hal_bouffalolab/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/hal_espressif/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/hal_espressif/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/hal_ethos_u/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/hal_ethos_u/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/hal_gigadevice/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/hal_gigadevice/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/hal_infineon/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/hal_infineon/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/hal_intel/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/hal_intel/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/microchip/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/microchip/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/hal_nordic/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/hal_nordic/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/nuvoton/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/nuvoton/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/hal_nxp/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/hal_nxp/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/openisa/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/openisa/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/quicklogic/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/quicklogic/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/hal_renesas/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/hal_renesas/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/hal_rpi_pico/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/hal_rpi_pico/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/hal_sifli/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/hal_sifli/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/hal_silabs/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/hal_silabs/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/hal_st/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/hal_st/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/hal_stm32/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/hal_stm32/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/hal_tdk/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/hal_tdk/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/hal_telink/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/hal_telink/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/ti/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/ti/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/hal_wch/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/hal_wch/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/hal_wurthelektronik/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/hal_wurthelektronik/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/xtensa/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/xtensa/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/hostap/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/hostap/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/liblc3/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/liblc3/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/libmctp/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/libmctp/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/libmetal/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/libmetal/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/libsbc/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/libsbc/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/littlefs/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/littlefs/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/lora-basics-modem/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/lora-basics-modem/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/loramac-node/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/loramac-node/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/lvgl/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/lvgl/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/mbedtls/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/mbedtls/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/mcuboot/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/mcuboot/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/mipi-sys-t/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/mipi-sys-t/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/nanopb/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/nanopb/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/nrf_wifi/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/nrf_wifi/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/open-amp/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/open-amp/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/openthread/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/openthread/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/percepio/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/percepio/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/picolibc/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/picolibc/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/segger/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/segger/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/trusted-firmware-a/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/trusted-firmware-a/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/trusted-firmware-m/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/trusted-firmware-m/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/uoscore-uedhoc/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/uoscore-uedhoc/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/zcbor/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/zcbor/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/modules/nrf_hw_models/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/modules/nrf_hw_models/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/kernel/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/kernel/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/cmake/flash/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/cmake/flash/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/cmake/usage/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/cmake/usage/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/cmake/reports/cmake_install.cmake")
+  include("/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/cmake/reports/cmake_install.cmake")
 endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/install_local_manifest.txt"
+  file(WRITE "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

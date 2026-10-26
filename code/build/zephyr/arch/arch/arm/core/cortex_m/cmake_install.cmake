@@ -40,6 +40,6 @@ endif()
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/build/zephyr/arch/arch/arm/core/cortex_m/install_local_manifest.txt"
+  file(WRITE "/Users/hansgelke/Documents/BLUELINE/blueline/code/build/zephyr/arch/arch/arm/core/cortex_m/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

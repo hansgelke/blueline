@@ -8,7 +8,7 @@ The project is developed step by step; implement only what is asked for, nothing
 - Board target: `rpi_pico2/rp2350a/m33`
 - `west` is not on the PATH. Activate the Zephyr environment first:
   `source ~/zephyrproject/.venv/bin/activate` (Zephyr base: `~/zephyrproject/zephyr`)
-- Build (run from `code_blueline/`, output goes to `code_blueline/build/`):
+- Build (run from `code/`, output goes to `code/build/`):
   `west build -b rpi_pico2/rp2350a/m33 -d build .`
 - Rebuild from scratch: add `-p always`
 - Flash: copy `build/zephyr/zephyr.uf2` to the Pico in BOOTSEL mode (drive `RP2350`).
@@ -28,10 +28,11 @@ New source files must be added to `CMakeLists.txt`.
 
 ## Hardware
 
-| Signal | GPIO | Config                         | Logic                          |
-|--------|------|--------------------------------|--------------------------------|
-| Button | 15   | input, internal pull-up        | high = released, low = pushed  |
-| LED    | 25   | output (Pico 2 user LED)       | high = on                      |
+| Signal            | GPIO | Config                         | Logic                          |
+|-------------------|------|--------------------------------|--------------------------------|
+| `SHK_FALLING_PIN` | 15   | input, internal pull-up        | IRQ on falling edge            |
+| `SHK_RISING_PIN`  | 14   | input, internal pull-up        | IRQ on rising edge             |
+| LED               | 25   | output (Pico 2 user LED)       | high = on                      |
 
 ## Threads
 
@@ -44,11 +45,13 @@ New source files must be added to `CMakeLists.txt`.
   owns the NVIC handler and calls `gpio_int` with a bit mask of the pins that fired.
 - `gpio_int` is the single common ISR for all GPIO interrupt pins. To add a pin:
   add it to `GPIO_INT_PIN_MASK` and add an `if (pins & BIT(n))` branch in `gpio_int`.
-- The button interrupt fires on the falling edge (button pushed). Release does nothing.
-- The ISR contains no FSM logic. It only posts events with `fsm_post_event()`
-  (ISR-safe, K_NO_WAIT) into the `fsm_event_q` message queue.
-- **No debounce.** The button is assumed to switch cleanly. A dedicated debounce
-  will be added later by the developer; do not add one on your own.
+- The ISR contains no FSM logic. It only starts timers or posts events with
+  `fsm_post_event()` (ISR-safe, K_NO_WAIT) into the `fsm_event_q` message queue.
+- shk events (in `pico_io.c`): an edge starts a one-shot timer of `SHK_CHECK_MS`
+  (10 ms); its expiry function checks the pin level and posts the event:
+  - `EVT_SHK_INACTIVE`: falling edge on `SHK_FALLING_PIN`, pin still low after 10 ms.
+  - `EVT_SHK_ACTIVE`: rising edge on `SHK_RISING_PIN`, pin still high after 10 ms.
+- No other debounce. Do not add one on your own.
 
 ## State machine
 
@@ -56,14 +59,31 @@ The FSM is event-driven: `fsm_thread` blocks on `fsm_event_q` (K_FOREVER), with 
 Each state has its own handler function. State changes go through `fsm_enter_state()`,
 which runs the entry action of the new state.
 
-States (C names cannot start with a digit, so `1_idle` becomes `STATE_1_IDLE`):
+Timers (in `fsm_main.c`, one-shot, the expiry function only posts an event):
 
-| State       | Entry action | Event `FSM_EV_SHK_PRESSED` |
-|-------------|--------------|-------------------------------|
-| `1_idle`    | LED off      | go to `2_offhook`             |
-| `2_offhook` | LED on       | go to `1_idle`                |
+| Timer          | Timeout | Event                |
+|----------------|---------|----------------------|
+| `pulse_timer`  | 50 ms   | `EVT_PULSE_TIMEOUT`  |
+| `hangup_timer` | 100 ms  | `EVT_HANGUP_TIMEOUT` |
 
-After power-up the FSM starts in `1_idle`. More states will be added later.
+A timer counts as expired when `k_timer_remaining_ticks() == 0`. Timeout events are
+only acted on if the timer is really expired, so stale events from a restarted timer
+are ignored.
+
+States (`s0_idle` is `STATE_S0_IDLE` in C, etc.):
+
+| State        | Entry action                  | Transitions                                                                |
+|--------------|-------------------------------|----------------------------------------------------------------------------|
+| `s0_idle`    | LED off                       | `EVT_SHK_ACTIVE` → `s1_offhook`                                            |
+| `s1_offhook` | LED on                        | `EVT_SHK_INACTIVE` → `s2_open`                                             |
+| `s2_open`    | LED off, start `hangup_timer` | `EVT_SHK_ACTIVE`, timer not expired → `s3_closed`; timer expired → `s0_idle` |
+| `s3_closed`  | LED off, start `pulse_timer`  | `EVT_SHK_INACTIVE`, timer not expired → `s2_open`; timer expired → `s1_offhook` |
+
+If a shk event arrives after the state's timer has expired but before its timeout
+event is processed, the FSM takes the timeout transition first and then handles the
+shk event in the new state.
+
+After power-up the FSM starts in `s0_idle`. More states will be added later.
 
 ## Code style
 

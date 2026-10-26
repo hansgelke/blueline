@@ -31,5 +31,4 @@ empty_file.o: /Users/hansgelke/zephyrproject/zephyr/misc/empty_file.c \
  /Users/hansgelke/zephyrproject/zephyr/include/zephyr/dt-bindings/pinctrl/rpi-pico-pinctrl-common.h \
  /Users/hansgelke/zephyrproject/zephyr/boards/raspberrypi/rpi_pico2/../common/rpi_pico-pinctrl-common.dtsi \
  /Users/hansgelke/zephyrproject/zephyr/boards/raspberrypi/rpi_pico2/../common/rpi_pico-led.dtsi \
- /Users/hansgelke/Documents/BLUELINE/blueline/code_blueline/boards/rpi_pico2_rp2350a_m33.overlay \
- /Users/hansgelke/zephyrproject/zephyr/include/zephyr/dt-bindings/gpio/gpio.h
+ /Users/hansgelke/Documents/BLUELINE/blueline/code/boards/rpi_pico2_rp2350a_m33.overlay
