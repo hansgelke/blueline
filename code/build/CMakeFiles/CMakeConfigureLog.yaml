@@ -3509,3 +3509,105 @@ events:
         - "/Applications/VMware Fusion.app/Contents/Public"
       CMAKE_INSTALL_PREFIX: "/usr/local"
 ...
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/Users/hansgelke/zephyrproject/zephyr/cmake/compiler/gcc/target.cmake:8 (find_program)"
+      - "/Users/hansgelke/zephyrproject/zephyr/cmake/modules/FindTargetTools.cmake:103 (include)"
+      - "/Users/hansgelke/zephyrproject/zephyr/cmake/modules/kernel.cmake:25 (find_package)"
+      - "/Users/hansgelke/zephyrproject/zephyr/cmake/modules/zephyr_default.cmake:138 (include)"
+      - "/Users/hansgelke/zephyrproject/zephyr/share/zephyr-package/cmake/ZephyrConfig.cmake:66 (include)"
+      - "/Users/hansgelke/zephyrproject/zephyr/share/zephyr-package/cmake/ZephyrConfig.cmake:97 (include_boilerplate)"
+      - "CMakeLists.txt:3 (find_package)"
+    mode: "program"
+    variable: "CMAKE_C_COMPILER"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "/Users/hansgelke/zephyr-sdk-0.17.4/arm-zephyr-eabi/bin/arm-zephyr-eabi-gcc"
+    candidate_directories:
+      - "/Users/hansgelke/zephyr-sdk-0.17.4/"
+    found: "/Users/hansgelke/zephyr-sdk-0.17.4/arm-zephyr-eabi/bin/arm-zephyr-eabi-gcc"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/Users/hansgelke/zephyr-sdk-0.17.4/sysroots/arm64-pokysdk-linux/usr"
+      ENV{PATH}:
+        - "/Users/hansgelke/zephyrproject/.venv/bin"
+        - "/opt/homebrew/opt/python/libexec/bin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.13/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Applications/VMware Fusion.app/Contents/Public"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+...
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/Users/hansgelke/zephyrproject/zephyr/cmake/compiler/gcc/target.cmake:8 (find_program)"
+      - "/Users/hansgelke/zephyrproject/zephyr/cmake/modules/FindTargetTools.cmake:103 (include)"
+      - "/Users/hansgelke/zephyrproject/zephyr/cmake/modules/kernel.cmake:25 (find_package)"
+      - "/Users/hansgelke/zephyrproject/zephyr/cmake/modules/zephyr_default.cmake:138 (include)"
+      - "/Users/hansgelke/zephyrproject/zephyr/share/zephyr-package/cmake/ZephyrConfig.cmake:66 (include)"
+      - "/Users/hansgelke/zephyrproject/zephyr/share/zephyr-package/cmake/ZephyrConfig.cmake:97 (include_boilerplate)"
+      - "CMakeLists.txt:3 (find_package)"
+    mode: "program"
+    variable: "CMAKE_C_COMPILER"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "/Users/hansgelke/zephyr-sdk-0.17.4/arm-zephyr-eabi/bin/arm-zephyr-eabi-gcc"
+    candidate_directories:
+      - "/Users/hansgelke/zephyr-sdk-0.17.4/"
+    found: "/Users/hansgelke/zephyr-sdk-0.17.4/arm-zephyr-eabi/bin/arm-zephyr-eabi-gcc"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/Users/hansgelke/zephyr-sdk-0.17.4/sysroots/arm64-pokysdk-linux/usr"
+      ENV{PATH}:
+        - "/Users/hansgelke/zephyrproject/.venv/bin"
+        - "/opt/homebrew/opt/python/libexec/bin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.13/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Applications/VMware Fusion.app/Contents/Public"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+...

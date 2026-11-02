@@ -8,12 +8,51 @@
  * GPIO usage of this project. The pins are configured at runtime in
  * src/pico_io.c, not through devicetree nodes:
  *
- *   GPIO14  SHK_RISING_PIN   input, internal pull-up, IRQ on rising edge
- *   GPIO15  SHK_FALLING_PIN  input, internal pull-up, IRQ on falling edge
+ *   GPIO2   POT_FWD_PIN      output (SLIC), high after init
+ *   GPIO3   PDOWN_N_PIN      output (SLIC), high after init
+ *   GPIO7   RING_MODE_PIN    output (SLIC), low after init
+ *   GPIO11  SHK_RISING_PIN   input, internal pull-up, IRQ on rising edge
+ *   GPIO12  SHK_FALLING_PIN  input, internal pull-up, IRQ on falling edge
  *   GPIO25  PICO_IO_LED_PIN  output, user LED, high = on
+ *
+ * UART1 to the Microchip BM83 Bluetooth module (src/bt_uart.c):
+ *
+ *   GPIO4   UART1 TX  (RP2350 -> BM83)
+ *   GPIO5   UART1 RX  (BM83 -> RP2350)
+ *   115200 baud, 8N1, no flow control
  */
 
 /* pico_io.c uses gpio0 directly (DT_NODELABEL(gpio0)) */
 &gpio0 {
 	status = "okay";
+};
+
+/* The stock board enables i2c0 (GPIO4/5) and i2c1 (GPIO6/7). These pins are
+ * used here for UART1 and RING_MODE, so both I2C controllers are disabled. */
+&i2c0 {
+	status = "disabled";
+};
+
+&i2c1 {
+	status = "disabled";
+};
+
+&pinctrl {
+	uart1_default: uart1_default {
+		group1 {
+			pinmux = <UART1_TX_P4>;
+		};
+		group2 {
+			pinmux = <UART1_RX_P5>;
+			input-enable;
+		};
+	};
+};
+
+/* BM83 link, no hw-flow-control property = no RTS/CTS */
+&uart1 {
+	status = "okay";
+	current-speed = <115200>;
+	pinctrl-0 = <&uart1_default>;
+	pinctrl-names = "default";
 };

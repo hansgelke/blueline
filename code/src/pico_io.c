@@ -1,6 +1,6 @@
 /*
  * blueline - pico_io.c
- * GPIO setup for the Raspberry Pi Pico 2 (RP2350): shk and user LED.
+ * GPIO setup for the Raspberry Pi Pico 2 (RP2350): shk, SLIC control and user LED.
  *
  * All GPIOs of bank 0 share one interrupt line to the NVIC (IO_IRQ_BANK0).
  * The Zephyr GPIO driver handles that NVIC interrupt and calls the registered
@@ -93,6 +93,25 @@ int pico_io_init(void)
 		return ret;
 	}
 
+	/* SLIC control outputs with their initial level */
+	ret = gpio_pin_configure(gpio0, RING_MODE_PIN, GPIO_OUTPUT_LOW);
+	if (ret < 0) {
+		LOG_ERR("RING_MODE pin config failed (%d)", ret);
+		return ret;
+	}
+
+	ret = gpio_pin_configure(gpio0, PDOWN_N_PIN, GPIO_OUTPUT_HIGH);
+	if (ret < 0) {
+		LOG_ERR("PDOWN_N pin config failed (%d)", ret);
+		return ret;
+	}
+
+	ret = gpio_pin_configure(gpio0, POT_FWD_PIN, GPIO_OUTPUT_HIGH);
+	if (ret < 0) {
+		LOG_ERR("POT_FWD pin config failed (%d)", ret);
+		return ret;
+	}
+
 	/* Shk falling: input with pull-up */
 	ret = gpio_pin_configure(gpio0, SHK_FALLING_PIN,
 				 GPIO_INPUT | GPIO_PULL_UP);
@@ -133,6 +152,8 @@ int pico_io_init(void)
 
 	LOG_INF("GPIO%d shk falling / GPIO%d shk rising / GPIO%d LED initialised",
 		SHK_FALLING_PIN, SHK_RISING_PIN, PICO_IO_LED_PIN);
+	LOG_INF("GPIO%d RING_MODE low / GPIO%d PDOWN_N high / GPIO%d POT_FWD high",
+		RING_MODE_PIN, PDOWN_N_PIN, POT_FWD_PIN);
 	return 0;
 }
 

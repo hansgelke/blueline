@@ -7,4 +7,5 @@ target_sources(app PRIVATE
 	src/main.c
 	src/fsm_main.c
 	src/pico_io.c
+	src/bt_uart.c
 )

@@ -7,8 +7,12 @@
 #define FSM_MAIN_H
 
 /* FSM timer timeouts */
-#define PULSE_TIMER_MS    500
-#define HANGUP_TIMER_MS   500
+#define PULSE_TIMER_MS    50
+#define HANGUP_TIMER_MS   100
+#define DIALCMPL_TIMER_MS 3000
+
+/* Maximum number of dialled digits stored in number_queue */
+#define NUMBER_QUEUE_SIZE 19
 
 /* FSM states */
 typedef enum {
@@ -25,6 +29,7 @@ typedef enum {
 	EVT_SHK_INACTIVE,
 	EVT_PULSE_TIMEOUT,
 	EVT_HANGUP_TIMEOUT,
+	EVT_DIALCMPL,
 	FSM_EV_COUNT
 } fsm_event_t;
 

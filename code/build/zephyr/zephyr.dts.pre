@@ -824,9 +824,39 @@ pico_serial: &uart0 {};
 # 20 "/Users/hansgelke/zephyrproject/zephyr/boards/raspberrypi/rpi_pico2/rpi_pico2_rp2350a_m33.dts" 2
 # 0 "<command-line>" 2
 # 1 "/Users/hansgelke/Documents/BLUELINE/blueline/code/boards/rpi_pico2_rp2350a_m33.overlay" 1
-# 17 "/Users/hansgelke/Documents/BLUELINE/blueline/code/boards/rpi_pico2_rp2350a_m33.overlay"
+# 26 "/Users/hansgelke/Documents/BLUELINE/blueline/code/boards/rpi_pico2_rp2350a_m33.overlay"
 &gpio0 {
  status = "okay";
+};
+
+
+
+&i2c0 {
+ status = "disabled";
+};
+
+&i2c1 {
+ status = "disabled";
+};
+
+&pinctrl {
+ uart1_default: uart1_default {
+  group1 {
+   pinmux = <(((4) << 5) | ((2) << 0))>;
+  };
+  group2 {
+   pinmux = <(((5) << 5) | ((2) << 0))>;
+   input-enable;
+  };
+ };
+};
+
+
+&uart1 {
+ status = "okay";
+ current-speed = <115200>;
+ pinctrl-0 = <&uart1_default>;
+ pinctrl-names = "default";
 };
 # 0 "<command-line>" 2
 # 1 "/Users/hansgelke/zephyrproject/zephyr/misc/empty_file.c"
