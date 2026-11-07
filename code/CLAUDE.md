@@ -158,7 +158,7 @@ a length of 0 or more than 21 are dropped in the ISR.
 
 ## BM83 power-up (bm_83.c)
 
-`bm83_init()` (blocks about 640 ms):
+`bm83_init()` (blocks about 650 ms):
 
 1. `bt_rst_n` (GPIO6) and `bt_mfb` (GPIO8): outputs, low.
 2. 100 ms → `bt_mfb` high.
@@ -168,7 +168,9 @@ a length of 0 or more than 21 are dropped in the ISR.
 6. MMI action 0x52 (power on button release): `AA 00 03 02 00 52 A9`.
 7. Read_BTM_Version 0x08, type 0x01 = firmware version (0x00 = UART version):
    `AA 00 02 08 01 F5`. Reply: event 0x18 `Read_BTM_Version_Reply`, params type, version (2 bytes).
-8. `bt_mfb` low (each command waits for its `Command_ACK` first).
+8. MMI action 0x5D (fast enter pairing mode, with tone): `AA 00 03 02 00 5D 9E`.
+   BM83 reports `BTM_Status` 0x01 (pairing), then 0x03 (paired) or 0x04 (failed).
+9. `bt_mfb` low (each command waits for its `Command_ACK` first).
 
 MFB handshake: in host MCU mode MFB is the BM83 `UART_RX_IND` input ("UART data from the MCU
 follows", Audio UART Command Set 4.1/4.4/4.5), as in Microchip's PIC32 demo:

@@ -11,6 +11,7 @@
  *   MMI action 0x51 (power on button press)
  *   MMI action 0x52 (power on button release)
  *   Read_BTM_Version (firmware version)
+ *   MMI action 0x5D (enter pairing mode)
  *   bt_mfb = low
  *
  * MFB handshake: in host MCU mode MFB is the BM83 UART_RX_IND input
@@ -168,6 +169,12 @@ int bm83_mmi_action(uint8_t action)
 	return bm83_send_cmd(BM83_CMD_MMI_ACTION, params, sizeof(params));
 }
 
+int bm83_enter_pairing(void)
+{
+	LOG_INF("tx: enter pairing mode");
+	return bm83_mmi_action(BM83_MMI_ENTER_PAIRING);
+}
+
 int bm83_read_btm_version(uint8_t type)
 {
 	const uint8_t params[] = { type };
@@ -237,6 +244,9 @@ int bm83_init(void)
 	}
 	if (ret == 0) {
 		ret = bm83_read_btm_version(BM83_VERSION_FW);
+	}
+	if (ret == 0) {
+		ret = bm83_enter_pairing();
 	}
 
 	/* end of the power-up sequence: MFB low unless an Event_ACK is going out */

@@ -36,6 +36,7 @@
 /* MMI actions */
 #define BM83_MMI_POWER_ON_PRESS    0x51
 #define BM83_MMI_POWER_ON_RELEASE  0x52
+#define BM83_MMI_ENTER_PAIRING     0x5D   /* fast enter pairing mode (from non-off) */
 
 /* Read_BTM_Version types (reply: event 0x18 Read_BTM_Version_Reply) */
 #define BM83_VERSION_UART          0x00
@@ -43,7 +44,8 @@
 
 /* Initialise bt_rst_n and bt_mfb, run the power-up sequence, power the
  * BM83 on with MMI actions 0x51/0x52 and request its firmware version
- * (Read_BTM_Version). bt_mfb is low afterwards. Blocks for about 640 ms.
+ * (Read_BTM_Version) and put it into pairing mode. bt_mfb is low afterwards.
+ * Blocks for about 650 ms.
  * Returns 0 on success, negative errno otherwise. */
 int bm83_init(void);
 
@@ -54,6 +56,11 @@ int bm83_init(void);
 
 /* Send an MMI action command (opcode 0x02, data_base_index 0x00, action). */
 int bm83_mmi_action(uint8_t action);
+
+/* Put the BM83 into pairing mode (discoverable), MMI action 0x5D with a
+ * pairing tone. Result: BTM_Status 0x01 (pairing), later 0x03 (pairing
+ * successful) or 0x04 (pairing failed). */
+int bm83_enter_pairing(void);
 
 /* Send a Read_BTM_Version command (opcode 0x08) with the given type
  * (BM83_VERSION_UART or BM83_VERSION_FW). */
