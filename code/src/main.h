@@ -10,12 +10,12 @@
 #define FSM_THREAD_STACK_SIZE  2048
 #define FSM_THREAD_PRIORITY    5
 
+/* bt_fsm_thread: Bluetooth state machine */
+#define BT_FSM_THREAD_STACK_SIZE  1024
+#define BT_FSM_THREAD_PRIORITY    6
+
 /* bt_rx_thread: checks and prints frames received from the BM83 */
 #define BT_RX_THREAD_STACK_SIZE  1024
 #define BT_RX_THREAD_PRIORITY    6
-
-/* bt_tx_thread: tx_test, sends a test frame to the BM83 every second */
-#define BT_TX_THREAD_STACK_SIZE  1024
-#define BT_TX_THREAD_PRIORITY    7
 
 #endif /* MAIN_H */

@@ -11,8 +11,8 @@
 #define HANGUP_TIMER_MS   100
 #define DIALCMPL_TIMER_MS 3000
 
-/* Maximum number of dialled digits stored in number_queue */
-#define NUMBER_QUEUE_SIZE 19
+/* Maximum number of dialled digits stored in number_array */
+#define NUMBER_ARRAY_SIZE 19
 
 /* FSM states */
 typedef enum {

@@ -1,0 +1,32 @@
+/*
+ * blueline - bt_fsm.h
+ * Bluetooth state machine running in bt_fsm_thread.
+ */
+
+#ifndef BT_FSM_H
+#define BT_FSM_H
+
+/* bt_fsm states */
+typedef enum {
+	BT_S0_IDLE = 0,
+	BT_S1_CALLERWAIT,
+	BT_STATE_COUNT
+} bt_fsm_state_t;
+
+/* Events delivered to bt_fsm (from fsm_main) */
+typedef enum {
+	BT_EVT_MAIN_IDLE = 0,	/* fsm_main entered STATE_S0_IDLE */
+	BT_EVT_DIALCMPL,	/* dialcmpl_timer expired while fsm_main in STATE_S1_OFFHOOK */
+	BT_EVT_COUNT
+} bt_fsm_event_t;
+
+/* Entry point of bt_fsm_thread (signature as required by k_thread_create). */
+void bt_fsm_main(void *p1, void *p2, void *p3);
+
+/* Hand an event to bt_fsm. ISR-safe, never blocks. */
+void bt_fsm_post_event(bt_fsm_event_t ev);
+
+/* Returns the current bt_fsm state. */
+bt_fsm_state_t bt_fsm_get_state(void);
+
+#endif /* BT_FSM_H */

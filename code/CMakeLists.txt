@@ -8,4 +8,6 @@ target_sources(app PRIVATE
 	src/fsm_main.c
 	src/pico_io.c
 	src/bt_uart.c
+	src/bt_fsm.c
+	src/bm_83.c
 )

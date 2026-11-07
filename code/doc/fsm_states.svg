@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="830" viewBox="0 0 800 830"
+     font-family="Helvetica, Arial, sans-serif" font-size="14">
+  <title>blueline - fsm_main state diagram</title>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <rect width="800" height="830" fill="#ffffff"/>
+
+  <!-- power-up -->
+  <circle cx="360" cy="18" r="8" fill="#333"/>
+  <text x="376" y="23" fill="#333">power-up</text>
+  <line x1="360" y1="26" x2="360" y2="50" stroke="#333" stroke-width="1.8" marker-end="url(#arrow)"/>
+
+  <!-- states -->
+  <g stroke="#333" stroke-width="1.8">
+    <rect x="260" y="50"  width="200" height="70"  rx="14" fill="#e8eef7"/>
+    <rect x="260" y="230" width="200" height="70"  rx="14" fill="#fff4c2"/>
+    <rect x="260" y="410" width="200" height="80"  rx="14" fill="#e8eef7"/>
+    <rect x="260" y="600" width="200" height="100" rx="14" fill="#e8eef7"/>
+  </g>
+  <g text-anchor="middle" fill="#111">
+    <text x="360" y="78"  font-weight="bold" font-size="16">s0_idle</text>
+    <text x="360" y="101">entry: LED off</text>
+
+    <text x="360" y="258" font-weight="bold" font-size="16">s1_offhook</text>
+    <text x="360" y="281">entry: LED on</text>
+
+    <text x="360" y="436" font-weight="bold" font-size="16">s2_open</text>
+    <text x="360" y="458">entry: LED off,</text>
+    <text x="360" y="477">start hangup_timer</text>
+
+    <text x="360" y="626" font-weight="bold" font-size="16">s3_closed</text>
+    <text x="360" y="648">entry: LED off,</text>
+    <text x="360" y="667">start pulse_timer,</text>
+    <text x="360" y="686">pulse_counter++</text>
+  </g>
+
+  <!-- transitions -->
+  <g stroke="#333" stroke-width="1.8" fill="none" marker-end="url(#arrow)">
+    <!-- s0 -> s1 -->
+    <line x1="360" y1="120" x2="360" y2="230"/>
+    <!-- s1 -> s2 -->
+    <line x1="360" y1="300" x2="360" y2="410"/>
+    <!-- s2 -> s3 -->
+    <line x1="330" y1="490" x2="330" y2="600"/>
+    <!-- s3 -> s2 -->
+    <line x1="390" y1="600" x2="390" y2="490"/>
+    <!-- s2 -> s0 : hangup_timer expired -->
+    <polyline points="260,450 100,450 100,85 260,85"/>
+    <!-- s3 -> s1 : pulse_timer expired -->
+    <polyline points="460,650 620,650 620,265 460,265"/>
+  </g>
+
+  <!-- transition labels: event [condition] in black/grey, / actions in blue -->
+  <g font-size="13" fill="#111">
+    <text x="372" y="168">EVT_SHK_ACTIVE</text>
+    <text x="372" y="186" fill="#1f5fa8">/ clear number_array, pointer = 0</text>
+
+    <text x="372" y="340">EVT_SHK_INACTIVE</text>
+    <text x="372" y="358" fill="#1f5fa8">/ pulse_counter = 0,</text>
+    <text x="372" y="376" fill="#1f5fa8">  stop dialcmpl_timer</text>
+
+    <text x="320" y="538" text-anchor="end">EVT_SHK_ACTIVE</text>
+    <text x="320" y="556" text-anchor="end" fill="#555">[hangup_timer running]</text>
+
+    <text x="400" y="538">EVT_SHK_INACTIVE</text>
+    <text x="400" y="556" fill="#555">[pulse_timer running]</text>
+
+    <text x="112" y="160">hangup_timer expired</text>
+    <text x="112" y="178" fill="#555">(EVT_HANGUP_TIMEOUT)</text>
+
+    <text x="632" y="430">pulse_timer expired</text>
+    <text x="632" y="448" fill="#555">(EVT_PULSE_TIMEOUT)</text>
+    <text x="632" y="472" fill="#1f5fa8">/ store pulse_counter</text>
+    <text x="632" y="490" fill="#1f5fa8">  in number_array,</text>
+    <text x="632" y="508" fill="#1f5fa8">  start dialcmpl_timer</text>
+  </g>
+
+  <!-- events handled in every state -->
+  <rect x="130" y="722" width="460" height="66" rx="6" fill="#f4f4f4" stroke="#999" stroke-dasharray="5,4"/>
+  <g font-size="13" text-anchor="middle">
+    <text x="360" y="742" fill="#111">in every state: EVT_DIALCMPL (dialcmpl_timer expired)</text>
+    <text x="360" y="760" fill="#1f5fa8">/ copy number_array to dialed_number_reg, display it,</text>
+    <text x="360" y="778" fill="#1f5fa8">  clear number_array, pointer = 0; in s1_offhook: BT_EVT_DIALCMPL</text>
+  </g>
+
+  <text x="360" y="814" text-anchor="middle" font-size="12" fill="#666">
+    blueline fsm_main - LED is on only in s1_offhook
+  </text>
+</svg>

@@ -14,17 +14,26 @@
  * Dial pulses:
  *   - entering s3_closed:  pulse_counter++
  *   - s1_offhook -> s2_open:  pulse_counter = 0, stop dialcmpl_timer
- *   - s3_closed -> s1_offhook:  store pulse_counter in number_queue,
- *                               start dialcmpl_timer
- *   - s0_idle -> s1_offhook and EVT_DIALCMPL:  number_queue pointer back to
- *                                              the first digit
+ *   - s3_closed -> s1_offhook:  store pulse_counter in number_array,
+ *                               number_array_pointer++, start dialcmpl_timer
+ *   - s0_idle -> s1_offhook:  clear number_array, number_array_pointer = 0
+ *   - EVT_DIALCMPL (every state):  copy number_array to dialed_number_reg and
+ *                                  display it, clear number_array,
+ *                                  number_array_pointer = 0
+ *
+ * bt_fsm (bt_fsm.c) is driven from here:
+ *   - entering s0_idle:  BT_EVT_MAIN_IDLE (forces bt_fsm to BT_S0_IDLE)
+ *   - EVT_DIALCMPL while in s1_offhook:  BT_EVT_DIALCMPL
  */
+
+#include <string.h>
 
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 
 #include "fsm_main.h"
 #include "pico_io.h"
+#include "bt_fsm.h"
 
 LOG_MODULE_REGISTER(fsm_main, LOG_LEVEL_INF);
 
@@ -44,8 +53,12 @@ static const char *const state_names[STATE_COUNT] = {
 static uint8_t pulse_counter;
 
 /* Dialled digits (pulse_counter values) and the position of the next digit */
-static uint8_t number_queue[NUMBER_QUEUE_SIZE];
-static uint8_t number_queue_pos;
+static uint8_t number_array[NUMBER_ARRAY_SIZE];
+static uint8_t number_array_pointer;
+
+/* Complete dialled number, copied from number_array when dialcmpl_timer expires */
+static uint8_t dialed_number_reg[NUMBER_ARRAY_SIZE];
+static uint8_t dialed_number_len;
 
 /* ---- timers ------------------------------------------------------------ */
 
@@ -94,39 +107,48 @@ fsm_state_t fsm_get_state(void)
 	return current_state;
 }
 
-/* Debug: print all digits stored in number_queue so far */
-static void number_queue_log(void)
+/* Debug: print len digits of an array on the console */
+static void digits_log(const char *name, const uint8_t *digits, uint8_t len)
 {
 	/* up to "10 " per digit plus terminator */
-	char buf[NUMBER_QUEUE_SIZE * 3 + 1];
-	int len = 0;
+	char buf[NUMBER_ARRAY_SIZE * 3 + 1];
+	int pos = 0;
 
 	buf[0] = '\0';
-	for (uint8_t i = 0; i < number_queue_pos; i++) {
-		len += snprintk(&buf[len], sizeof(buf) - len, "%u ", number_queue[i]);
+	for (uint8_t i = 0; i < len; i++) {
+		pos += snprintk(&buf[pos], sizeof(buf) - pos, "%u ", digits[i]);
 	}
 
-	LOG_INF("number_queue (%u): %s", number_queue_pos, buf);
+	LOG_INF("%s (%u): %s", name, len, buf);
 }
 
-/* Store a dialled digit at the current queue position */
-static void number_queue_put(uint8_t digit)
+/* Store a dialled digit at number_array_pointer */
+static void number_array_put(uint8_t digit)
 {
-	if (number_queue_pos >= NUMBER_QUEUE_SIZE) {
-		LOG_WRN("number_queue full, digit %u dropped", digit);
+	if (number_array_pointer >= NUMBER_ARRAY_SIZE) {
+		LOG_WRN("number_array full, digit %u dropped", digit);
 		return;
 	}
 
-	number_queue[number_queue_pos] = digit;
-	LOG_INF("digit %u stored at position %u", digit, number_queue_pos);
-	number_queue_pos++;
-	number_queue_log();
+	number_array[number_array_pointer] = digit;
+	LOG_INF("digit %u stored at position %u", digit, number_array_pointer);
+	number_array_pointer++;
+	digits_log("number_array", number_array, number_array_pointer);
 }
 
-/* Set the queue pointer back to the first digit */
-static void number_queue_reset(void)
+/* Clear number_array and set number_array_pointer back to zero */
+static void number_array_clear(void)
 {
-	number_queue_pos = 0;
+	memset(number_array, 0, sizeof(number_array));
+	number_array_pointer = 0;
+}
+
+/* Dialling complete: copy number_array to dialed_number_reg and display it */
+static void dialed_number_store(void)
+{
+	memcpy(dialed_number_reg, number_array, sizeof(dialed_number_reg));
+	dialed_number_len = number_array_pointer;
+	digits_log("dialed_number_reg", dialed_number_reg, dialed_number_len);
 }
 
 /* Change state and execute the entry action of the new state */
@@ -139,6 +161,7 @@ static void fsm_enter_state(fsm_state_t new_state)
 	switch (new_state) {
 	case STATE_S0_IDLE:
 		pico_io_led_set(false);
+		bt_fsm_post_event(BT_EVT_MAIN_IDLE);
 		break;
 	case STATE_S1_OFFHOOK:
 		pico_io_led_set(true);
@@ -160,7 +183,7 @@ static void fsm_enter_state(fsm_state_t new_state)
 /* Transition s3_closed -> s1_offhook: one digit has been dialled */
 static void fsm_s3_to_s1(void)
 {
-	number_queue_put(pulse_counter);
+	number_array_put(pulse_counter);
 	k_timer_start(&dialcmpl_timer, K_MSEC(DIALCMPL_TIMER_MS), K_NO_WAIT);
 	fsm_enter_state(STATE_S1_OFFHOOK);
 }
@@ -171,7 +194,7 @@ static void state_s0_idle(fsm_event_t ev)
 {
 	switch (ev) {
 	case EVT_SHK_ACTIVE:
-		number_queue_reset();
+		number_array_clear();
 		fsm_enter_state(STATE_S1_OFFHOOK);
 		break;
 	default:
@@ -260,7 +283,11 @@ void fsm_main(void *p1, void *p2, void *p3)
 			if (!timer_expired(&dialcmpl_timer)) {
 				continue;	/* stale, dialcmpl_timer was restarted */
 			}
-			number_queue_reset();
+			dialed_number_store();
+			number_array_clear();
+			if (current_state == STATE_S1_OFFHOOK) {
+				bt_fsm_post_event(BT_EVT_DIALCMPL);
+			}
 		}
 
 		switch (current_state) {
