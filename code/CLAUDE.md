@@ -189,11 +189,34 @@ follows", Audio UART Command Set 4.1/4.4/4.5), as in Microchip's PIC32 demo:
 The BM83 must be programmed with a **host MCU mode** configuration (Config Tool: "Host MCU
 Mode", UART 115200). The factory/embedded configuration (`SYS_CFG_KEY_OPTION1` = 0xC0) has the
 UART command interface disabled: the BM83 then ignores all UART commands and never transmits.
-Programming: isUpdate tool over J3 (USB-UART), BM83 in test mode (J5 fitted), Pico in BOOTSEL,
+Programming: isUpdate tool over J3 (USB-UART), BM83 in test mode (J5 fitted), Pico in BOOTSEL
+(or firmware built with `BT_UART_TX_DISABLE` = 1 in `bt_uart.h`: GP4 tristate, `bm83_init()` skipped),
 `image num` = 3 with 8051 + DSP + config hex selected together in one file dialog.
+
+BM83 configuration on the module (IS208x Config Tool / UI 1.3.25, based on Microchip's
+`IS208x_UI_1.3.23_Demo_Package_Host_Mode_SPP.hex`, firmware MSPKv2 1.03.0406 SPP). These settings
+exist only in the Config Tool and on the module, not in this repository:
+
+| Setting | Value | Why |
+|---|---|---|
+| Operating mode | Host MCU Mode, UART 115200 | UART command interface (demo default: embedded, UART off) |
+| CODEC Type | Internal Codec | analog output on AOHPL/AOHPR (demo: I2S, pins 1–5 unconnected) |
+| CODEC Function → Speaker Output | Single Ended External Amp | board has DC-blocking caps C25/C26, AOHPM floats; raised the output from ~50 mV RMS to ~530 mV RMS (1.5 Vpp at TP17) |
+| Output Volume Scaling Method | 0x0: Codec DAC gain | |
+| Digital Mic | Disable | analog mic on MICP1/MICN1 (demo: digital mic) |
+| ADC Path | 5 (MIC1 to L), mic bias off | MICBIAS (pin 15) is not connected |
+| Audio Gain Table | default (level 15 = 0xFC = 0 dB) | firmware sets level 15 after connecting |
+
+The SLIC (AG1171, J4 pin 9 via RV1 and R12 47k) needs about 500 mV RMS audio input.
 
 `bm83_mmi_action(action)` sends opcode `0x02` with params `data_base_index 0x00, action`.
 `bm83_read_btm_version(type)` sends opcode `0x08` with param `type`. Both use `bm83_send_cmd()`.
+
+Output gain: when `BTM_Status` reports an HF link (0x05) or A2DP link (0x06), `bt_rx_thread` calls
+`bm83_link_established()`, which submits a work item; the system workqueue then sends
+`Set_Overall_Gain` (0x23, `bm83_set_overall_gain()`) with absolute level `BM83_A2DP_GAIN_LEVEL` /
+`BM83_HF_GAIN_LEVEL` (both 15 = max, `bm_83.h`). The phone can change the gain afterwards via
+AVRCP absolute volume. Without AVRCP the BM83 starts at "Default Gain Level" 0x99 (9 of 15).
 
 Event acknowledge: `bt_rx_thread` answers every received event except `Command_ACK` (0x00) with
 `bm83_event_ack(opcode)` (Event_ACK 0x14, e.g. `AA 00 02 14 01 E9` for BTM_Status). Without it the

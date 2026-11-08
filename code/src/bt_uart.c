@@ -20,6 +20,7 @@
 #include <zephyr/kernel.h>
 #include <zephyr/device.h>
 #include <zephyr/drivers/uart.h>
+#include <zephyr/drivers/gpio.h>
 #include <zephyr/logging/log.h>
 
 #include "bt_uart.h"
@@ -81,6 +82,10 @@ K_MUTEX_DEFINE(bt_tx_mutex);
 
 void bt_uart_send(const uint8_t *data, size_t len)
 {
+	if (IS_ENABLED(BT_UART_TX_DISABLE)) {
+		return;		/* TX pin is tristate */
+	}
+
 	k_mutex_lock(&bt_tx_mutex, K_FOREVER);
 	for (size_t i = 0; i < len; i++) {
 		uart_poll_out(bt_uart, data[i]);
@@ -254,6 +259,13 @@ static void bt_uart_rx_frame(const uint8_t *raw)
 		/* acknowledge every other event, so the BM83 sends the next
 		 * event right away instead of after its 800 ms timeout */
 		bm83_event_ack(rx_buffer[1]);
+
+		/* phone connected (HF or A2DP link): set the output gain */
+		if (rx_buffer[1] == BM83_EVT_BTM_STATUS && num_params >= 1 &&
+		    (rx_buffer[2] == BM83_STATUS_HF_LINK ||
+		     rx_buffer[2] == BM83_STATUS_A2DP_LINK)) {
+			bm83_link_established();
+		}
 	}
 }
 
@@ -289,6 +301,17 @@ int bt_uart_init(void)
 		return ret;
 	}
 	uart_irq_rx_enable(bt_uart);
+	if (IS_ENABLED(BT_UART_TX_DISABLE)) {
+		/* Take GP4 away from UART1: GPIO input, no pulls = tristate */
+		ret = gpio_pin_configure(DEVICE_DT_GET(DT_NODELABEL(gpio0)),
+					 BT_UART_TX_PIN, GPIO_INPUT);
+		if (ret < 0) {
+			LOG_ERR("GP%d tristate config failed (%d)", BT_UART_TX_PIN, ret);
+			return ret;
+		}
+		LOG_WRN("uart1 TX disabled, GP%d is tristate (BT_UART_TX_DISABLE)",
+			BT_UART_TX_PIN);
+	}
 
 	LOG_INF("uart1 (BM83) initialised");
 	return 0;

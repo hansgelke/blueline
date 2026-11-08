@@ -175,6 +175,34 @@ int bm83_enter_pairing(void)
 	return bm83_mmi_action(BM83_MMI_ENTER_PAIRING);
 }
 
+int bm83_set_overall_gain(uint8_t mask, uint8_t type, uint8_t a2dp,
+			  uint8_t hf, uint8_t line_in)
+{
+	const uint8_t params[] = { BM83_MMI_DATABASE_INDEX, mask, type,
+				   a2dp, hf, line_in };
+
+	LOG_INF("tx: Set_Overall_Gain mask 0x%02X type 0x%02X A2DP %u HF %u line-in %u",
+		mask, type, a2dp, hf, line_in);
+	return bm83_send_cmd(BM83_CMD_SET_OVERALL_GAIN, params, sizeof(params));
+}
+
+/* Runs in the system workqueue: may wait for the Command_ACK */
+static void bm83_gain_work_handler(struct k_work *work)
+{
+	ARG_UNUSED(work);
+
+	bm83_set_overall_gain(BM83_GAIN_MASK_A2DP | BM83_GAIN_MASK_HF,
+			      BM83_GAIN_TYPE_ABS_LEVEL,
+			      BM83_A2DP_GAIN_LEVEL, BM83_HF_GAIN_LEVEL, 0);
+}
+
+K_WORK_DEFINE(bm83_gain_work, bm83_gain_work_handler);
+
+void bm83_link_established(void)
+{
+	k_work_submit(&bm83_gain_work);
+}
+
 int bm83_read_btm_version(uint8_t type)
 {
 	const uint8_t params[] = { type };

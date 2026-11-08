@@ -76,7 +76,10 @@ int main(void)
 
 	/* BM83 power-up runs last: bt_rx_thread is already running and shows
 	 * the BM83 responses (ACKs, status events) as they arrive. */
-	if (bm83_init() < 0) {
+	if (IS_ENABLED(BT_UART_TX_DISABLE)) {
+		/* BM83 is being programmed through J3: leave it alone */
+		LOG_WRN("BT_UART_TX_DISABLE: bm83_init() skipped, GP6/GP8 not driven");
+	} else if (bm83_init() < 0) {
 		LOG_ERR("BM83 init failed");
 		return -1;
 	}

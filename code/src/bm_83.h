@@ -8,6 +8,7 @@
 #define BM_83_H
 
 #include <stdint.h>
+#include <zephyr/sys/util.h>
 
 /* Pin assignment */
 #define BT_RST_N_PIN   6   /* output, BM83 reset, active low */
@@ -26,9 +27,26 @@
 #define BM83_CMD_MMI_ACTION      0x02
 #define BM83_CMD_READ_BTM_VERSION  0x08
 #define BM83_CMD_EVENT_ACK         0x14
+#define BM83_CMD_SET_OVERALL_GAIN  0x23
 
 /* Event opcodes */
 #define BM83_EVT_COMMAND_ACK       0x00
+#define BM83_EVT_BTM_STATUS        0x01
+
+/* BTM_Status states that start the gain setting */
+#define BM83_STATUS_HF_LINK        0x05   /* HF/HS link established */
+#define BM83_STATUS_A2DP_LINK      0x06   /* A2DP link established */
+
+/* Set_Overall_Gain: mask bits, type, levels */
+#define BM83_GAIN_MASK_A2DP        BIT(0)
+#define BM83_GAIN_MASK_HF          BIT(1)
+#define BM83_GAIN_MASK_LINE_IN     BIT(2)
+#define BM83_GAIN_TYPE_ABS_LEVEL   0x03   /* set absolute gain level 0..15 */
+#define BM83_GAIN_LEVEL_MAX        0x0F
+
+/* Gain levels set after the phone has connected (0..15) */
+#define BM83_A2DP_GAIN_LEVEL       BM83_GAIN_LEVEL_MAX
+#define BM83_HF_GAIN_LEVEL         BM83_GAIN_LEVEL_MAX
 
 /* Command_ACK status */
 #define BM83_ACK_COMMAND_COMPLETE  0x00
@@ -61,6 +79,17 @@ int bm83_mmi_action(uint8_t action);
  * pairing tone. Result: BTM_Status 0x01 (pairing), later 0x03 (pairing
  * successful) or 0x04 (pairing failed). */
 int bm83_enter_pairing(void);
+
+/* Set_Overall_Gain (opcode 0x23): data_base_index 0x00, mask (BM83_GAIN_MASK_*),
+ * type (e.g. BM83_GAIN_TYPE_ABS_LEVEL), gain for A2DP, HF and line-in.
+ * The phone may later change the gain again (AVRCP absolute volume). */
+int bm83_set_overall_gain(uint8_t mask, uint8_t type, uint8_t a2dp,
+			  uint8_t hf, uint8_t line_in);
+
+/* Called by bt_rx_thread when a link to the phone is established: sets
+ * BM83_A2DP_GAIN_LEVEL / BM83_HF_GAIN_LEVEL from the system workqueue
+ * (bt_rx_thread itself must not send commands). */
+void bm83_link_established(void);
 
 /* Send a Read_BTM_Version command (opcode 0x08) with the given type
  * (BM83_VERSION_UART or BM83_VERSION_FW). */

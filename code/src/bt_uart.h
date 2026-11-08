@@ -22,6 +22,17 @@
 /* Longest frame: header + length(h) + length(l) + opcode + params + checksum */
 #define BT_FRAME_MAX_LEN     (4 + BT_FRAME_MAX_PARAMS + 1)
 
+/* UART1 TX pin (RP2350 -> BM83 UART_RXD, pin 29) */
+#define BT_UART_TX_PIN       4
+
+/* Programming the BM83 with isUpdate (USB-UART adapter on J3):
+ * 1 = GP4 is switched to a GPIO input without pulls (tristate) so the adapter
+ *     can drive the BM83 RX line, bt_uart_send() sends nothing, and main()
+ *     skips bm83_init() so GP6 (reset) and GP8 (MFB) stay undriven inputs.
+ *     Receiving on GP5 still works.
+ * 0 = normal operation. */
+#define BT_UART_TX_DISABLE   0
+
 /* Size of the receive buffer array */
 #define BT_UART_RX_BUF_SIZE  32
 
