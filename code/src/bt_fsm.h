@@ -8,15 +8,22 @@
 
 /* bt_fsm states */
 typedef enum {
-	BT_S0_IDLE = 0,
-	BT_S1_CALLERWAIT,
+	BT_IDLE = 0,
+	BT_MAKE_CALL,
+	BT_CALLER_WAIT,
+	BT_NOHF,
+	BT_OUT_ESTABLISHED,
 	BT_STATE_COUNT
 } bt_fsm_state_t;
 
-/* Events delivered to bt_fsm (from fsm_main) */
+/* Events delivered to bt_fsm */
 typedef enum {
 	BT_EVT_MAIN_IDLE = 0,	/* fsm_main entered STATE_S0_IDLE */
 	BT_EVT_DIALCMPL,	/* dialcmpl_timer expired while fsm_main in STATE_S1_OFFHOOK */
+	BT_EVT_CALL_ACK_OK,	/* Command_ACK of Make_Call with status 0x00 */
+	BT_EVT_CALL_ACK_FAIL,	/* Command_ACK of Make_Call with status != 0x00, or no ACK */
+	BT_EVT_CALL_OUTGOING,	/* Call_Status: outgoing call (0x03) or call active (0x04) */
+	BT_EVT_CALL_IDLE,	/* Call_Status: idle (0x00), the call has ended */
 	BT_EVT_COUNT
 } bt_fsm_event_t;
 

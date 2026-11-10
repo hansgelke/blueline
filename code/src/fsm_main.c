@@ -22,7 +22,7 @@
  *                                  number_array_pointer = 0
  *
  * bt_fsm (bt_fsm.c) is driven from here:
- *   - entering s0_idle:  BT_EVT_MAIN_IDLE (forces bt_fsm to BT_S0_IDLE)
+ *   - entering s0_idle:  BT_EVT_MAIN_IDLE (forces bt_fsm to BT_IDLE)
  *   - EVT_DIALCMPL while in s1_offhook:  BT_EVT_DIALCMPL
  */
 
@@ -105,6 +105,14 @@ void fsm_post_event(fsm_event_t ev)
 fsm_state_t fsm_get_state(void)
 {
 	return current_state;
+}
+
+uint8_t fsm_get_dialed_number(uint8_t *digits, uint8_t size)
+{
+	uint8_t len = MIN(dialed_number_len, size);
+
+	memcpy(digits, dialed_number_reg, len);
+	return len;
 }
 
 /* Debug: print len digits of an array on the console */

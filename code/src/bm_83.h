@@ -24,18 +24,33 @@
 #define BM83_CMD_ACK_TIMEOUT_MS   200   /* command -> Command_ACK */
 
 /* Command opcodes */
+#define BM83_CMD_MAKE_CALL       0x00
 #define BM83_CMD_MMI_ACTION      0x02
 #define BM83_CMD_READ_BTM_VERSION  0x08
+#define BM83_CMD_READ_LINK_STATUS  0x0D
 #define BM83_CMD_EVENT_ACK         0x14
 #define BM83_CMD_SET_OVERALL_GAIN  0x23
 
 /* Event opcodes */
 #define BM83_EVT_COMMAND_ACK       0x00
 #define BM83_EVT_BTM_STATUS        0x01
+#define BM83_EVT_CALL_STATUS       0x02
+#define BM83_EVT_LINK_STATUS_REPLY 0x1E
 
 /* BTM_Status states that start the gain setting */
 #define BM83_STATUS_HF_LINK        0x05   /* HF/HS link established */
 #define BM83_STATUS_A2DP_LINK      0x06   /* A2DP link established */
+
+/* Call_Status states */
+#define BM83_CALL_IDLE             0x00   /* idle, no call */
+#define BM83_CALL_OUTGOING         0x03   /* outgoing call */
+#define BM83_CALL_ACTIVE           0x04   /* call active */
+
+/* Database index of all commands with a Data_Base_Index parameter */
+#define BM83_DATABASE_INDEX        0x00
+
+/* Make_Call: maximum length of the phone number (ASCII digits) */
+#define BM83_PHONE_NUMBER_MAX      19
 
 /* Set_Overall_Gain: mask bits, type, levels */
 #define BM83_GAIN_MASK_A2DP        BIT(0)
@@ -55,6 +70,7 @@
 #define BM83_MMI_POWER_ON_PRESS    0x51
 #define BM83_MMI_POWER_ON_RELEASE  0x52
 #define BM83_MMI_ENTER_PAIRING     0x5D   /* fast enter pairing mode (from non-off) */
+#define BM83_MMI_END_CALL          0x06   /* end call / transfer audio to phone */
 
 /* Read_BTM_Version types (reply: event 0x18 Read_BTM_Version_Reply) */
 #define BM83_VERSION_UART          0x00
@@ -85,6 +101,25 @@ int bm83_enter_pairing(void);
  * The phone may later change the gain again (AVRCP absolute volume). */
 int bm83_set_overall_gain(uint8_t mask, uint8_t type, uint8_t a2dp,
 			  uint8_t hf, uint8_t line_in);
+
+/* Read_Link_Status (opcode 0x0D): the reply (event 0x1E) is decoded and
+ * printed by bm83_handle_event(): device state and, per database, which
+ * profiles (A2DP, AVRCP, HF, SPP) are connected. */
+int bm83_read_link_status(void);
+
+/* End the active call: MMI action 0x06 "End call / transfer audio to phone". */
+int bm83_end_call(void);
+
+/* Make_Call (opcode 0x00): data_base_index 0x00, phone number as ASCII
+ * digits (len <= BM83_PHONE_NUMBER_MAX). The Command_ACK result is also
+ * posted to bt_fsm (BT_EVT_CALL_ACK_OK / BT_EVT_CALL_ACK_FAIL) by
+ * bt_rx_thread. */
+int bm83_make_call(const char *number, uint8_t len);
+
+/* Called by bt_rx_thread for every received event except Command_ACK:
+ * starts the gain setting when a link is established, forwards Call_Status
+ * (outgoing / active / idle) to bt_fsm, prints Read_Link_Status_Reply. params[] are the event parameters. */
+void bm83_handle_event(uint8_t opcode, const uint8_t *params, uint8_t num_params);
 
 /* Called by bt_rx_thread when a link to the phone is established: sets
  * BM83_A2DP_GAIN_LEVEL / BM83_HF_GAIN_LEVEL from the system workqueue

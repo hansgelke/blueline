@@ -260,12 +260,8 @@ static void bt_uart_rx_frame(const uint8_t *raw)
 		 * event right away instead of after its 800 ms timeout */
 		bm83_event_ack(rx_buffer[1]);
 
-		/* phone connected (HF or A2DP link): set the output gain */
-		if (rx_buffer[1] == BM83_EVT_BTM_STATUS && num_params >= 1 &&
-		    (rx_buffer[2] == BM83_STATUS_HF_LINK ||
-		     rx_buffer[2] == BM83_STATUS_A2DP_LINK)) {
-			bm83_link_established();
-		}
+		/* react to the event (gain setting, call status for bt_fsm) */
+		bm83_handle_event(rx_buffer[1], &rx_buffer[2], num_params);
 	}
 }
 

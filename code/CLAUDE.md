@@ -19,14 +19,17 @@ The project is developed step by step; implement only what is asked for, nothing
 
 Every `.c` file has a matching `.h` file.
 
-- `main.c / main.h`: system start. Calls `pico_io_init()` and `bt_uart_init()`, creates all
+- `main.c / main.h`: system start. Calls `pico_io_init()`, `bt_uart_init()` and `slic_init()`, creates all
   threads, then calls `bm83_init()` last (so `bt_rx_thread` already shows the BM83 responses).
   Thread stack sizes and priorities are defined in `main.h`. New threads are added here.
 - `fsm_main.c / fsm_main.h`: the main state machine, running in `fsm_thread`.
 - `bt_fsm.c / bt_fsm.h`: the Bluetooth state machine, running in `bt_fsm_thread`.
-- `pico_io.c / pico_io.h`: GPIO initialisation, the common GPIO ISR `gpio_int`, and LED control.
+- `pico_io.c / pico_io.h`: shk GPIO initialisation, the common GPIO ISR `gpio_int`, and LED control.
 - `bt_uart.c / bt_uart.h`: UART1 link to the BM83 Bluetooth module (frame build/send,
   receive ISR, frame check, BM83 event names). Everything UART-related goes here.
+- `slic.c / slic.h`: SLIC (AG1171, J4) control. `slic_init()`: POT_FWD (GP2) high,
+  POT_PDOWN_N (GP3) tristate, RING_MODE (GP7) low.
+  All SLIC-related code goes here.
 - `bm_83.c / bm_83.h`: BM83 control signals (`bt_rst_n`, `bt_mfb`), power-up sequence
   `bm83_init()` and BM83 commands (`bm83_mmi_action()`).
 
@@ -36,11 +39,11 @@ New source files must be added to `CMakeLists.txt`.
 
 | Signal            | GPIO | Config                         | Logic                          |
 |-------------------|------|--------------------------------|--------------------------------|
-| `SHK_FALLING_PIN` | 12   | input, internal pull-up        | IRQ on falling edge            |
-| `SHK_RISING_PIN`  | 11   | input, internal pull-up        | IRQ on rising edge             |
-| `RING_MODE_PIN`   | 7    | output (SLIC)                  | low after init                 |
-| `PDOWN_N_PIN`     | 3    | output (SLIC)                  | high after init                |
-| `POT_FWD_PIN`     | 2    | output (SLIC)                  | high after init                |
+| `SHK_FALLING_PIN` | 12   | input, no internal pulls       | IRQ on falling edge            |
+| `SHK_RISING_PIN`  | 11   | input, no internal pulls       | IRQ on rising edge             |
+| `RING_MODE_PIN`   | 7    | output (SLIC, `slic.c`)        | low after init                 |
+| `POT_PDOWN_N_PIN` | 3    | input, no pulls (tristate)     | to AG1171 pin 14 via D7 (cathode at GP3), AG1171 internal pull-up, `slic.c` |
+| `POT_FWD_PIN`     | 2    | output (SLIC, `slic.c`)        | high after init                |
 | `BT_RST_N_PIN`    | 6    | output (BM83 reset)            | low after init, active low     |
 | `BT_MFB_PIN`      | 8    | output (BM83 MFB)              | low after init                 |
 | LED               | 25   | output (Pico 2 user LED)       | high = on                      |
@@ -67,10 +70,15 @@ those pins are used for UART1 and RING_MODE.
   add it to `GPIO_INT_PIN_MASK` and add an `if (pins & BIT(n))` branch in `gpio_int`.
 - The ISR contains no FSM logic. It only starts timers or posts events with
   `fsm_post_event()` (ISR-safe, K_NO_WAIT) into the `fsm_event_q` message queue.
-- shk events (in `pico_io.c`): an edge starts a one-shot timer of `SHK_CHECK_MS`
-  (10 ms); its expiry function checks the pin level and posts the event:
+- shk events (in `pico_io.c`): `SHK_RISING_PIN` (GP11) and `SHK_FALLING_PIN` (GP12) are
+  connected together outside the Pico; one pin detects rising edges, the other falling edges.
+  An edge starts a one-shot timer of `SHK_CHECK_MS` (10 ms); its expiry function checks the
+  pin level and posts the event:
   - `EVT_SHK_INACTIVE`: falling edge on `SHK_FALLING_PIN`, pin still low after 10 ms.
   - `EVT_SHK_ACTIVE`: rising edge on `SHK_RISING_PIN`, pin still high after 10 ms.
+- This edge + 10 ms level check is the shk debounce. Only after the check is a high or low
+  level valid. **Never use `SHK_RISING_PIN` / `SHK_FALLING_PIN` directly in the logic**
+  (no `gpio_pin_get()` on them in the FSMs); use only `EVT_SHK_ACTIVE` / `EVT_SHK_INACTIVE`.
 - No other debounce. Do not add one on your own.
 
 ## State machine
@@ -125,18 +133,41 @@ After power-up the FSM starts in `s0_idle`. More states will be added later.
 ## Bluetooth state machine (bt_fsm.c)
 
 Second FSM, same structure as `fsm_main`: `bt_fsm_thread` blocks on `bt_fsm_event_q`,
-one handler per state, state changes through `bt_fsm_enter_state()`. Its events come
-from `fsm_main`:
+one handler per state, state changes through `bt_fsm_enter_state()`.
 
-- `BT_EVT_MAIN_IDLE`: posted whenever `fsm_main` enters `s0_idle`.
-- `BT_EVT_DIALCMPL`: posted when `dialcmpl_timer` expires while `fsm_main` is in `s1_offhook`.
+Events:
 
-| State              | Entry action | Transitions                          |
-|--------------------|--------------|--------------------------------------|
-| `BT_S0_IDLE`       | –            | `BT_EVT_DIALCMPL` → `BT_S1_CALLERWAIT` |
-| `BT_S1_CALLERWAIT` | –            | `BT_EVT_MAIN_IDLE` → `BT_S0_IDLE`      |
+- `BT_EVT_MAIN_IDLE` (`fsm_main`): posted whenever `fsm_main` enters `s0_idle`.
+- `BT_EVT_DIALCMPL` (`fsm_main`): `dialcmpl_timer` expired while `fsm_main` is in `s1_offhook`.
+- `BT_EVT_CALL_ACK_OK` / `BT_EVT_CALL_ACK_FAIL` (`bt_rx_thread`, `bm83_command_ack_received()`):
+  `Command_ACK` of `Make_Call` with status 0x00 / not 0x00. `BT_EVT_CALL_ACK_FAIL` is also posted
+  by `bt_fsm` itself if no `Command_ACK` arrives (200 ms). The ACK result is posted from
+  `bt_rx_thread` so it is queued before the `Call_Status` event that follows the ACK.
+- `BT_EVT_CALL_OUTGOING` (`bt_rx_thread`, `bm83_handle_event()`): `Call_Status` (0x02) reports
+  outgoing call (0x03) or call active (0x04).
+- `BT_EVT_CALL_IDLE` (`bt_rx_thread`, `bm83_handle_event()`): `Call_Status` reports idle (0x00),
+  the call has ended.
 
-After power-up `bt_fsm` starts in `BT_S0_IDLE`.
+| State                | Entry action | Transitions |
+|----------------------|--------------|-------------|
+| `BT_IDLE`            | – | `BT_EVT_DIALCMPL` → `BT_MAKE_CALL` |
+| `BT_MAKE_CALL`       | `Make_Call` (0x00) with `dialed_number_reg` as ASCII | `BT_EVT_MAIN_IDLE` → `BT_IDLE`; `BT_EVT_CALL_ACK_OK` → `BT_CALLER_WAIT`; `BT_EVT_CALL_ACK_FAIL` → `BT_NOHF` |
+| `BT_CALLER_WAIT`     | – | `BT_EVT_MAIN_IDLE` → `BT_IDLE`, sending MMI action 0x06 "End call"; `BT_EVT_CALL_OUTGOING` → `BT_OUT_ESTABLISHED` |
+| `BT_NOHF`            | – | `BT_EVT_MAIN_IDLE` → `BT_IDLE` |
+| `BT_OUT_ESTABLISHED` | – | `BT_EVT_MAIN_IDLE` → `BT_IDLE`, sending MMI action 0x06 "End call" (`bm83_end_call()`, `AA 00 03 02 00 06 F5`); `BT_EVT_CALL_IDLE` → `BT_IDLE` (no command) |
+
+`BT_EVT_MAIN_IDLE` has the highest priority: every state except `BT_IDLE` goes to `BT_IDLE` on it.
+
+Phone number: `fsm_get_dialed_number()` copies `dialed_number_reg` (pulse counts); `bt_fsm`
+converts 1–9 to '1'–'9' and 10 to '0' (other values are skipped with a warning) and sends it
+with `bm83_make_call()`: `AA | len | 00 | 00 (database) | ASCII digits (max 19) | checksum`.
+All BM83 commands with a `Data_Base_Index` use 0x00 (`BM83_DATABASE_INDEX`).
+Before every `Make_Call`, `bt_fsm` sends `Read_Link_Status` (0x0D) for debugging; the reply
+(event 0x1E) is printed by `bm83_handle_event()` with device state and, per database (0 and 1),
+which profiles are connected (bit 0 A2DP signaling, 1 A2DP stream, 2 AVRCP, 3 HF, 4 SPP).
+`Make_Call` status 0x01 "Command disallow" means "No HF connection exist".
+
+After power-up `bt_fsm` starts in `BT_IDLE`.
 
 ## BM83 UART (bt_uart.c)
 

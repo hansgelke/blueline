@@ -8,13 +8,13 @@
  * GPIO usage of this project. The pins are configured at runtime in
  * src/pico_io.c, not through devicetree nodes:
  *
- *   GPIO2   POT_FWD_PIN      output (SLIC), high after init
- *   GPIO3   PDOWN_N_PIN      output (SLIC), high after init
+ *   GPIO2   POT_FWD_PIN      SLIC, output, high after init (src/slic.c)
+ *   GPIO3   POT_PDOWN_N_PIN  SLIC power down, tristate after init (src/slic.c)
  *   GPIO6   BT_RST_N_PIN     output (BM83 reset, src/bm_83.c), low after init
- *   GPIO7   RING_MODE_PIN    output (SLIC), low after init
+ *   GPIO7   RING_MODE_PIN    SLIC, output, low after init (src/slic.c)
  *   GPIO8   BT_MFB_PIN       output (BM83 MFB, src/bm_83.c), low after init
- *   GPIO11  SHK_RISING_PIN   input, internal pull-up, IRQ on rising edge
- *   GPIO12  SHK_FALLING_PIN  input, internal pull-up, IRQ on falling edge
+ *   GPIO11  SHK_RISING_PIN   input, no pulls, IRQ on rising edge
+ *   GPIO12  SHK_FALLING_PIN  input, no pulls, IRQ on falling edge
  *   GPIO25  PICO_IO_LED_PIN  output, user LED, high = on
  *
  * UART1 to the Microchip BM83 Bluetooth module (src/bt_uart.c):

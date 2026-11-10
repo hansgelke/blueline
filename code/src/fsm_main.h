@@ -6,6 +6,8 @@
 #ifndef FSM_MAIN_H
 #define FSM_MAIN_H
 
+#include <stdint.h>
+
 /* FSM timer timeouts */
 #define PULSE_TIMER_MS    50
 #define HANGUP_TIMER_MS   100
@@ -41,5 +43,9 @@ void fsm_post_event(fsm_event_t ev);
 
 /* Returns the current state (for debugging / other threads later). */
 fsm_state_t fsm_get_state(void);
+
+/* Copy dialed_number_reg (pulse counts, 10 = digit 0) to digits[] (at most
+ * size entries). Returns the number of digits. */
+uint8_t fsm_get_dialed_number(uint8_t *digits, uint8_t size);
 
 #endif /* FSM_MAIN_H */

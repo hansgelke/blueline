@@ -13,6 +13,7 @@
 #include "pico_io.h"
 #include "bt_uart.h"
 #include "bm_83.h"
+#include "slic.h"
 
 LOG_MODULE_REGISTER(main, LOG_LEVEL_INF);
 
@@ -47,6 +48,11 @@ int main(void)
 
 	if (bt_uart_init() < 0) {
 		LOG_ERR("BM83 UART init failed, stopping");
+		return -1;
+	}
+
+	if (slic_init() < 0) {
+		LOG_ERR("SLIC init failed, stopping");
 		return -1;
 	}
 

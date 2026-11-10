@@ -26,6 +26,8 @@
  * command interface enabled), otherwise it ignores all UART commands.
  */
 
+#include <string.h>
+
 #include <zephyr/kernel.h>
 #include <zephyr/device.h>
 #include <zephyr/drivers/gpio.h>
@@ -33,13 +35,11 @@
 
 #include "bm_83.h"
 #include "bt_uart.h"
+#include "bt_fsm.h"
 
 LOG_MODULE_REGISTER(bm_83, LOG_LEVEL_INF);
 
 static const struct device *const gpio0 = DEVICE_DT_GET(DT_NODELABEL(gpio0));
-
-/* MMI action parameter: database index */
-#define BM83_MMI_DATABASE_INDEX  0x00
 
 /* ---- MFB handshake ----------------------------------------------------- */
 
@@ -100,6 +100,14 @@ void bm83_command_ack_received(uint8_t cmd_id, uint8_t status)
 	if (cmd_ack_pending && cmd_id == cmd_ack_id) {
 		cmd_ack_status = status;
 		cmd_ack_pending = false;
+
+		/* Make_Call result goes to bt_fsm from here, so it is queued
+		 * before the Call_Status events that follow the ACK */
+		if (cmd_id == BM83_CMD_MAKE_CALL) {
+			bt_fsm_post_event(status == BM83_ACK_COMMAND_COMPLETE ?
+					  BT_EVT_CALL_ACK_OK : BT_EVT_CALL_ACK_FAIL);
+		}
+
 		k_sem_give(&cmd_ack_sem);
 	}
 }
@@ -163,7 +171,7 @@ static int bm83_send_cmd(uint8_t opcode, const uint8_t *params, uint8_t num_para
 
 int bm83_mmi_action(uint8_t action)
 {
-	const uint8_t params[] = { BM83_MMI_DATABASE_INDEX, action };
+	const uint8_t params[] = { BM83_DATABASE_INDEX, action };
 
 	LOG_INF("tx: MMI action 0x%02X", action);
 	return bm83_send_cmd(BM83_CMD_MMI_ACTION, params, sizeof(params));
@@ -175,10 +183,104 @@ int bm83_enter_pairing(void)
 	return bm83_mmi_action(BM83_MMI_ENTER_PAIRING);
 }
 
+int bm83_read_link_status(void)
+{
+	const uint8_t params[] = { 0x00 };	/* reserved */
+
+	LOG_INF("tx: Read_Link_Status");
+	return bm83_send_cmd(BM83_CMD_READ_LINK_STATUS, params, sizeof(params));
+}
+
+/* Print Read_Link_Status_Reply: device state, then per database the connected
+ * profiles, play status and stream status */
+static void bm83_log_link_status(const uint8_t *params, uint8_t num_params)
+{
+	static const char *const states[] = {
+		"power off", "pairing", "standby", "connected (HF only)",
+		"connected (A2DP only)", "connected (SPP only)",
+		"connected (multi-profile)",
+	};
+
+	if (num_params < 3) {
+		return;
+	}
+
+	LOG_INF("link status: device state 0x%02X %s", params[0],
+		params[0] < ARRAY_SIZE(states) ? states[params[0]] : "unknown");
+
+	for (uint8_t db = 0; db < 2; db++) {
+		uint8_t con = params[1 + db];
+
+		LOG_INF("link status: database %u: HF %s, A2DP %s/%s, AVRCP %s, SPP %s"
+			" (0x%02X), play 0x%02X, stream 0x%02X",
+			db,
+			(con & BIT(3)) ? "yes" : "no",
+			(con & BIT(0)) ? "sig" : "-",
+			(con & BIT(1)) ? "stream" : "-",
+			(con & BIT(2)) ? "yes" : "no",
+			(con & BIT(4)) ? "yes" : "no",
+			con,
+			num_params > 3 + db ? params[3 + db] : 0,
+			num_params > 5 + db ? params[5 + db] : 0);
+	}
+}
+
+int bm83_end_call(void)
+{
+	LOG_INF("tx: end call");
+	return bm83_mmi_action(BM83_MMI_END_CALL);
+}
+
+int bm83_make_call(const char *number, uint8_t len)
+{
+	uint8_t params[1 + BM83_PHONE_NUMBER_MAX];
+
+	if (len > BM83_PHONE_NUMBER_MAX) {
+		LOG_ERR("Make_Call: number too long (%u digits)", len);
+		return -EINVAL;
+	}
+
+	params[0] = BM83_DATABASE_INDEX;
+	memcpy(&params[1], number, len);
+
+	LOG_INF("tx: Make_Call \"%.*s\"", len, number);
+	return bm83_send_cmd(BM83_CMD_MAKE_CALL, params, 1 + len);
+}
+
+void bm83_handle_event(uint8_t opcode, const uint8_t *params, uint8_t num_params)
+{
+	switch (opcode) {
+	case BM83_EVT_BTM_STATUS:
+		/* phone connected (HF or A2DP link): set the output gain */
+		if (num_params >= 1 &&
+		    (params[0] == BM83_STATUS_HF_LINK ||
+		     params[0] == BM83_STATUS_A2DP_LINK)) {
+			bm83_link_established();
+		}
+		break;
+	case BM83_EVT_LINK_STATUS_REPLY:
+		bm83_log_link_status(params, num_params);
+		break;
+	case BM83_EVT_CALL_STATUS:
+		/* params: data_base_index, call status */
+		if (num_params < 2) {
+			break;
+		}
+		if (params[1] == BM83_CALL_OUTGOING || params[1] == BM83_CALL_ACTIVE) {
+			bt_fsm_post_event(BT_EVT_CALL_OUTGOING);
+		} else if (params[1] == BM83_CALL_IDLE) {
+			bt_fsm_post_event(BT_EVT_CALL_IDLE);
+		}
+		break;
+	default:
+		break;
+	}
+}
+
 int bm83_set_overall_gain(uint8_t mask, uint8_t type, uint8_t a2dp,
 			  uint8_t hf, uint8_t line_in)
 {
-	const uint8_t params[] = { BM83_MMI_DATABASE_INDEX, mask, type,
+	const uint8_t params[] = { BM83_DATABASE_INDEX, mask, type,
 				   a2dp, hf, line_in };
 
 	LOG_INF("tx: Set_Overall_Gain mask 0x%02X type 0x%02X A2DP %u HF %u line-in %u",
