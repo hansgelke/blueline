@@ -14,7 +14,7 @@
 #define PICO_IO_LED_PIN   25   /* user LED on the Pico 2, active high */
 
 /* Time after an shk edge at which the pin level is checked */
-#define SHK_CHECK_MS      10
+#define SHK_CHECK_MS      20
 
 /* Initialise shk pins (input without pulls, edge IRQs) and LED (output, off).
  * Returns 0 on success, negative errno otherwise. */

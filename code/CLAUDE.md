@@ -27,8 +27,11 @@ Every `.c` file has a matching `.h` file.
 - `pico_io.c / pico_io.h`: shk GPIO initialisation, the common GPIO ISR `gpio_int`, and LED control.
 - `bt_uart.c / bt_uart.h`: UART1 link to the BM83 Bluetooth module (frame build/send,
   receive ISR, frame check, BM83 event names). Everything UART-related goes here.
-- `slic.c / slic.h`: SLIC (AG1171, J4) control. `slic_init()`: POT_FWD (GP2) high,
-  POT_PDOWN_N (GP3) tristate, RING_MODE (GP7) low.
+- `ring.c / ring.h`: ringer PWM (PWM1 on POT_FWD, GP2) and ring cadence generator
+  `generate_ring()` (runs in `ring_thread`), cadence type `note_t`, cadence tables (e.g.
+  `gb_ring`), current cadence `melody`, global event `ring_event` with bit `PWM_ON`.
+- `slic.c / slic.h`: SLIC (AG1171, J4) control. `slic_init()`: POT_PDOWN_N (GP3) tristate,
+  RING_MODE (GP7) low. `slic_ring_mode_set()` switches RING_MODE.
   All SLIC-related code goes here.
 - `bm_83.c / bm_83.h`: BM83 control signals (`bt_rst_n`, `bt_mfb`), power-up sequence
   `bm83_init()` and BM83 commands (`bm83_mmi_action()`).
@@ -43,7 +46,7 @@ New source files must be added to `CMakeLists.txt`.
 | `SHK_RISING_PIN`  | 11   | input, no internal pulls       | IRQ on rising edge             |
 | `RING_MODE_PIN`   | 7    | output (SLIC, `slic.c`)        | low after init                 |
 | `POT_PDOWN_N_PIN` | 3    | input, no pulls (tristate)     | to AG1171 pin 14 via D7 (cathode at GP3), AG1171 internal pull-up, `slic.c` |
-| `POT_FWD_PIN`     | 2    | output (SLIC, `slic.c`)        | high after init                |
+| `POT_FWD_PIN`     | 2    | PWM1 slice 1 A (SLIC, `ring.c`) | 25 Hz; high = ringer off       |
 | `BT_RST_N_PIN`    | 6    | output (BM83 reset)            | low after init, active low     |
 | `BT_MFB_PIN`      | 8    | output (BM83 MFB)              | low after init                 |
 | LED               | 25   | output (Pico 2 user LED)       | high = on                      |
@@ -60,6 +63,24 @@ those pins are used for UART1 and RING_MODE.
 - `fsm_thread`: runs `fsm_main()`, priority 5, stack 2048.
 - `bt_fsm_thread`: runs `bt_fsm_main()`, priority 6, stack 1024.
 - `bt_rx_thread`: runs `bt_rx_main()`, priority 6, stack 1024. Checks and prints BM83 frames.
+- `ring_thread`: runs `generate_ring()`, priority 7, stack 1024. Blocked until `PWM_ON` is set in
+  `ring_event` (`ring_start()`, from `bt_fsm` in `BT_RING_BELL`). Then plays the cadence `melody`
+  (`note_t` table, max `RING_MAX_SEGMENTS` = 8 segments, `skip` = true on the last one, then the
+  cadence restarts). Durations are in µs (`k_usleep()`). Only `ringer_on` is used so far.
+
+## Ringer (ring.c)
+
+POT_FWD_PIN (GP2) is the output of PWM1 (slice 1 channel A, Zephyr PWM channel 2, pinctrl
+`pwm_ch1a_default` in the overlay). The PWM runs all the time at 25 Hz (`RING_PWM_FREQ_HZ`):
+
+- `ringer_on` true and `PWM_ON` set: duty 50 % → POT_FWD toggles (ringer AC on).
+- otherwise: duty 100 % → POT_FWD constantly high (ringer off). This is the "PWM AND ringer_on".
+
+`ring_init()` (called first in `main()`, before all other inits) starts the PWM with POT_FWD high.
+`ring_start()` sets `PWM_ON`. `ring_stop()` clears `PWM_ON`, sets POT_FWD high at once and wakes
+`ring_thread` from its segment sleep (`k_wakeup()`); `ring_mutex` keeps `generate_ring()` from
+switching the PWM on again in between. GP2 must not be configured as a GPIO anywhere (that would
+disconnect it from the PWM).
 - More threads will follow, all running in parallel.
 
 ## Interrupts
@@ -72,11 +93,11 @@ those pins are used for UART1 and RING_MODE.
   `fsm_post_event()` (ISR-safe, K_NO_WAIT) into the `fsm_event_q` message queue.
 - shk events (in `pico_io.c`): `SHK_RISING_PIN` (GP11) and `SHK_FALLING_PIN` (GP12) are
   connected together outside the Pico; one pin detects rising edges, the other falling edges.
-  An edge starts a one-shot timer of `SHK_CHECK_MS` (10 ms); its expiry function checks the
+  An edge starts a one-shot timer of `SHK_CHECK_MS` (20 ms); its expiry function checks the
   pin level and posts the event:
-  - `EVT_SHK_INACTIVE`: falling edge on `SHK_FALLING_PIN`, pin still low after 10 ms.
-  - `EVT_SHK_ACTIVE`: rising edge on `SHK_RISING_PIN`, pin still high after 10 ms.
-- This edge + 10 ms level check is the shk debounce. Only after the check is a high or low
+  - `EVT_SHK_INACTIVE`: falling edge on `SHK_FALLING_PIN`, pin still low after 20 ms.
+  - `EVT_SHK_ACTIVE`: rising edge on `SHK_RISING_PIN`, pin still high after 20 ms.
+- This edge + 20 ms level check is the shk debounce. Only after the check is a high or low
   level valid. **Never use `SHK_RISING_PIN` / `SHK_FALLING_PIN` directly in the logic**
   (no `gpio_pin_get()` on them in the FSMs); use only `EVT_SHK_ACTIVE` / `EVT_SHK_INACTIVE`.
 - No other debounce. Do not add one on your own.
@@ -91,7 +112,7 @@ Timers (in `fsm_main.c`, one-shot, the expiry function only posts an event):
 
 | Timer          | Timeout | Event                |
 |----------------|---------|----------------------|
-| `pulse_timer`  | 50 ms   | `EVT_PULSE_TIMEOUT`  |
+| `pulse_timer`  | 100 ms  | `EVT_PULSE_TIMEOUT`  |
 | `hangup_timer` | 100 ms  | `EVT_HANGUP_TIMEOUT` |
 | `dialcmpl_timer` | 3 s   | `EVT_DIALCMPL`       |
 
@@ -147,16 +168,29 @@ Events:
   outgoing call (0x03) or call active (0x04).
 - `BT_EVT_CALL_IDLE` (`bt_rx_thread`, `bm83_handle_event()`): `Call_Status` reports idle (0x00),
   the call has ended.
+- `BT_EVT_CALL_INCOMING` (`bt_rx_thread`, `bm83_handle_event()`): `Call_Status` reports incoming
+  call (0x02).
+- `BT_EVT_RING_PROTECT` (`ring_protect_timer`, 50 ms) expired.
+- `BT_EVT_OFFHOOK` (`fsm_main`): `s0_idle` → `s1_offhook` on `EVT_SHK_ACTIVE` (handset lifted).
+  `bt_fsm` never reads the shk pins; it only gets this forwarded event.
 
 | State                | Entry action | Transitions |
 |----------------------|--------------|-------------|
-| `BT_IDLE`            | – | `BT_EVT_DIALCMPL` → `BT_MAKE_CALL` |
+| `BT_IDLE`            | RING_MODE low, `ring_stop()` | `BT_EVT_DIALCMPL` → `BT_MAKE_CALL`; `BT_EVT_CALL_INCOMING` → `BT_RING_MODE` |
 | `BT_MAKE_CALL`       | `Make_Call` (0x00) with `dialed_number_reg` as ASCII | `BT_EVT_MAIN_IDLE` → `BT_IDLE`; `BT_EVT_CALL_ACK_OK` → `BT_CALLER_WAIT`; `BT_EVT_CALL_ACK_FAIL` → `BT_NOHF` |
 | `BT_CALLER_WAIT`     | – | `BT_EVT_MAIN_IDLE` → `BT_IDLE`, sending MMI action 0x06 "End call"; `BT_EVT_CALL_OUTGOING` → `BT_OUT_ESTABLISHED` |
 | `BT_NOHF`            | – | `BT_EVT_MAIN_IDLE` → `BT_IDLE` |
 | `BT_OUT_ESTABLISHED` | – | `BT_EVT_MAIN_IDLE` → `BT_IDLE`, sending MMI action 0x06 "End call" (`bm83_end_call()`, `AA 00 03 02 00 06 F5`); `BT_EVT_CALL_IDLE` → `BT_IDLE` (no command) |
+| `BT_RING_MODE`       | RING_MODE high, start `ring_protect_timer` (50 ms) | `BT_EVT_RING_PROTECT` → `BT_RING_BELL`; `BT_EVT_CALL_IDLE` → `BT_IDLE`; `BT_EVT_OFFHOOK` → `BT_OUT_ESTABLISHED`, with RING_MODE low and MMI 0x04 "Accept" |
+| `BT_RING_BELL`       | `ring_start()` (`PWM_ON`) | `BT_EVT_OFFHOOK` → `BT_STOP_RING`; `BT_EVT_CALL_IDLE` → `BT_IDLE` (caller hung up before answering) |
+| `BT_STOP_RING`       | `ring_stop()` (POT_FWD high at once), start `ring_protect_timer` (50 ms) | `BT_EVT_CALL_IDLE` → `BT_IDLE`; `BT_EVT_RING_PROTECT` → `BT_OUT_ESTABLISHED`, with RING_MODE low and MMI action 0x04 "Accept an incoming call" (`bm83_accept_call()`, `AA 00 03 02 00 04 F7`) |
 
-`BT_EVT_MAIN_IDLE` has the highest priority: every state except `BT_IDLE` goes to `BT_IDLE` on it.
+`BT_EVT_MAIN_IDLE` has the highest priority in the outgoing-call states (`BT_MAKE_CALL`,
+`BT_CALLER_WAIT`, `BT_NOHF`, `BT_OUT_ESTABLISHED`). The ringing states `BT_RING_MODE`,
+`BT_RING_BELL`, `BT_STOP_RING` do not react to it (the handset is on hook while ringing).
+
+`ring_protect_timer` (`RING_PROTECT_MS` = 50) posts `BT_EVT_RING_PROTECT`; a stale event from an
+earlier run is ignored (`k_timer_remaining_ticks() != 0`).
 
 Phone number: `fsm_get_dialed_number()` copies `dialed_number_reg` (pulse counts); `bt_fsm`
 converts 1–9 to '1'–'9' and 10 to '0' (other values are skipped with a warning) and sends it

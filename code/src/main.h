@@ -18,4 +18,8 @@
 #define BT_RX_THREAD_STACK_SIZE  1024
 #define BT_RX_THREAD_PRIORITY    6
 
+/* ring_thread: ring cadence generator */
+#define RING_THREAD_STACK_SIZE   1024
+#define RING_THREAD_PRIORITY     7
+
 #endif /* MAIN_H */

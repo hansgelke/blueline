@@ -23,6 +23,7 @@
  *
  * bt_fsm (bt_fsm.c) is driven from here:
  *   - entering s0_idle:  BT_EVT_MAIN_IDLE (forces bt_fsm to BT_IDLE)
+ *   - s0_idle -> s1_offhook (handset lifted):  BT_EVT_OFFHOOK
  *   - EVT_DIALCMPL while in s1_offhook:  BT_EVT_DIALCMPL
  */
 
@@ -203,6 +204,7 @@ static void state_s0_idle(fsm_event_t ev)
 	switch (ev) {
 	case EVT_SHK_ACTIVE:
 		number_array_clear();
+		bt_fsm_post_event(BT_EVT_OFFHOOK);	/* handset lifted */
 		fsm_enter_state(STATE_S1_OFFHOOK);
 		break;
 	default:

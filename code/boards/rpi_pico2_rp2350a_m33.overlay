@@ -8,7 +8,7 @@
  * GPIO usage of this project. The pins are configured at runtime in
  * src/pico_io.c, not through devicetree nodes:
  *
- *   GPIO2   POT_FWD_PIN      SLIC, output, high after init (src/slic.c)
+ *   GPIO2   POT_FWD_PIN      SLIC, PWM1 output (slice 1 A), 25 Hz, high = ringer off (src/ring.c)
  *   GPIO3   POT_PDOWN_N_PIN  SLIC power down, tristate after init (src/slic.c)
  *   GPIO6   BT_RST_N_PIN     output (BM83 reset, src/bm_83.c), low after init
  *   GPIO7   RING_MODE_PIN    SLIC, output, low after init (src/slic.c)
@@ -40,6 +40,13 @@
 };
 
 &pinctrl {
+	/* ringer PWM: PWM slice 1 channel A on GP2 (POT_FWD) */
+	pwm_ch1a_default: pwm_ch1a_default {
+		group1 {
+			pinmux = <PWM_1A_P2>;
+		};
+	};
+
 	uart1_default: uart1_default {
 		group1 {
 			pinmux = <UART1_TX_P4>;
@@ -56,5 +63,13 @@
 	status = "okay";
 	current-speed = <115200>;
 	pinctrl-0 = <&uart1_default>;
+	pinctrl-names = "default";
+};
+
+/* Ringer PWM (src/ring.c). Replaces the board default pinctrl (PWM 4B on the
+ * user LED GP25), so GP25 stays a GPIO. */
+&pwm {
+	status = "okay";
+	pinctrl-0 = <&pwm_ch1a_default>;
 	pinctrl-names = "default";
 };

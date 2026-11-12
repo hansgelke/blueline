@@ -6,6 +6,9 @@
 #ifndef BT_FSM_H
 #define BT_FSM_H
 
+/* RING_PROTECT timer: settle time around ring mode switching */
+#define RING_PROTECT_MS   50
+
 /* bt_fsm states */
 typedef enum {
 	BT_IDLE = 0,
@@ -13,6 +16,9 @@ typedef enum {
 	BT_CALLER_WAIT,
 	BT_NOHF,
 	BT_OUT_ESTABLISHED,
+	BT_RING_BELL,
+	BT_RING_MODE,
+	BT_STOP_RING,
 	BT_STATE_COUNT
 } bt_fsm_state_t;
 
@@ -24,6 +30,9 @@ typedef enum {
 	BT_EVT_CALL_ACK_FAIL,	/* Command_ACK of Make_Call with status != 0x00, or no ACK */
 	BT_EVT_CALL_OUTGOING,	/* Call_Status: outgoing call (0x03) or call active (0x04) */
 	BT_EVT_CALL_IDLE,	/* Call_Status: idle (0x00), the call has ended */
+	BT_EVT_CALL_INCOMING,	/* Call_Status: incoming call (0x02) */
+	BT_EVT_OFFHOOK,		/* fsm_main: s0_idle -> s1_offhook (handset lifted) */
+	BT_EVT_RING_PROTECT,	/* ring_protect_timer expired */
 	BT_EVT_COUNT
 } bt_fsm_event_t;
 

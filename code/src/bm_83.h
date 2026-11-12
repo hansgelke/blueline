@@ -43,6 +43,7 @@
 
 /* Call_Status states */
 #define BM83_CALL_IDLE             0x00   /* idle, no call */
+#define BM83_CALL_INCOMING         0x02   /* incoming call */
 #define BM83_CALL_OUTGOING         0x03   /* outgoing call */
 #define BM83_CALL_ACTIVE           0x04   /* call active */
 
@@ -70,6 +71,7 @@
 #define BM83_MMI_POWER_ON_PRESS    0x51
 #define BM83_MMI_POWER_ON_RELEASE  0x52
 #define BM83_MMI_ENTER_PAIRING     0x5D   /* fast enter pairing mode (from non-off) */
+#define BM83_MMI_ACCEPT_CALL       0x04   /* accept an incoming call */
 #define BM83_MMI_END_CALL          0x06   /* end call / transfer audio to phone */
 
 /* Read_BTM_Version types (reply: event 0x18 Read_BTM_Version_Reply) */
@@ -110,6 +112,9 @@ int bm83_read_link_status(void);
 /* End the active call: MMI action 0x06 "End call / transfer audio to phone". */
 int bm83_end_call(void);
 
+/* Accept the incoming call: MMI action 0x04 "Accept an incoming call". */
+int bm83_accept_call(void);
+
 /* Make_Call (opcode 0x00): data_base_index 0x00, phone number as ASCII
  * digits (len <= BM83_PHONE_NUMBER_MAX). The Command_ACK result is also
  * posted to bt_fsm (BT_EVT_CALL_ACK_OK / BT_EVT_CALL_ACK_FAIL) by
@@ -118,7 +123,7 @@ int bm83_make_call(const char *number, uint8_t len);
 
 /* Called by bt_rx_thread for every received event except Command_ACK:
  * starts the gain setting when a link is established, forwards Call_Status
- * (outgoing / active / idle) to bt_fsm, prints Read_Link_Status_Reply. params[] are the event parameters. */
+ * (incoming / outgoing / active / idle) to bt_fsm, prints Read_Link_Status_Reply. params[] are the event parameters. */
 void bm83_handle_event(uint8_t opcode, const uint8_t *params, uint8_t num_params);
 
 /* Called by bt_rx_thread when a link to the phone is established: sets

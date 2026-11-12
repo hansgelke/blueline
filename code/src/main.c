@@ -14,6 +14,7 @@
 #include "bt_uart.h"
 #include "bm_83.h"
 #include "slic.h"
+#include "ring.h"
 
 LOG_MODULE_REGISTER(main, LOG_LEVEL_INF);
 
@@ -35,11 +36,23 @@ K_THREAD_STACK_DEFINE(bt_rx_thread_stack, BT_RX_THREAD_STACK_SIZE);
 static struct k_thread bt_rx_thread_data;
 static k_tid_t bt_rx_thread_id;
 
+/* ---- ring_thread ------------------------------------------------------- */
+
+K_THREAD_STACK_DEFINE(ring_thread_stack, RING_THREAD_STACK_SIZE);
+static struct k_thread ring_thread_data;
+static k_tid_t ring_thread_id;
+
 /* ---- further threads will be added here -------------------------------- */
 
 int main(void)
 {
 	LOG_INF("blueline starting");
+
+	/* first: drive POT_FWD (GP2, PWM1) high as early as possible */
+	if (ring_init() < 0) {
+		LOG_ERR("ringer PWM init failed, stopping");
+		return -1;
+	}
 
 	if (pico_io_init() < 0) {
 		LOG_ERR("I/O init failed, stopping");
@@ -55,6 +68,7 @@ int main(void)
 		LOG_ERR("SLIC init failed, stopping");
 		return -1;
 	}
+
 
 	fsm_thread_id = k_thread_create(&fsm_thread_data,
 					fsm_thread_stack,
@@ -79,6 +93,14 @@ int main(void)
 					  NULL, NULL, NULL,
 					  BT_RX_THREAD_PRIORITY, 0, K_NO_WAIT);
 	k_thread_name_set(bt_rx_thread_id, "bt_rx_thread");
+
+	ring_thread_id = k_thread_create(&ring_thread_data,
+					 ring_thread_stack,
+					 K_THREAD_STACK_SIZEOF(ring_thread_stack),
+					 generate_ring,
+					 NULL, NULL, NULL,
+					 RING_THREAD_PRIORITY, 0, K_NO_WAIT);
+	k_thread_name_set(ring_thread_id, "ring_thread");
 
 	/* BM83 power-up runs last: bt_rx_thread is already running and shows
 	 * the BM83 responses (ACKs, status events) as they arrive. */

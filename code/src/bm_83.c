@@ -231,6 +231,12 @@ int bm83_end_call(void)
 	return bm83_mmi_action(BM83_MMI_END_CALL);
 }
 
+int bm83_accept_call(void)
+{
+	LOG_INF("tx: accept call");
+	return bm83_mmi_action(BM83_MMI_ACCEPT_CALL);
+}
+
 int bm83_make_call(const char *number, uint8_t len)
 {
 	uint8_t params[1 + BM83_PHONE_NUMBER_MAX];
@@ -270,6 +276,8 @@ void bm83_handle_event(uint8_t opcode, const uint8_t *params, uint8_t num_params
 			bt_fsm_post_event(BT_EVT_CALL_OUTGOING);
 		} else if (params[1] == BM83_CALL_IDLE) {
 			bt_fsm_post_event(BT_EVT_CALL_IDLE);
+		} else if (params[1] == BM83_CALL_INCOMING) {
+			bt_fsm_post_event(BT_EVT_CALL_INCOMING);
 		}
 		break;
 	default:

@@ -11,4 +11,5 @@ target_sources(app PRIVATE
 	src/bt_fsm.c
 	src/bm_83.c
 	src/slic.c
+	src/ring.c
 )

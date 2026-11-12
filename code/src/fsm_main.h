@@ -9,7 +9,7 @@
 #include <stdint.h>
 
 /* FSM timer timeouts */
-#define PULSE_TIMER_MS    50
+#define PULSE_TIMER_MS    100   /* > make time between dial pulses (~44 ms) */
 #define HANGUP_TIMER_MS   100
 #define DIALCMPL_TIMER_MS 3000
 
