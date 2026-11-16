@@ -260,7 +260,7 @@ static void bt_uart_rx_frame(const uint8_t *raw)
 		 * event right away instead of after its 800 ms timeout */
 		bm83_event_ack(rx_buffer[1]);
 
-		/* react to the event (gain setting, call status for bt_fsm) */
+		/* react to the event (call status for bt_fsm, link status) */
 		bm83_handle_event(rx_buffer[1], &rx_buffer[2], num_params);
 	}
 }

@@ -42,13 +42,24 @@ K_THREAD_STACK_DEFINE(ring_thread_stack, RING_THREAD_STACK_SIZE);
 static struct k_thread ring_thread_data;
 static k_tid_t ring_thread_id;
 
+/* ---- bell_thread ------------------------------------------------------- */
+
+K_THREAD_STACK_DEFINE(bell_thread_stack, BELL_THREAD_STACK_SIZE);
+static struct k_thread bell_thread_data;
+static k_tid_t bell_thread_id;
+
 /* ---- further threads will be added here -------------------------------- */
 
 int main(void)
 {
 	LOG_INF("blueline starting");
 
-	/* first: drive POT_FWD (GP2, PWM1) high as early as possible */
+	/* first: RING_MODE low, then POT_FWD (GP2) PWM at 100 % */
+	if (slic_init() < 0) {
+		LOG_ERR("SLIC init failed, stopping");
+		return -1;
+	}
+
 	if (ring_init() < 0) {
 		LOG_ERR("ringer PWM init failed, stopping");
 		return -1;
@@ -61,11 +72,6 @@ int main(void)
 
 	if (bt_uart_init() < 0) {
 		LOG_ERR("BM83 UART init failed, stopping");
-		return -1;
-	}
-
-	if (slic_init() < 0) {
-		LOG_ERR("SLIC init failed, stopping");
 		return -1;
 	}
 
@@ -101,6 +107,14 @@ int main(void)
 					 NULL, NULL, NULL,
 					 RING_THREAD_PRIORITY, 0, K_NO_WAIT);
 	k_thread_name_set(ring_thread_id, "ring_thread");
+
+	bell_thread_id = k_thread_create(&bell_thread_data,
+					 bell_thread_stack,
+					 K_THREAD_STACK_SIZEOF(bell_thread_stack),
+					 bell_fsm_main,
+					 NULL, NULL, NULL,
+					 BELL_THREAD_PRIORITY, 0, K_NO_WAIT);
+	k_thread_name_set(bell_thread_id, "bell_thread");
 
 	/* BM83 power-up runs last: bt_rx_thread is already running and shows
 	 * the BM83 responses (ACKs, status events) as they arrive. */

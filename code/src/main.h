@@ -22,4 +22,8 @@
 #define RING_THREAD_STACK_SIZE   1024
 #define RING_THREAD_PRIORITY     7
 
+/* bell_thread: bell state machine (RING_MODE / POT_FWD switching) */
+#define BELL_THREAD_STACK_SIZE   1024
+#define BELL_THREAD_PRIORITY     4
+
 #endif /* MAIN_H */

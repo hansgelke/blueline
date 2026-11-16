@@ -19,7 +19,8 @@ The project is developed step by step; implement only what is asked for, nothing
 
 Every `.c` file has a matching `.h` file.
 
-- `main.c / main.h`: system start. Calls `pico_io_init()`, `bt_uart_init()` and `slic_init()`, creates all
+- `main.c / main.h`: system start. Calls `slic_init()` and `ring_init()` first (RING_MODE low, POT_FWD
+  PWM at 100 % as early as possible), then `pico_io_init()` and `bt_uart_init()`, creates all
   threads, then calls `bm83_init()` last (so `bt_rx_thread` already shows the BM83 responses).
   Thread stack sizes and priorities are defined in `main.h`. New threads are added here.
 - `fsm_main.c / fsm_main.h`: the main state machine, running in `fsm_thread`.
@@ -27,11 +28,11 @@ Every `.c` file has a matching `.h` file.
 - `pico_io.c / pico_io.h`: shk GPIO initialisation, the common GPIO ISR `gpio_int`, and LED control.
 - `bt_uart.c / bt_uart.h`: UART1 link to the BM83 Bluetooth module (frame build/send,
   receive ISR, frame check, BM83 event names). Everything UART-related goes here.
-- `ring.c / ring.h`: ringer PWM (PWM1 on POT_FWD, GP2) and ring cadence generator
-  `generate_ring()` (runs in `ring_thread`), cadence type `note_t`, cadence tables (e.g.
-  `gb_ring`), current cadence `melody`, global event `ring_event` with bit `PWM_ON`.
-- `slic.c / slic.h`: SLIC (AG1171, J4) control. `slic_init()`: POT_PDOWN_N (GP3) tristate,
-  RING_MODE (GP7) low. `slic_ring_mode_set()` switches RING_MODE.
+- `ring.c / ring.h`: ringer PWM on POT_FWD (GP2), ring cadence generator `generate_ring()`
+  (`ring_thread`), cadence type `note_t`, cadence tables (e.g. `gb_ring`), current cadence
+  `melody`, and the bell state machine `bell_fsm` (`bell_thread`).
+- `slic.c / slic.h`: SLIC (AG1171, J4) control. `slic_init()`: RING_MODE (GP7) low,
+  POT_PDOWN_N (GP3) tristate. `slic_ring_mode_set()` switches RING_MODE (used by `bell_fsm`).
   All SLIC-related code goes here.
 - `bm_83.c / bm_83.h`: BM83 control signals (`bt_rst_n`, `bt_mfb`), power-up sequence
   `bm83_init()` and BM83 commands (`bm83_mmi_action()`).
@@ -44,9 +45,9 @@ New source files must be added to `CMakeLists.txt`.
 |-------------------|------|--------------------------------|--------------------------------|
 | `SHK_FALLING_PIN` | 12   | input, no internal pulls       | IRQ on falling edge            |
 | `SHK_RISING_PIN`  | 11   | input, no internal pulls       | IRQ on rising edge             |
-| `RING_MODE_PIN`   | 7    | output (SLIC, `slic.c`)        | low after init                 |
+| `RING_MODE_PIN`   | 7    | output (SLIC, `slic.c`)        | low after init, set by `bell_fsm` |
 | `POT_PDOWN_N_PIN` | 3    | input, no pulls (tristate)     | to AG1171 pin 14 via D7 (cathode at GP3), AG1171 internal pull-up, `slic.c` |
-| `POT_FWD_PIN`     | 2    | PWM1 slice 1 A (SLIC, `ring.c`) | 25 Hz; high = ringer off       |
+| `POT_FWD_PIN`     | 2    | PWM1 slice 1 A (SLIC, `ring.c`) | 25 Hz, duty 100 % = high       |
 | `BT_RST_N_PIN`    | 6    | output (BM83 reset)            | low after init, active low     |
 | `BT_MFB_PIN`      | 8    | output (BM83 MFB)              | low after init                 |
 | LED               | 25   | output (Pico 2 user LED)       | high = on                      |
@@ -63,24 +64,35 @@ those pins are used for UART1 and RING_MODE.
 - `fsm_thread`: runs `fsm_main()`, priority 5, stack 2048.
 - `bt_fsm_thread`: runs `bt_fsm_main()`, priority 6, stack 1024.
 - `bt_rx_thread`: runs `bt_rx_main()`, priority 6, stack 1024. Checks and prints BM83 frames.
-- `ring_thread`: runs `generate_ring()`, priority 7, stack 1024. Blocked until `PWM_ON` is set in
-  `ring_event` (`ring_start()`, from `bt_fsm` in `BT_RING_BELL`). Then plays the cadence `melody`
-  (`note_t` table, max `RING_MAX_SEGMENTS` = 8 segments, `skip` = true on the last one, then the
-  cadence restarts). Durations are in µs (`k_usleep()`). Only `ringer_on` is used so far.
+- `ring_thread`: runs `generate_ring()`, priority 7, stack 1024. Blocked until `bt_fsm` enters
+  `BT_RING_BELL` (`ring_start()`), so the cadence is synchronised with that entry. Plays the cadence
+  `melody` (`note_t` table, max `RING_MAX_SEGMENTS` = 8 segments, `skip` = true on the last one, then
+  it restarts; durations in µs, `k_usleep()`) and reports each segment's `ringer_on` to `bell_fsm`.
+  `ring_stop()` (leaving `BT_RING_BELL`) ends the cadence at once and reports `ringer_on` = false.
+- `bell_thread`: runs `bell_fsm_main()`, priority 4, stack 1024. The bell state machine.
 
-## Ringer (ring.c)
+## Bell (ring.c)
 
-POT_FWD_PIN (GP2) is the output of PWM1 (slice 1 channel A, Zephyr PWM channel 2, pinctrl
-`pwm_ch1a_default` in the overlay). The PWM runs all the time at 25 Hz (`RING_PWM_FREQ_HZ`):
+POT_FWD_PIN (GP2) is the output of PWM1 (slice 1 channel A, pinctrl `pwm_ch1a_default` in the
+overlay) from power-up on, 25 Hz. Duty 100 % = constantly high, 50 % = bell rings. Duty changes take
+effect at the end of the current PWM period (double-buffered, up to 40 ms). GP2 must never be
+configured as a GPIO (that would disconnect it from the PWM).
 
-- `ringer_on` true and `PWM_ON` set: duty 50 % → POT_FWD toggles (ringer AC on).
-- otherwise: duty 100 % → POT_FWD constantly high (ringer off). This is the "PWM AND ringer_on".
+`bell_fsm` (own thread, events in `bell_event_q`, `BELL_TIMER`):
 
-`ring_init()` (called first in `main()`, before all other inits) starts the PWM with POT_FWD high.
-`ring_start()` sets `PWM_ON`. `ring_stop()` clears `PWM_ON`, sets POT_FWD high at once and wakes
-`ring_thread` from its segment sleep (`k_wakeup()`); `ring_mutex` keeps `generate_ring()` from
-switching the PWM on again in between. GP2 must not be configured as a GPIO anywhere (that would
-disconnect it from the PWM).
+| State          | RING_MODE | POT_FWD | Entry / transitions |
+|----------------|-----------|---------|---------------------|
+| `BELL_OFF`     | low       | 100 %   | → `BELL_RM_ON` when `ringer_on` AND NOT `shk_active` |
+| `BELL_RM_ON`   | high      | 100 %   | start `BELL_TIMER` 50 ms; expired → `BELL_PWM_ON` |
+| `BELL_PWM_ON`  | high      | 50 %    | → `BELL_PWM_OFF` when NOT `ringer_on` OR `shk_active` |
+| `BELL_PWM_OFF` | high      | 100 %   | start `BELL_TIMER` 90 ms; expired → `BELL_OFF` |
+
+- `ringer_on`: `ringer_on` of the current cadence segment (`BELL_EVT_RINGER_ON/OFF` from `ring_thread`;
+  false after `ring_stop()`).
+- `shk_active`: last debounced shk event was `EVT_SHK_ACTIVE`. `fsm_main` forwards every
+  `EVT_SHK_ACTIVE` / `EVT_SHK_INACTIVE` as `BELL_EVT_SHK_ACTIVE/INACTIVE`; the shk pins are not read.
+- Conditions are re-checked on every input change and on entering `BELL_OFF` / `BELL_PWM_ON`.
+- RING_MODE is high at least 50 ms before and 90 ms after the PWM runs at 50 %.
 - More threads will follow, all running in parallel.
 
 ## Interrupts
@@ -170,27 +182,20 @@ Events:
   the call has ended.
 - `BT_EVT_CALL_INCOMING` (`bt_rx_thread`, `bm83_handle_event()`): `Call_Status` reports incoming
   call (0x02).
-- `BT_EVT_RING_PROTECT` (`ring_protect_timer`, 50 ms) expired.
 - `BT_EVT_OFFHOOK` (`fsm_main`): `s0_idle` → `s1_offhook` on `EVT_SHK_ACTIVE` (handset lifted).
   `bt_fsm` never reads the shk pins; it only gets this forwarded event.
 
 | State                | Entry action | Transitions |
 |----------------------|--------------|-------------|
-| `BT_IDLE`            | RING_MODE low, `ring_stop()` | `BT_EVT_DIALCMPL` → `BT_MAKE_CALL`; `BT_EVT_CALL_INCOMING` → `BT_RING_MODE` |
+| `BT_IDLE`            | – | `BT_EVT_DIALCMPL` → `BT_MAKE_CALL`; `BT_EVT_CALL_INCOMING` → `BT_RING_BELL` |
 | `BT_MAKE_CALL`       | `Make_Call` (0x00) with `dialed_number_reg` as ASCII | `BT_EVT_MAIN_IDLE` → `BT_IDLE`; `BT_EVT_CALL_ACK_OK` → `BT_CALLER_WAIT`; `BT_EVT_CALL_ACK_FAIL` → `BT_NOHF` |
 | `BT_CALLER_WAIT`     | – | `BT_EVT_MAIN_IDLE` → `BT_IDLE`, sending MMI action 0x06 "End call"; `BT_EVT_CALL_OUTGOING` → `BT_OUT_ESTABLISHED` |
 | `BT_NOHF`            | – | `BT_EVT_MAIN_IDLE` → `BT_IDLE` |
-| `BT_OUT_ESTABLISHED` | – | `BT_EVT_MAIN_IDLE` → `BT_IDLE`, sending MMI action 0x06 "End call" (`bm83_end_call()`, `AA 00 03 02 00 06 F5`); `BT_EVT_CALL_IDLE` → `BT_IDLE` (no command) |
-| `BT_RING_MODE`       | RING_MODE high, start `ring_protect_timer` (50 ms) | `BT_EVT_RING_PROTECT` → `BT_RING_BELL`; `BT_EVT_CALL_IDLE` → `BT_IDLE`; `BT_EVT_OFFHOOK` → `BT_OUT_ESTABLISHED`, with RING_MODE low and MMI 0x04 "Accept" |
-| `BT_RING_BELL`       | `ring_start()` (`PWM_ON`) | `BT_EVT_OFFHOOK` → `BT_STOP_RING`; `BT_EVT_CALL_IDLE` → `BT_IDLE` (caller hung up before answering) |
-| `BT_STOP_RING`       | `ring_stop()` (POT_FWD high at once), start `ring_protect_timer` (50 ms) | `BT_EVT_CALL_IDLE` → `BT_IDLE`; `BT_EVT_RING_PROTECT` → `BT_OUT_ESTABLISHED`, with RING_MODE low and MMI action 0x04 "Accept an incoming call" (`bm83_accept_call()`, `AA 00 03 02 00 04 F7`) |
+| `BT_OUT_ESTABLISHED` | line-in off (`bm83_line_in_set(false)`), audio from the phone; exit action: line-in on | `BT_EVT_MAIN_IDLE` → `BT_IDLE`, sending MMI action 0x06 "End call" (`bm83_end_call()`, `AA 00 03 02 00 06 F5`); `BT_EVT_CALL_IDLE` → `BT_IDLE` (no command) |
+| `BT_RING_BELL`       | `ring_start()` | `BT_EVT_OFFHOOK` → `ring_stop()`, → `BT_OUT_ESTABLISHED`, sending MMI action 0x04 "Accept an incoming call" (`bm83_accept_call()`, `AA 00 03 02 00 04 F7`); `BT_EVT_CALL_IDLE` → `ring_stop()`, → `BT_IDLE` (caller hung up before answering) |
 
-`BT_EVT_MAIN_IDLE` has the highest priority in the outgoing-call states (`BT_MAKE_CALL`,
-`BT_CALLER_WAIT`, `BT_NOHF`, `BT_OUT_ESTABLISHED`). The ringing states `BT_RING_MODE`,
-`BT_RING_BELL`, `BT_STOP_RING` do not react to it (the handset is on hook while ringing).
-
-`ring_protect_timer` (`RING_PROTECT_MS` = 50) posts `BT_EVT_RING_PROTECT`; a stale event from an
-earlier run is ignored (`k_timer_remaining_ticks() != 0`).
+`BT_EVT_MAIN_IDLE` has the highest priority: every state except `BT_IDLE` and `BT_RING_BELL` goes to
+`BT_IDLE` on it. In `BT_RING_BELL` the handset is on hook (`fsm_main` already in `s0_idle`).
 
 Phone number: `fsm_get_dialed_number()` copies `dialed_number_reg` (pulse counts); `bt_fsm`
 converts 1–9 to '1'–'9' and 10 to '0' (other values are skipped with a warning) and sends it
@@ -235,7 +240,12 @@ a length of 0 or more than 21 are dropped in the ISR.
    `AA 00 02 08 01 F5`. Reply: event 0x18 `Read_BTM_Version_Reply`, params type, version (2 bytes).
 8. MMI action 0x5D (fast enter pairing mode, with tone): `AA 00 03 02 00 5D 9E`.
    BM83 reports `BTM_Status` 0x01 (pairing), then 0x03 (paired) or 0x04 (failed).
-9. `bt_mfb` low (each command waits for its `Command_ACK` first).
+9. `BTM_Utility_Function` 0x13, type 0x01 (aux line-in), parameter 0x01 "line in is controlled by
+   MCU": `AA 00 03 13 01 01 E8` (`bm83_line_in_set(true)`): line-in (AIL/AIR → AOHPL/AOHPR) on.
+   Parameter 0x00 "not controlled by MCU" (`AA 00 03 13 01 00 E9`, `bm83_line_in_set(false)`)
+   switches it off: the BM83 then uses its own aux-in detection pin P3_2, which is not connected
+   (observed behaviour). While line-in is on, Bluetooth audio is suppressed.
+10. `bt_mfb` low (each command waits for its `Command_ACK` first).
 
 MFB handshake: in host MCU mode MFB is the BM83 `UART_RX_IND` input ("UART data from the MCU
 follows", Audio UART Command Set 4.1/4.4/4.5), as in Microchip's PIC32 demo:
@@ -270,18 +280,18 @@ exist only in the Config Tool and on the module, not in this repository:
 | Output Volume Scaling Method | 0x0: Codec DAC gain | |
 | Digital Mic | Disable | analog mic on MICP1/MICN1 (demo: digital mic) |
 | ADC Path | 5 (MIC1 to L), mic bias off | MICBIAS (pin 15) is not connected |
-| Audio Gain Table | default (level 15 = 0xFC = 0 dB) | firmware sets level 15 after connecting |
+| Audio Gain Table | default (level 15 = 0xFC = 0 dB) | |
 
 The SLIC (AG1171, J4 pin 9 via RV1 and R12 47k) needs about 500 mV RMS audio input.
 
 `bm83_mmi_action(action)` sends opcode `0x02` with params `data_base_index 0x00, action`.
 `bm83_read_btm_version(type)` sends opcode `0x08` with param `type`. Both use `bm83_send_cmd()`.
 
-Output gain: when `BTM_Status` reports an HF link (0x05) or A2DP link (0x06), `bt_rx_thread` calls
-`bm83_link_established()`, which submits a work item; the system workqueue then sends
-`Set_Overall_Gain` (0x23, `bm83_set_overall_gain()`) with absolute level `BM83_A2DP_GAIN_LEVEL` /
-`BM83_HF_GAIN_LEVEL` (both 15 = max, `bm_83.h`). The phone can change the gain afterwards via
-AVRCP absolute volume. Without AVRCP the BM83 starts at "Default Gain Level" 0x99 (9 of 15).
+Speaker volume: no gain commands are sent. `Set_Overall_Gain` (0x23, A2DP/HF level 15 on link
+established) and `Set_HF_Speaker_Gain_Level` (0x1B, level 0x0F at init and on call active) were
+tried and had no audible effect; the phone sets the volume itself (AVRCP absolute volume,
+`Report_HF_Gain_Level`). Volume comes from the BM83 configuration ("Speaker Output = Single Ended
+External Amp") and the phone.
 
 Event acknowledge: `bt_rx_thread` answers every received event except `Command_ACK` (0x00) with
 `bm83_event_ack(opcode)` (Event_ACK 0x14, e.g. `AA 00 02 14 01 E9` for BTM_Status). Without it the

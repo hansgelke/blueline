@@ -7,6 +7,7 @@
 #ifndef BM_83_H
 #define BM_83_H
 
+#include <stdbool.h>
 #include <stdint.h>
 #include <zephyr/sys/util.h>
 
@@ -28,18 +29,14 @@
 #define BM83_CMD_MMI_ACTION      0x02
 #define BM83_CMD_READ_BTM_VERSION  0x08
 #define BM83_CMD_READ_LINK_STATUS  0x0D
+#define BM83_CMD_BTM_UTILITY       0x13
 #define BM83_CMD_EVENT_ACK         0x14
-#define BM83_CMD_SET_OVERALL_GAIN  0x23
 
 /* Event opcodes */
 #define BM83_EVT_COMMAND_ACK       0x00
 #define BM83_EVT_BTM_STATUS        0x01
 #define BM83_EVT_CALL_STATUS       0x02
 #define BM83_EVT_LINK_STATUS_REPLY 0x1E
-
-/* BTM_Status states that start the gain setting */
-#define BM83_STATUS_HF_LINK        0x05   /* HF/HS link established */
-#define BM83_STATUS_A2DP_LINK      0x06   /* A2DP link established */
 
 /* Call_Status states */
 #define BM83_CALL_IDLE             0x00   /* idle, no call */
@@ -53,16 +50,10 @@
 /* Make_Call: maximum length of the phone number (ASCII digits) */
 #define BM83_PHONE_NUMBER_MAX      19
 
-/* Set_Overall_Gain: mask bits, type, levels */
-#define BM83_GAIN_MASK_A2DP        BIT(0)
-#define BM83_GAIN_MASK_HF          BIT(1)
-#define BM83_GAIN_MASK_LINE_IN     BIT(2)
-#define BM83_GAIN_TYPE_ABS_LEVEL   0x03   /* set absolute gain level 0..15 */
-#define BM83_GAIN_LEVEL_MAX        0x0F
-
-/* Gain levels set after the phone has connected (0..15) */
-#define BM83_A2DP_GAIN_LEVEL       BM83_GAIN_LEVEL_MAX
-#define BM83_HF_GAIN_LEVEL         BM83_GAIN_LEVEL_MAX
+/* BTM_Utility_Function (0x13) type / parameter for line-in (AIL/AIR) */
+#define BM83_UTIL_AUX_LINE_IN      0x01   /* in-built aux line-in function */
+#define BM83_LINE_IN_BY_MCU        0x01   /* line in is controlled by MCU -> on */
+#define BM83_LINE_IN_BY_BM83       0x00   /* BM83 own detection (P3_2 n.c.) -> off */
 
 /* Command_ACK status */
 #define BM83_ACK_COMMAND_COMPLETE  0x00
@@ -98,12 +89,6 @@ int bm83_mmi_action(uint8_t action);
  * successful) or 0x04 (pairing failed). */
 int bm83_enter_pairing(void);
 
-/* Set_Overall_Gain (opcode 0x23): data_base_index 0x00, mask (BM83_GAIN_MASK_*),
- * type (e.g. BM83_GAIN_TYPE_ABS_LEVEL), gain for A2DP, HF and line-in.
- * The phone may later change the gain again (AVRCP absolute volume). */
-int bm83_set_overall_gain(uint8_t mask, uint8_t type, uint8_t a2dp,
-			  uint8_t hf, uint8_t line_in);
-
 /* Read_Link_Status (opcode 0x0D): the reply (event 0x1E) is decoded and
  * printed by bm83_handle_event(): device state and, per database, which
  * profiles (A2DP, AVRCP, HF, SPP) are connected. */
@@ -122,14 +107,18 @@ int bm83_accept_call(void);
 int bm83_make_call(const char *number, uint8_t len);
 
 /* Called by bt_rx_thread for every received event except Command_ACK:
- * starts the gain setting when a link is established, forwards Call_Status
+ * forwards Call_Status
  * (incoming / outgoing / active / idle) to bt_fsm, prints Read_Link_Status_Reply. params[] are the event parameters. */
 void bm83_handle_event(uint8_t opcode, const uint8_t *params, uint8_t num_params);
 
-/* Called by bt_rx_thread when a link to the phone is established: sets
- * BM83_A2DP_GAIN_LEVEL / BM83_HF_GAIN_LEVEL from the system workqueue
- * (bt_rx_thread itself must not send commands). */
-void bm83_link_established(void);
+/* Line-in (AIL/AIR) on or off: BTM_Utility_Function (opcode 0x13), type 0x01.
+ *   on:  parameter 0x01 "line in is controlled by MCU" -> line-in active,
+ *        Bluetooth audio suppressed
+ *   off: parameter 0x00 "line in is not controlled by MCU" -> the BM83 uses
+ *        its own aux-in detection pin P3_2, which is not connected, so
+ *        line-in is off (observed behaviour) and Bluetooth audio is heard.
+ * On at the end of bm83_init(); bt_fsm switches it off in BT_OUT_ESTABLISHED. */
+int bm83_line_in_set(bool on);
 
 /* Send a Read_BTM_Version command (opcode 0x08) with the given type
  * (BM83_VERSION_UART or BM83_VERSION_FW). */

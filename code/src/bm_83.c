@@ -12,6 +12,7 @@
  *   MMI action 0x52 (power on button release)
  *   Read_BTM_Version (firmware version)
  *   MMI action 0x5D (enter pairing mode)
+ *   BTM_Utility_Function: aux line-in controlled by MCU (line-in on)
  *   bt_mfb = low
  *
  * MFB handshake: in host MCU mode MFB is the BM83 UART_RX_IND input
@@ -256,14 +257,6 @@ int bm83_make_call(const char *number, uint8_t len)
 void bm83_handle_event(uint8_t opcode, const uint8_t *params, uint8_t num_params)
 {
 	switch (opcode) {
-	case BM83_EVT_BTM_STATUS:
-		/* phone connected (HF or A2DP link): set the output gain */
-		if (num_params >= 1 &&
-		    (params[0] == BM83_STATUS_HF_LINK ||
-		     params[0] == BM83_STATUS_A2DP_LINK)) {
-			bm83_link_established();
-		}
-		break;
 	case BM83_EVT_LINK_STATUS_REPLY:
 		bm83_log_link_status(params, num_params);
 		break;
@@ -285,32 +278,13 @@ void bm83_handle_event(uint8_t opcode, const uint8_t *params, uint8_t num_params
 	}
 }
 
-int bm83_set_overall_gain(uint8_t mask, uint8_t type, uint8_t a2dp,
-			  uint8_t hf, uint8_t line_in)
+int bm83_line_in_set(bool on)
 {
-	const uint8_t params[] = { BM83_DATABASE_INDEX, mask, type,
-				   a2dp, hf, line_in };
+	const uint8_t params[] = { BM83_UTIL_AUX_LINE_IN,
+				   on ? BM83_LINE_IN_BY_MCU : BM83_LINE_IN_BY_BM83 };
 
-	LOG_INF("tx: Set_Overall_Gain mask 0x%02X type 0x%02X A2DP %u HF %u line-in %u",
-		mask, type, a2dp, hf, line_in);
-	return bm83_send_cmd(BM83_CMD_SET_OVERALL_GAIN, params, sizeof(params));
-}
-
-/* Runs in the system workqueue: may wait for the Command_ACK */
-static void bm83_gain_work_handler(struct k_work *work)
-{
-	ARG_UNUSED(work);
-
-	bm83_set_overall_gain(BM83_GAIN_MASK_A2DP | BM83_GAIN_MASK_HF,
-			      BM83_GAIN_TYPE_ABS_LEVEL,
-			      BM83_A2DP_GAIN_LEVEL, BM83_HF_GAIN_LEVEL, 0);
-}
-
-K_WORK_DEFINE(bm83_gain_work, bm83_gain_work_handler);
-
-void bm83_link_established(void)
-{
-	k_work_submit(&bm83_gain_work);
+	LOG_INF("tx: BTM_Utility_Function aux line-in %s", on ? "on (MCU)" : "off (BM83)");
+	return bm83_send_cmd(BM83_CMD_BTM_UTILITY, params, sizeof(params));
 }
 
 int bm83_read_btm_version(uint8_t type)
@@ -385,6 +359,10 @@ int bm83_init(void)
 	}
 	if (ret == 0) {
 		ret = bm83_enter_pairing();
+	}
+	if (ret == 0) {
+		/* line-in (AIL/AIR) on: controlled by the MCU */
+		ret = bm83_line_in_set(true);
 	}
 
 	/* end of the power-up sequence: MFB low unless an Event_ACK is going out */

@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="880" viewBox="0 0 1000 880"
+     font-family="Helvetica, Arial, sans-serif" font-size="14">
+  <title>blueline - bt_fsm state diagram</title>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+    <marker id="arrow-back" viewBox="0 0 10 10" refX="10" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b03a2e"/>
+    </marker>
+  </defs>
+
+  <rect width="1000" height="880" fill="#ffffff"/>
+
+  <!-- power-up -->
+  <circle cx="330" cy="40" r="8" fill="#333"/>
+  <text x="250" y="45" fill="#333">power-up</text>
+  <line x1="338" y1="44" x2="420" y2="62" stroke="#333" stroke-width="1.8" marker-end="url(#arrow)"/>
+
+  <!-- states -->
+  <g stroke="#333" stroke-width="1.8">
+    <rect x="420" y="40"  width="200" height="70" rx="14" fill="#e8eef7"/>
+    <rect x="200" y="230" width="200" height="90" rx="14" fill="#e8eef7"/>
+    <rect x="700" y="230" width="200" height="80" rx="14" fill="#fff4c2"/>
+    <rect x="40"  y="440" width="180" height="70" rx="14" fill="#f6dcd8"/>
+    <rect x="330" y="440" width="200" height="70" rx="14" fill="#e8eef7"/>
+    <rect x="420" y="650" width="200" height="92" rx="14" fill="#dff0d8"/>
+  </g>
+  <g text-anchor="middle" fill="#111">
+    <text x="520" y="80" font-weight="bold" font-size="16">BT_IDLE</text>
+
+    <text x="300" y="256" font-weight="bold" font-size="16">BT_MAKE_CALL</text>
+    <text x="300" y="278" font-size="13">entry: Read_Link_Status,</text>
+    <text x="300" y="296" font-size="13">Make_Call (dialed_number_reg</text>
+    <text x="300" y="312" font-size="13">as ASCII)</text>
+
+    <text x="800" y="260" font-weight="bold" font-size="16">BT_RING_BELL</text>
+    <text x="800" y="281" font-size="13">(incoming call)</text>
+    <text x="800" y="299" font-size="12" fill="#1f5fa8">entry: ring_start (bell_fsm)</text>
+
+    <text x="130" y="470" font-weight="bold" font-size="16">BT_NOHF</text>
+    <text x="130" y="492" font-size="13">(no HF connection)</text>
+
+    <text x="430" y="470" font-weight="bold" font-size="16">BT_CALLER_WAIT</text>
+    <text x="430" y="492" font-size="13">(phone is dialling)</text>
+
+    <text x="520" y="680" font-weight="bold" font-size="16">BT_OUT_ESTABLISHED</text>
+    <text x="520" y="700" font-size="13">(call in progress)</text>
+    <text x="520" y="718" font-size="12" fill="#1f5fa8">entry: line-in off (BT audio)</text>
+    <text x="520" y="734" font-size="12" fill="#1f5fa8">exit: line-in on (AIL/AIR)</text>
+  </g>
+
+  <!-- call flow transitions -->
+  <g stroke="#333" stroke-width="1.8" fill="none" marker-end="url(#arrow)">
+    <!-- IDLE -> MAKE_CALL -->
+    <line x1="440" y1="110" x2="270" y2="230"/>
+    <!-- IDLE -> RING_BELL -->
+    <line x1="620" y1="95" x2="740" y2="230"/>
+    <!-- MAKE_CALL -> CALLER_WAIT -->
+    <line x1="360" y1="320" x2="410" y2="440"/>
+    <!-- MAKE_CALL -> NOHF -->
+    <line x1="240" y1="320" x2="150" y2="440"/>
+    <!-- CALLER_WAIT -> OUT_ESTABLISHED -->
+    <line x1="460" y1="510" x2="500" y2="650"/>
+    <!-- RING_BELL -> OUT_ESTABLISHED -->
+    <line x1="780" y1="310" x2="600" y2="650"/>
+  </g>
+  <g font-size="13" fill="#111">
+    <text x="330" y="160" text-anchor="end">BT_EVT_DIALCMPL</text>
+    <text x="690" y="150">BT_EVT_CALL_INCOMING</text>
+    <text x="398" y="375">BT_EVT_CALL_</text>
+    <text x="398" y="391">ACK_OK</text>
+    <text x="180" y="375" text-anchor="end">BT_EVT_CALL_</text>
+    <text x="180" y="391" text-anchor="end">ACK_FAIL</text>
+    <text x="470" y="585" text-anchor="end">BT_EVT_CALL_OUTGOING</text>
+    <text x="720" y="470">BT_EVT_OFFHOOK</text>
+    <text x="720" y="488" fill="#1f5fa8">/ ring_stop,</text>
+    <text x="720" y="506" fill="#1f5fa8">  accept call (MMI 0x04)</text>
+  </g>
+
+  <!-- back to BT_IDLE -->
+  <g stroke="#b03a2e" stroke-width="1.8" fill="none" marker-end="url(#arrow-back)">
+    <!-- MAKE_CALL -> IDLE -->
+    <line x1="350" y1="230" x2="490" y2="110"/>
+    <!-- NOHF -> IDLE -->
+    <polyline points="40,475 20,475 20,75 420,75"/>
+    <!-- CALLER_WAIT -> IDLE -->
+    <line x1="520" y1="440" x2="600" y2="110"/>
+    <!-- OUT_ESTABLISHED -> IDLE -->
+    <polyline points="620,685 980,685 980,22 560,22 560,40"/>
+    <!-- RING_BELL -> IDLE -->
+    <polyline points="870,230 870,85 620,85"/>
+  </g>
+  <g font-size="13" fill="#b03a2e">
+    <text x="452" y="150">BT_EVT_MAIN_IDLE</text>
+    <text x="30" y="65">BT_EVT_MAIN_IDLE</text>
+    <text x="560" y="345">BT_EVT_MAIN_IDLE</text>
+    <text x="560" y="363" fill="#1f5fa8">/ end call (MMI 0x06)</text>
+    <text x="880" y="160">BT_EVT_</text>
+    <text x="880" y="176">CALL_IDLE</text>
+    <text x="970" y="560" text-anchor="end">BT_EVT_MAIN_IDLE</text>
+    <text x="970" y="578" text-anchor="end" fill="#1f5fa8">/ end call (MMI 0x06)</text>
+    <text x="970" y="602" text-anchor="end">or BT_EVT_CALL_IDLE</text>
+  </g>
+
+  <!-- legend -->
+  <rect x="40" y="750" width="920" height="112" rx="6" fill="#f4f4f4" stroke="#999" stroke-dasharray="5,4"/>
+  <g font-size="12" fill="#333">
+    <text x="55" y="770">BT_EVT_MAIN_IDLE: fsm_main enters s0_idle (handset on hook)</text>
+    <text x="55" y="788">BT_EVT_OFFHOOK: fsm_main s0_idle → s1_offhook (handset lifted)</text>
+    <text x="55" y="806">BT_EVT_DIALCMPL: dialcmpl_timer expired in s1_offhook</text>
+    <text x="55" y="824">BT_EVT_CALL_ACK_OK / _FAIL: Command_ACK of Make_Call, status 0x00 / other (or no ACK)</text>
+    <text x="55" y="842">Call_Status (0x02): 0x02 → ..._CALL_INCOMING · 0x03/0x04 → ..._CALL_OUTGOING · 0x00 → ..._CALL_IDLE</text>
+    <text x="560" y="770" fill="#b03a2e">red: back to BT_IDLE</text>
+    <text x="560" y="788" fill="#1f5fa8">blue: action on the transition</text>
+  </g>
+</svg>

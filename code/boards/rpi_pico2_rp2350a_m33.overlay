@@ -8,10 +8,10 @@
  * GPIO usage of this project. The pins are configured at runtime in
  * src/pico_io.c, not through devicetree nodes:
  *
- *   GPIO2   POT_FWD_PIN      SLIC, PWM1 output (slice 1 A), 25 Hz, high = ringer off (src/ring.c)
+ *   GPIO2   POT_FWD_PIN      SLIC, PWM1 output (slice 1 A), 25 Hz, duty 100 % = high (src/ring.c)
  *   GPIO3   POT_PDOWN_N_PIN  SLIC power down, tristate after init (src/slic.c)
  *   GPIO6   BT_RST_N_PIN     output (BM83 reset, src/bm_83.c), low after init
- *   GPIO7   RING_MODE_PIN    SLIC, output, low after init (src/slic.c)
+ *   GPIO7   RING_MODE_PIN    SLIC, output, low after init, switched by bell_fsm (src/ring.c)
  *   GPIO8   BT_MFB_PIN       output (BM83 MFB, src/bm_83.c), low after init
  *   GPIO11  SHK_RISING_PIN   input, no pulls, IRQ on rising edge
  *   GPIO12  SHK_FALLING_PIN  input, no pulls, IRQ on falling edge
@@ -40,7 +40,7 @@
 };
 
 &pinctrl {
-	/* ringer PWM: PWM slice 1 channel A on GP2 (POT_FWD) */
+	/* ringer PWM: PWM slice 1 channel A on GP2 (POT_FWD), src/ring.c */
 	pwm_ch1a_default: pwm_ch1a_default {
 		group1 {
 			pinmux = <PWM_1A_P2>;
@@ -66,8 +66,8 @@
 	pinctrl-names = "default";
 };
 
-/* Ringer PWM (src/ring.c). Replaces the board default pinctrl (PWM 4B on the
- * user LED GP25), so GP25 stays a GPIO. */
+/* Ringer PWM on GP2 (src/ring.c). Replaces the board default pinctrl
+ * (PWM 4B on the user LED GP25), so GP25 stays a GPIO. */
 &pwm {
 	status = "okay";
 	pinctrl-0 = <&pwm_ch1a_default>;

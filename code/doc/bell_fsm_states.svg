@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="760" viewBox="0 0 900 760"
+     font-family="Helvetica, Arial, sans-serif" font-size="14">
+  <title>blueline - bell_fsm state diagram</title>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5"
+            markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="760" fill="#ffffff"/>
+
+  <!-- power-up -->
+  <circle cx="40" cy="40" r="8" fill="#333"/>
+  <text x="56" y="45" fill="#333">power-up</text>
+  <line x1="44" y1="47" x2="85" y2="80" stroke="#333" stroke-width="1.8" marker-end="url(#arrow)"/>
+
+  <!-- states -->
+  <g stroke="#333" stroke-width="1.8">
+    <rect x="60"  y="80"  width="240" height="100" rx="14" fill="#e8eef7"/>
+    <rect x="560" y="80"  width="240" height="100" rx="14" fill="#fff4c2"/>
+    <rect x="560" y="330" width="240" height="100" rx="14" fill="#ffd9a8"/>
+    <rect x="60"  y="330" width="240" height="100" rx="14" fill="#fff4c2"/>
+  </g>
+  <g text-anchor="middle" fill="#111">
+    <text x="180" y="108" font-weight="bold" font-size="16">BELL_OFF</text>
+    <text x="180" y="130" font-size="13">RING_MODE low</text>
+    <text x="180" y="148" font-size="13">POT_FWD 100 % (high)</text>
+
+    <text x="680" y="108" font-weight="bold" font-size="16">BELL_RM_ON</text>
+    <text x="680" y="130" font-size="13">RING_MODE high</text>
+    <text x="680" y="148" font-size="13">POT_FWD 100 % (high)</text>
+    <text x="680" y="166" font-size="13" fill="#1f5fa8">entry: BELL_TIMER 50 ms</text>
+
+    <text x="680" y="358" font-weight="bold" font-size="16">BELL_PWM_ON</text>
+    <text x="680" y="380" font-size="13">RING_MODE high</text>
+    <text x="680" y="398" font-size="13">POT_FWD 50 %, 25 Hz</text>
+    <text x="680" y="416" font-size="13">(bell rings)</text>
+
+    <text x="180" y="358" font-weight="bold" font-size="16">BELL_PWM_OFF</text>
+    <text x="180" y="380" font-size="13">RING_MODE high</text>
+    <text x="180" y="398" font-size="13">POT_FWD 100 % (high)</text>
+    <text x="180" y="416" font-size="13" fill="#1f5fa8">entry: BELL_TIMER 90 ms</text>
+  </g>
+
+  <!-- transitions -->
+  <g stroke="#333" stroke-width="1.8" fill="none" marker-end="url(#arrow)">
+    <line x1="300" y1="130" x2="560" y2="130"/>
+    <line x1="680" y1="180" x2="680" y2="330"/>
+    <line x1="560" y1="380" x2="300" y2="380"/>
+    <line x1="180" y1="330" x2="180" y2="180"/>
+  </g>
+  <g font-size="13" fill="#111" text-anchor="middle">
+    <text x="430" y="118">ringer_on AND NOT shk_active</text>
+    <text x="430" y="402">NOT ringer_on OR shk_active</text>
+  </g>
+  <g font-size="13" fill="#111">
+    <text x="692" y="250">BELL_TIMER</text>
+    <text x="692" y="267">50 ms expired</text>
+    <text x="168" y="250" text-anchor="end">BELL_TIMER</text>
+    <text x="168" y="267" text-anchor="end">90 ms expired</text>
+  </g>
+
+  <!-- notes in the middle -->
+  <g font-size="12" fill="#555" text-anchor="middle">
+    <text x="430" y="232">Conditions are re-checked on every input change</text>
+    <text x="430" y="249">and on entering BELL_OFF and BELL_PWM_ON</text>
+    <text x="430" y="266">(a change during a BELL_TIMER run is not lost).</text>
+  </g>
+
+  <!-- inputs -->
+  <rect x="60" y="455" width="740" height="56" rx="6" fill="#f4f4f4" stroke="#999" stroke-dasharray="5,4"/>
+  <g font-size="12" fill="#333">
+    <text x="75" y="475">ringer_on: ringer_on of the current cadence segment (ring_thread, only while bt_fsm is in BT_RING_BELL; false after ring_stop())</text>
+    <text x="75" y="494">shk_active: last debounced shk event from fsm_main was EVT_SHK_ACTIVE (shk pins are never read)</text>
+  </g>
+
+  <!-- timing sketch of one ring burst (scale 1 px = 1.25 ms) -->
+  <text x="40" y="540" font-weight="bold" font-size="14" fill="#111">One ring burst (to scale, ideal PWM timing)</text>
+  <g font-size="12" fill="#333" text-anchor="end">
+    <text x="140" y="580">ringer_on</text>
+    <text x="140" y="625">RING_MODE</text>
+    <text x="140" y="660">POT_FWD</text>
+  </g>
+  <g stroke="#333" stroke-width="1.6" fill="none">
+    <polyline points="150,588 200.0,588 200.0,566 520.0,566 520.0,588 870,588"/>
+    <polyline points="150,633 200.0,633 200.0,611 592.0,611 592.0,633 870,633"/>
+    <polyline points="150.0,642 240.0,642 240.0,642 256.0,642 256.0,668 272.0,668 272.0,642 272.0,642 288.0,642 288.0,668 304.0,668 304.0,642 304.0,642 320.0,642 320.0,668 336.0,668 336.0,642 336.0,642 352.0,642 352.0,668 368.0,668 368.0,642 368.0,642 384.0,642 384.0,668 400.0,668 400.0,642 400.0,642 416.0,642 416.0,668 432.0,668 432.0,642 432.0,642 448.0,642 448.0,668 464.0,668 464.0,642 464.0,642 480.0,642 480.0,668 496.0,668 496.0,642 496.0,642 512.0,642 512.0,668 520.0,668 520.0,642 520.0,642 870.0,642"/>
+  </g>
+  <!-- markers -->
+  <g stroke="#999" stroke-width="1" stroke-dasharray="3,3">
+    <line x1="200.0" y1="555" x2="200.0" y2="690"/>
+    <line x1="240.0" y1="555" x2="240.0" y2="690"/>
+    <line x1="520.0" y1="555" x2="520.0" y2="690"/>
+    <line x1="592.0" y1="555" x2="592.0" y2="690"/>
+  </g>
+  <g font-size="11" fill="#1f5fa8" text-anchor="middle">
+    <text x="220.0" y="705">50 ms</text>
+    <text x="556.0" y="705">90 ms</text>
+  </g>
+  <g font-size="11" fill="#555" text-anchor="middle">
+    <text x="175.0" y="560">OFF</text>
+    <text x="220.0" y="560">RM_ON</text>
+    <text x="380.0" y="560">PWM_ON</text>
+    <text x="556.0" y="560">PWM_OFF</text>
+    <text x="731.0" y="560">OFF</text>
+  </g>
+  <g font-size="11" fill="#555">
+    <text x="40" y="732">Real POT_FWD edges can come up to 40 ms later than the state change (PWM duty is double-buffered,</text>
+    <text x="40" y="748">taken over at the end of the period). RING_MODE overlap is then 50-90 ms before and at least 50 ms after.</text>
+  </g>
+</svg>

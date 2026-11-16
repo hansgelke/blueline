@@ -24,6 +24,8 @@
  * bt_fsm (bt_fsm.c) is driven from here:
  *   - entering s0_idle:  BT_EVT_MAIN_IDLE (forces bt_fsm to BT_IDLE)
  *   - s0_idle -> s1_offhook (handset lifted):  BT_EVT_OFFHOOK
+ *
+ * bell_fsm (ring.c) gets every EVT_SHK_ACTIVE / EVT_SHK_INACTIVE forwarded.
  *   - EVT_DIALCMPL while in s1_offhook:  BT_EVT_DIALCMPL
  */
 
@@ -35,6 +37,7 @@
 #include "fsm_main.h"
 #include "pico_io.h"
 #include "bt_fsm.h"
+#include "ring.h"
 
 LOG_MODULE_REGISTER(fsm_main, LOG_LEVEL_INF);
 
@@ -287,6 +290,13 @@ void fsm_main(void *p1, void *p2, void *p3)
 	while (1) {
 		/* Sleep until an event arrives - no polling */
 		k_msgq_get(&fsm_event_q, &ev, K_FOREVER);
+
+		/* bell_fsm needs the debounced shk level (never the shk pins) */
+		if (ev == EVT_SHK_ACTIVE) {
+			bell_fsm_post_event(BELL_EVT_SHK_ACTIVE);
+		} else if (ev == EVT_SHK_INACTIVE) {
+			bell_fsm_post_event(BELL_EVT_SHK_INACTIVE);
+		}
 
 		/* EVT_DIALCMPL is handled in every state */
 		if (ev == EVT_DIALCMPL) {
