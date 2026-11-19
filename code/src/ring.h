@@ -19,6 +19,12 @@
 #define RING_PWM_FREQ_HZ   25
 #define RING_PWM_PERIOD_NS (NSEC_PER_SEC / RING_PWM_FREQ_HZ)
 
+/* Test feature: 1 = the bell rings constantly from power-up on (ringer_on
+ * is always true, the cadence and ring_stop() are ignored). The handset
+ * (shk) does not stop the bell either, so the shk line can be checked with
+ * a scope while the bell rings. 0 = normal operation. */
+#define RING_TEST_CONTINUOUS  0
+
 /* BELL_TIMER durations */
 #define BELL_RM_ON_MS      50   /* BELL_RM_ON:   RING_MODE high -> PWM on */
 #define BELL_PWM_OFF_MS    90   /* BELL_PWM_OFF: PWM off -> RING_MODE low */

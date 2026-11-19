@@ -264,6 +264,14 @@ void bell_fsm_main(void *p1, void *p2, void *p3)
 	bell_state = BELL_OFF;
 	LOG_INF("bell_thread started, state %s", bell_state_names[bell_state]);
 
+	if (IS_ENABLED(RING_TEST_CONTINUOUS)) {
+		LOG_WRN("RING_TEST_CONTINUOUS: bell rings constantly");
+		ringer_on = true;
+		if (bell_start_condition()) {
+			bell_enter_state(BELL_RM_ON);
+		}
+	}
+
 	while (1) {
 		/* Sleep until an event arrives - no polling */
 		k_msgq_get(&bell_event_q, &ev, K_FOREVER);
@@ -274,10 +282,12 @@ void bell_fsm_main(void *p1, void *p2, void *p3)
 			ringer_on = true;
 			break;
 		case BELL_EVT_RINGER_OFF:
-			ringer_on = false;
+			/* test feature: ringer_on stays true */
+			ringer_on = IS_ENABLED(RING_TEST_CONTINUOUS);
 			break;
 		case BELL_EVT_SHK_ACTIVE:
-			shk_active = true;
+			/* test feature: the handset does not stop the bell */
+			shk_active = !IS_ENABLED(RING_TEST_CONTINUOUS);
 			break;
 		case BELL_EVT_SHK_INACTIVE:
 			shk_active = false;

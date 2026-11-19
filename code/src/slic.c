@@ -7,6 +7,8 @@
  * without pulls): D7 blocks and the AG1171 internal pull-up holds the pin high.
  *
  * After init: RING_MODE (GP7) low, POT_PDOWN_N (GP3) tristate.
+ * With BT_UART_TX_DISABLE = 1 (BM83 programming, bt_uart.h) GP3 is driven
+ * low instead: the SLIC is powered down (also useful to test the power down).
  * POT_FWD (GP2) is the ringer PWM, see ring.c. RING_MODE is switched by
  * bell_fsm (ring.c) through slic_ring_mode_set().
  */
@@ -17,6 +19,7 @@
 #include <zephyr/logging/log.h>
 
 #include "slic.h"
+#include "bt_uart.h"
 
 LOG_MODULE_REGISTER(slic, LOG_LEVEL_INF);
 
@@ -38,6 +41,19 @@ int slic_init(void)
 	if (ret < 0) {
 		LOG_ERR("RING_MODE pin config failed (%d)", ret);
 		return ret;
+	}
+
+	if (IS_ENABLED(BT_UART_TX_DISABLE)) {
+		/* BM83 programming: SLIC powered down, GP3 low pulls AG1171
+		 * pin 14 low through D7 */
+		ret = gpio_pin_configure(gpio0, POT_PDOWN_N_PIN, GPIO_OUTPUT_LOW);
+		if (ret < 0) {
+			LOG_ERR("POT_PDOWN_N pin config failed (%d)", ret);
+			return ret;
+		}
+		LOG_WRN("GPIO%d RING_MODE low / GPIO%d POT_PDOWN_N low: SLIC powered down (BT_UART_TX_DISABLE)",
+			RING_MODE_PIN, POT_PDOWN_N_PIN);
+		return 0;
 	}
 
 	/* POT_PDOWN_N: input without pulls = tristate */

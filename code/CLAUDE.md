@@ -32,7 +32,8 @@ Every `.c` file has a matching `.h` file.
   (`ring_thread`), cadence type `note_t`, cadence tables (e.g. `gb_ring`), current cadence
   `melody`, and the bell state machine `bell_fsm` (`bell_thread`).
 - `slic.c / slic.h`: SLIC (AG1171, J4) control. `slic_init()`: RING_MODE (GP7) low,
-  POT_PDOWN_N (GP3) tristate. `slic_ring_mode_set()` switches RING_MODE (used by `bell_fsm`).
+  POT_PDOWN_N (GP3) tristate (driven low = SLIC powered down when `BT_UART_TX_DISABLE` = 1).
+  `slic_ring_mode_set()` switches RING_MODE (used by `bell_fsm`).
   All SLIC-related code goes here.
 - `bm_83.c / bm_83.h`: BM83 control signals (`bt_rst_n`, `bt_mfb`), power-up sequence
   `bm83_init()` and BM83 commands (`bm83_mmi_action()`).
@@ -265,7 +266,8 @@ The BM83 must be programmed with a **host MCU mode** configuration (Config Tool:
 Mode", UART 115200). The factory/embedded configuration (`SYS_CFG_KEY_OPTION1` = 0xC0) has the
 UART command interface disabled: the BM83 then ignores all UART commands and never transmits.
 Programming: isUpdate tool over J3 (USB-UART), BM83 in test mode (J5 fitted), Pico in BOOTSEL
-(or firmware built with `BT_UART_TX_DISABLE` = 1 in `bt_uart.h`: GP4 tristate, `bm83_init()` skipped),
+(or firmware built with `BT_UART_TX_DISABLE` = 1 in `bt_uart.h`: GP4 tristate, `bm83_init()` skipped,
+SLIC powered down with POT_PDOWN_N (GP3) low),
 `image num` = 3 with 8051 + DSP + config hex selected together in one file dialog.
 
 BM83 configuration on the module (IS208x Config Tool / UI 1.3.25, based on Microchip's
