@@ -30,17 +30,18 @@
 #define BELL_PWM_OFF_MS    90   /* BELL_PWM_OFF: PWM off -> RING_MODE low */
 
 /* One segment of a ring cadence: audio tone and mechanical bell.
- * Only duration, ringer_on and skip are used so far. */
+ * duration, ringer_on and skip are used by generate_ring()/bell_fsm,
+ * freq_1, freq_2, vol and tone_on by the CMX865A (tone.c). */
 typedef struct {
 	/* Duration in microseconds */
 	uint32_t duration;
-	/* Frequency 1 in Hz */
+	/* Frequency of CMX865A oscillator 1 in Hz, 0 = oscillator off */
 	double freq_1;
-	/* Frequency 2 in Hz */
+	/* Frequency of CMX865A oscillator 2 in Hz, 0 = oscillator off */
 	double freq_2;
-	/* Volume of the tone */
+	/* Volume of both oscillators, 0.0 .. 1.0 (max) */
 	double vol;
-	/* Turn tone on */
+	/* Tone on: CMX865A TXA output connected */
 	bool tone_on;
 	/* Turn AC on for the ringer (input of bell_fsm) */
 	bool ringer_on;
@@ -70,15 +71,21 @@ typedef enum {
 /* Cadence played by generate_ring() */
 extern note_t *melody;
 
+/* Cadence tables (ring.c) */
+extern note_t gb_ring[4];	/* British ring cadence, used by bt_fsm */
+extern note_t ger_dial[4];	/* dial tone, used by tone_fsm */
+extern note_t ger_enga[2];	/* busy tone, used by tone_fsm */
+
 /* Initialise the ringer PWM on GP2: 25 Hz, duty 100 % (POT_FWD high).
  * Returns 0 on success, negative errno otherwise. */
 int ring_init(void);
 
-/* bt_fsm entered BT_RING_BELL: generate_ring() starts the cadence. */
+/* Start the cadence melody[] (bt_fsm: BT_RING_BELL, tone_fsm: tone_dial). */
 void ring_start(void);
 
-/* bt_fsm left BT_RING_BELL: generate_ring() stops and blocks again,
- * ringer_on becomes false (bell_fsm turns the bell off). */
+/* Stop the cadence: generate_ring() stops and blocks again, ringer_on
+ * becomes false (bell_fsm turns the bell off) and the tone is switched off
+ * (tone_off()). */
 void ring_stop(void);
 
 /* Entry point of ring_thread: plays melody[] while bt_fsm is in BT_RING_BELL. */

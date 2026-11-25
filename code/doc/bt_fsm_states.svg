@@ -48,8 +48,6 @@
 
     <text x="520" y="680" font-weight="bold" font-size="16">BT_OUT_ESTABLISHED</text>
     <text x="520" y="700" font-size="13">(call in progress)</text>
-    <text x="520" y="718" font-size="12" fill="#1f5fa8">entry: line-in off (BT audio)</text>
-    <text x="520" y="734" font-size="12" fill="#1f5fa8">exit: line-in on (AIL/AIR)</text>
   </g>
 
   <!-- call flow transitions -->

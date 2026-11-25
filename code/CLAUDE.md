@@ -35,6 +35,17 @@ Every `.c` file has a matching `.h` file.
   POT_PDOWN_N (GP3) tristate (driven low = SLIC powered down when `BT_UART_TX_DISABLE` = 1).
   `slic_ring_mode_set()` switches RING_MODE (used by `bell_fsm`).
   All SLIC-related code goes here.
+- `tone.c / tone.h`: CMX865A Telecom Signalling Device on SPI0 (C-BUS): call progress tones in the
+  handset and the tone state machine `tone_fsm` (`tone_thread`). `cmx_init()` (called in `main.c` after
+  `bt_uart_init()`, ~100 ms): General Reset (0x01), General Control (0xE0) = Pwr (b8) + Rst (b7) with
+  TXA (b14) and TXAN (b15) disconnected, 100 ms, Rst cleared. No tone at start-up.
+  `tone_play_note()` is called by `generate_ring()` for every cadence segment (same `note_t` tables as the
+  ringing): `freq_1` / `freq_2` = the two oscillators (Tx tone pair TA, Programming Register 0xE8,
+  word 0x8000 + 16 words, frequency value = Hz × 3.414, 0 = oscillator off), `vol` = level of both
+  (1.0 = 16383 = max), `tone_on` = TXA connected (b14 = 0) / disconnected (b14 = 1). TXAN is always
+  disconnected. Tx Mode (0xE1) = 0x1E0C (tone pair TA, 0 dB) or 0x0000 (oscillators off). TA is only
+  reprogrammed when frequency or level change. `tone_off()`: TXA disconnected, oscillators off
+  (also called by `ring_stop()`). A failure of `cmx_init()` is only logged.
 - `bm_83.c / bm_83.h`: BM83 control signals (`bt_rst_n`, `bt_mfb`), power-up sequence
   `bm83_init()` and BM83 commands (`bm83_mmi_action()`).
 
@@ -52,6 +63,10 @@ New source files must be added to `CMakeLists.txt`.
 | `BT_RST_N_PIN`    | 6    | output (BM83 reset)            | low after init, active low     |
 | `BT_MFB_PIN`      | 8    | output (BM83 MFB)              | low after init                 |
 | LED               | 25   | output (Pico 2 user LED)       | high = on                      |
+| SPI0 RX (CMX865A) | 16   | SPI0 MISO                      | CMX865A REPLY DATA             |
+| CS0 (CMX865A)     | 17   | GPIO chip select (`cs-gpios`)  | CMX865A CSN, active low        |
+| SPI0 SCK (CMX865A)| 18   | SPI0, 1 MHz, mode 3            | CMX865A SERIAL CLOCK           |
+| SPI0 TX (CMX865A) | 19   | SPI0 MOSI                      | CMX865A COMMAND DATA           |
 | UART1 TX (BM83)   | 4    | UART1, 115200 8N1, no flow ctl | RP2350 → BM83                  |
 | UART1 RX (BM83)   | 5    | UART1, 115200 8N1, no flow ctl | BM83 → RP2350                  |
 
@@ -71,6 +86,28 @@ those pins are used for UART1 and RING_MODE.
   it restarts; durations in µs, `k_usleep()`) and reports each segment's `ringer_on` to `bell_fsm`.
   `ring_stop()` (leaving `BT_RING_BELL`) ends the cadence at once and reports `ringer_on` = false.
 - `bell_thread`: runs `bell_fsm_main()`, priority 4, stack 1024. The bell state machine.
+- `tone_thread`: runs `tone_fsm_main()`, priority 6, stack 1024. The tone state machine.
+
+## Tone (tone.c)
+
+`tone_fsm` (own thread, events in `tone_event_q`). From `fsm_main` (`fsm_enter_state()`):
+`TONE_EVT_MAIN_IDLE` (entered `s0_idle`), `TONE_EVT_OFFHOOK` (entered `s1_offhook`), `TONE_EVT_OPEN`
+(entered `s2_open`, only possible from `s1_offhook`). From `bm83_handle_event()`: `TONE_EVT_CALL_IDLE`
+(`Call_Status` 0x00, the call has ended, e.g. the other party hung up; the BM83 reports this, it does
+not send an MMI "end call") and `TONE_EVT_CALL_INCOMING` (`Call_Status` 0x02, incoming call).
+
+HF link: `bm83_hf_connected()` is true after `BTM_Status` 0x05 (HF/HS link established) and false
+after 0x07 (HF link disconnected), 0x11 (ACL disconnected) or 0x00 (power off) and at power-up.
+
+| State       | Entry action | Transitions |
+|-------------|--------------|-------------|
+| `tone_idle` | TXA disconnected, oscillators off | `TONE_EVT_OFFHOOK` with an incoming call ringing → `tone_mute` (call answered, no dial tone); `TONE_EVT_OFFHOOK` and `bm83_hf_connected()` → `tone_dial`; without HF link it stays in `tone_idle` (handset silent). Incoming call ringing: `TONE_EVT_CALL_INCOMING` received, not yet followed by `TONE_EVT_CALL_IDLE` (caller gave up) |
+| `tone_dial` | `melody = ger_dial`, `ring_start()` (ringer_on = false: no ring mode); exit: `ring_stop()` | `TONE_EVT_OPEN` → `tone_mute` |
+| `tone_mute` | TXA disconnected, oscillators off | `TONE_EVT_CALL_IDLE` → `tone_bussy` |
+| `tone_bussy` | `melody = ger_enga`, `ring_start()` (ringer_on = false); exit: `ring_stop()` | – |
+
+`TONE_EVT_MAIN_IDLE` takes every state to `tone_idle`. `bt_fsm` sets `melody = gb_ring` before its
+`ring_start()` in `BT_RING_BELL`.
 
 ## Bell (ring.c)
 
@@ -192,7 +229,7 @@ Events:
 | `BT_MAKE_CALL`       | `Make_Call` (0x00) with `dialed_number_reg` as ASCII | `BT_EVT_MAIN_IDLE` → `BT_IDLE`; `BT_EVT_CALL_ACK_OK` → `BT_CALLER_WAIT`; `BT_EVT_CALL_ACK_FAIL` → `BT_NOHF` |
 | `BT_CALLER_WAIT`     | – | `BT_EVT_MAIN_IDLE` → `BT_IDLE`, sending MMI action 0x06 "End call"; `BT_EVT_CALL_OUTGOING` → `BT_OUT_ESTABLISHED` |
 | `BT_NOHF`            | – | `BT_EVT_MAIN_IDLE` → `BT_IDLE` |
-| `BT_OUT_ESTABLISHED` | line-in off (`bm83_line_in_set(false)`), audio from the phone; exit action: line-in on | `BT_EVT_MAIN_IDLE` → `BT_IDLE`, sending MMI action 0x06 "End call" (`bm83_end_call()`, `AA 00 03 02 00 06 F5`); `BT_EVT_CALL_IDLE` → `BT_IDLE` (no command) |
+| `BT_OUT_ESTABLISHED` | – | `BT_EVT_MAIN_IDLE` → `BT_IDLE`, sending MMI action 0x06 "End call" (`bm83_end_call()`, `AA 00 03 02 00 06 F5`); `BT_EVT_CALL_IDLE` → `BT_IDLE` (no command) |
 | `BT_RING_BELL`       | `ring_start()` | `BT_EVT_OFFHOOK` → `ring_stop()`, → `BT_OUT_ESTABLISHED`, sending MMI action 0x04 "Accept an incoming call" (`bm83_accept_call()`, `AA 00 03 02 00 04 F7`); `BT_EVT_CALL_IDLE` → `ring_stop()`, → `BT_IDLE` (caller hung up before answering) |
 
 `BT_EVT_MAIN_IDLE` has the highest priority: every state except `BT_IDLE` and `BT_RING_BELL` goes to
@@ -241,12 +278,7 @@ a length of 0 or more than 21 are dropped in the ISR.
    `AA 00 02 08 01 F5`. Reply: event 0x18 `Read_BTM_Version_Reply`, params type, version (2 bytes).
 8. MMI action 0x5D (fast enter pairing mode, with tone): `AA 00 03 02 00 5D 9E`.
    BM83 reports `BTM_Status` 0x01 (pairing), then 0x03 (paired) or 0x04 (failed).
-9. `BTM_Utility_Function` 0x13, type 0x01 (aux line-in), parameter 0x01 "line in is controlled by
-   MCU": `AA 00 03 13 01 01 E8` (`bm83_line_in_set(true)`): line-in (AIL/AIR → AOHPL/AOHPR) on.
-   Parameter 0x00 "not controlled by MCU" (`AA 00 03 13 01 00 E9`, `bm83_line_in_set(false)`)
-   switches it off: the BM83 then uses its own aux-in detection pin P3_2, which is not connected
-   (observed behaviour). While line-in is on, Bluetooth audio is suppressed.
-10. `bt_mfb` low (each command waits for its `Command_ACK` first).
+9. `bt_mfb` low (each command waits for its `Command_ACK` first).
 
 MFB handshake: in host MCU mode MFB is the BM83 `UART_RX_IND` input ("UART data from the MCU
 follows", Audio UART Command Set 4.1/4.4/4.5), as in Microchip's PIC32 demo:

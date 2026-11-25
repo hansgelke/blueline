@@ -6,9 +6,11 @@
  *   Blocked until bt_fsm enters BT_RING_BELL (ring_start()), so the cadence
  *   starts with the entry into BT_RING_BELL. It walks through melody[] (max
  *   RING_MAX_SEGMENTS segments, skip = true on the last one, then it starts
- *   again) and reports each segment's ringer_on to bell_fsm. ring_stop()
- *   (bt_fsm leaves BT_RING_BELL) ends the cadence at once and reports
- *   ringer_on = false.
+ *   again) and reports each segment's ringer_on to bell_fsm and its tone
+ *   (freq_1, freq_2, vol, tone_on) to the CMX865A (tone_play_note(), tone.c).
+ *   ring_stop() ends the cadence at once, reports ringer_on = false and
+ *   switches the tone off. The cadence is started by bt_fsm (BT_RING_BELL,
+ *   melody = gb_ring) and by tone_fsm (tone_dial, melody = ger_dial).
  *
  * Bell state machine (bell_fsm, bell_thread):
  *
@@ -32,7 +34,6 @@
  * the overlay) from power-up on, 25 Hz. Duty 100 % = constantly high.
  * Duty changes take effect at the end of the current PWM period (<= 40 ms).
  *
- * freq_1, freq_2, vol and tone_on are not used yet.
  */
 
 #include <zephyr/kernel.h>
@@ -42,18 +43,58 @@
 
 #include "ring.h"
 #include "slic.h"
+#include "tone.h"
 
 LOG_MODULE_REGISTER(ring, LOG_LEVEL_INF);
 
 static const struct device *const ring_pwm = DEVICE_DT_GET(DT_NODELABEL(pwm));
 
 /* British ring cadence: 0.4 s on, 0.2 s off, 0.4 s on, 2 s off */
-static note_t gb_ring[4] = {
+note_t gb_ring[4] = {
 	/* durat    freq_1  freq_2  vol   tone_on ringer_on skip  */
-	{  400000,  450.0,  400.0,  0.5,  true,   true,     false },
+	{  400000,  450.0,  400.0,  0.5,  false,   true,     false },
 	{  200000,  450.0,  400.0,  0.5,  false,  false,    false },
-	{  400000,  450.0,  400.0,  0.5,  true,   true,     false },
+	{  400000,  450.0,  400.0,  0.5,  false,   true,     false },
 	{ 2000000,  450.0,  400.0,  0.5,  false,  false,    true  },
+};
+
+note_t gb_ringtone[4] = {
+	/* durat    freq_1  freq_2  vol   tone_on ringer_on skip  */
+	{  400000,  450.0,  400.0,  0.5,  true,   false,     false },
+	{  200000,  450.0,  400.0,  0.5,  false,  false,    false },
+	{  400000,  450.0,  400.0,  0.5,  true,   false,     false },
+	{ 2000000,  450.0,  400.0,  0.5,  false,  false,    true  },
+};
+
+static note_t ger_ring[2] = {
+    /*	     durat     freq_1 freq_2  tone_on ringer_on skip  */
+    {  1000000,    00.0,   400.0,   1.0, true,   true,   false},
+    {  4000000,    00.0,   400.0,  1.0,  false,   false,   true}
+};
+
+static note_t ger_enga[2] = {
+    /*	     durat     freq_1 freq_2  tone_on ringer_on skip  */
+    {  500000,    00.0,   400.0,   1.0, true,   false,   false},
+    {  500000,    00.0,   400.0,  1.0,  false,   false,   true}
+};
+
+note_t ger_dial[4] = {
+    /* durat   freq_1  freq_2 volume  tone_on ringer_on skip  */
+    {  200000, 475.0,    0,    0.5,    true,   false,   false},
+    {  300000, 475.0,    0,    0.5,    false,   false,   false},
+    {  700000, 475.0,    0,    0.5,    true,   false,   false},
+    {  800000, 475.0,    0,    0.5,    false,   false,   true}
+};
+//German tone is 425Hz but gst not precise, therefore set to 415Hz
+static note_t gb_dial[1] = {
+    /*	     durat     freq_1 freq_2  tone_on ringer_on skip  */
+    {  400000,    0.0,   415.0, 1.0 ,   true,   false,   true}
+};
+
+static note_t us_dial[1] = {
+    /*	     durat     freq_1 freq_2  tone_on ringer_on skip  */
+    {  400000,    440.0,   350.0, 0.5,   true,   false,   true}
+
 };
 
 /* Cadence played by generate_ring() */
@@ -112,6 +153,7 @@ void ring_stop(void)
 	k_mutex_lock(&ring_mutex, K_FOREVER);
 	k_event_clear(&ring_event, RING_ENABLE);
 	bell_fsm_post_event(BELL_EVT_RINGER_OFF);
+	tone_off();	/* TXA disconnected, oscillators off */
 	k_mutex_unlock(&ring_mutex);
 
 	/* end the current segment's sleep early */
@@ -151,6 +193,8 @@ void generate_ring(void *p1, void *p2, void *p3)
 			skip_flag = melody[note_idx].skip;
 			bell_fsm_post_event(melody[note_idx].ringer_on ?
 					    BELL_EVT_RINGER_ON : BELL_EVT_RINGER_OFF);
+			/* tone of this segment on the CMX865A (TXA) */
+			tone_play_note(&melody[note_idx]);
 			k_mutex_unlock(&ring_mutex);
 
 			/* keep this segment for its duration (ring_stop() wakes us) */

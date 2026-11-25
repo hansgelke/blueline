@@ -15,6 +15,7 @@
 #include "bm_83.h"
 #include "slic.h"
 #include "ring.h"
+#include "tone.h"
 
 LOG_MODULE_REGISTER(main, LOG_LEVEL_INF);
 
@@ -48,6 +49,12 @@ K_THREAD_STACK_DEFINE(bell_thread_stack, BELL_THREAD_STACK_SIZE);
 static struct k_thread bell_thread_data;
 static k_tid_t bell_thread_id;
 
+/* ---- tone_thread ------------------------------------------------------- */
+
+K_THREAD_STACK_DEFINE(tone_thread_stack, TONE_THREAD_STACK_SIZE);
+static struct k_thread tone_thread_data;
+static k_tid_t tone_thread_id;
+
 /* ---- further threads will be added here -------------------------------- */
 
 int main(void)
@@ -73,6 +80,12 @@ int main(void)
 	if (bt_uart_init() < 0) {
 		LOG_ERR("BM83 UART init failed, stopping");
 		return -1;
+	}
+
+	/* CMX865A: reset, power up, TXA/TXAN disconnected.
+	 * A failure is only logged, the telephone works without it. */
+	if (cmx_init() < 0) {
+		LOG_ERR("CMX865A init failed");
 	}
 
 
@@ -115,6 +128,14 @@ int main(void)
 					 NULL, NULL, NULL,
 					 BELL_THREAD_PRIORITY, 0, K_NO_WAIT);
 	k_thread_name_set(bell_thread_id, "bell_thread");
+
+	tone_thread_id = k_thread_create(&tone_thread_data,
+					 tone_thread_stack,
+					 K_THREAD_STACK_SIZEOF(tone_thread_stack),
+					 tone_fsm_main,
+					 NULL, NULL, NULL,
+					 TONE_THREAD_PRIORITY, 0, K_NO_WAIT);
+	k_thread_name_set(tone_thread_id, "tone_thread");
 
 	/* BM83 power-up runs last: bt_rx_thread is already running and shows
 	 * the BM83 responses (ACKs, status events) as they arrive. */

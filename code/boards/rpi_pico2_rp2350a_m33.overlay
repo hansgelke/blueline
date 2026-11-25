@@ -22,6 +22,14 @@
  *   GPIO4   UART1 TX  (RP2350 -> BM83)
  *   GPIO5   UART1 RX  (BM83 -> RP2350)
  *   115200 baud, 8N1, no flow control
+ *
+ * SPI0 (C-BUS) to the CMX865A Telecom Signalling Device (src/tone.c):
+ *
+ *   GP16  SPI0 RX  (MISO, CMX865A REPLY DATA)
+ *   GP17  CS0      (CMX865A CSN, GPIO chip select, active low)
+ *   GP18  SPI0 SCK (CMX865A SERIAL CLOCK)
+ *   GP19  SPI0 TX  (MOSI, CMX865A COMMAND DATA)
+ *   1 MHz (C-BUS max 5 MHz), SPI mode 3
  */
 
 /* pico_io.c uses gpio0 directly (DT_NODELABEL(gpio0)) */
@@ -44,6 +52,18 @@
 	pwm_ch1a_default: pwm_ch1a_default {
 		group1 {
 			pinmux = <PWM_1A_P2>;
+		};
+	};
+
+	/* SPI0 without the hardware CSN: GP17 is a GPIO chip select, so CSN
+	 * stays low for a whole multi-byte C-BUS transaction */
+	spi0_cmx: spi0_cmx {
+		group1 {
+			pinmux = <SPI0_SCK_P18>, <SPI0_TX_P19>;
+		};
+		group2 {
+			pinmux = <SPI0_RX_P16>;
+			input-enable;
 		};
 	};
 
@@ -72,4 +92,19 @@
 	status = "okay";
 	pinctrl-0 = <&pwm_ch1a_default>;
 	pinctrl-names = "default";
+};
+
+/* CMX865A on SPI0 (src/tone.c) */
+&spi0 {
+	status = "okay";
+	clock-frequency = <DT_FREQ_M(1)>;
+	pinctrl-0 = <&spi0_cmx>;
+	pinctrl-names = "default";
+	cs-gpios = <&gpio0 17 GPIO_ACTIVE_LOW>;
+
+	cmx865a: cmx865a@0 {
+		compatible = "vnd,spi-device";
+		reg = <0>;
+		spi-max-frequency = <DT_FREQ_M(1)>;
+	};
 };

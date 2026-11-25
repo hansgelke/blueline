@@ -29,7 +29,6 @@
 #define BM83_CMD_MMI_ACTION      0x02
 #define BM83_CMD_READ_BTM_VERSION  0x08
 #define BM83_CMD_READ_LINK_STATUS  0x0D
-#define BM83_CMD_BTM_UTILITY       0x13
 #define BM83_CMD_EVENT_ACK         0x14
 
 /* Event opcodes */
@@ -37,6 +36,12 @@
 #define BM83_EVT_BTM_STATUS        0x01
 #define BM83_EVT_CALL_STATUS       0x02
 #define BM83_EVT_LINK_STATUS_REPLY 0x1E
+
+/* BTM_Status (0x01) states used for the HF link state */
+#define BM83_BTM_POWER_OFF         0x00   /* power off */
+#define BM83_BTM_HF_LINK_UP        0x05   /* HF/HS link established */
+#define BM83_BTM_HF_LINK_DOWN      0x07   /* HF link disconnected */
+#define BM83_BTM_ACL_DOWN          0x11   /* ACL disconnected */
 
 /* Call_Status states */
 #define BM83_CALL_IDLE             0x00   /* idle, no call */
@@ -50,10 +55,6 @@
 /* Make_Call: maximum length of the phone number (ASCII digits) */
 #define BM83_PHONE_NUMBER_MAX      19
 
-/* BTM_Utility_Function (0x13) type / parameter for line-in (AIL/AIR) */
-#define BM83_UTIL_AUX_LINE_IN      0x01   /* in-built aux line-in function */
-#define BM83_LINE_IN_BY_MCU        0x01   /* line in is controlled by MCU -> on */
-#define BM83_LINE_IN_BY_BM83       0x00   /* BM83 own detection (P3_2 n.c.) -> off */
 
 /* Command_ACK status */
 #define BM83_ACK_COMMAND_COMPLETE  0x00
@@ -108,17 +109,14 @@ int bm83_make_call(const char *number, uint8_t len);
 
 /* Called by bt_rx_thread for every received event except Command_ACK:
  * forwards Call_Status
- * (incoming / outgoing / active / idle) to bt_fsm, prints Read_Link_Status_Reply. params[] are the event parameters. */
+ * (incoming / outgoing / active / idle) to bt_fsm, Call_Status idle also to
+ * tone_fsm, tracks the HF link (BTM_Status), prints Read_Link_Status_Reply.
+ * params[] are the event parameters. */
 void bm83_handle_event(uint8_t opcode, const uint8_t *params, uint8_t num_params);
 
-/* Line-in (AIL/AIR) on or off: BTM_Utility_Function (opcode 0x13), type 0x01.
- *   on:  parameter 0x01 "line in is controlled by MCU" -> line-in active,
- *        Bluetooth audio suppressed
- *   off: parameter 0x00 "line in is not controlled by MCU" -> the BM83 uses
- *        its own aux-in detection pin P3_2, which is not connected, so
- *        line-in is off (observed behaviour) and Bluetooth audio is heard.
- * On at the end of bm83_init(); bt_fsm switches it off in BT_OUT_ESTABLISHED. */
-int bm83_line_in_set(bool on);
+/* true while the phone is connected with HF (hands-free) profile: set on
+ * BTM_Status 0x05, cleared on 0x07, 0x11 and 0x00. */
+bool bm83_hf_connected(void);
 
 /* Send a Read_BTM_Version command (opcode 0x08) with the given type
  * (BM83_VERSION_UART or BM83_VERSION_FW). */

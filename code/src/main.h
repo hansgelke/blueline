@@ -26,4 +26,8 @@
 #define BELL_THREAD_STACK_SIZE   1024
 #define BELL_THREAD_PRIORITY     4
 
+/* tone_thread: tone state machine (CMX865A call progress tones) */
+#define TONE_THREAD_STACK_SIZE   1024
+#define TONE_THREAD_PRIORITY     6
+
 #endif /* MAIN_H */

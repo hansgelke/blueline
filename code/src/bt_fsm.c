@@ -16,8 +16,6 @@
  *
  * Entry action of BT_MAKE_CALL: dialed_number_reg (fsm_main) is converted
  * to ASCII and sent with the BM83 command Make_Call (opcode 0x00).
- * Entry action of BT_OUT_ESTABLISHED: line-in (AIL/AIR) off, audio from the
- * phone; exit action: line-in on again (bm83_line_in_set()).
  * Entry action of BT_RING_BELL: ring_start() (ring cadence, ring.c);
  * leaving BT_RING_BELL: ring_stop().
  *
@@ -115,23 +113,15 @@ static void bt_fsm_enter_state(bt_fsm_state_t new_state)
 	LOG_INF("state %s -> %s",
 		state_names[current_state], state_names[new_state]);
 
-	/* exit action of BT_OUT_ESTABLISHED: line-in (AIL/AIR) back on */
-	if (current_state == BT_OUT_ESTABLISHED && new_state != BT_OUT_ESTABLISHED) {
-		bm83_line_in_set(true);
-	}
-
 	current_state = new_state;
 
 	switch (new_state) {
 	case BT_MAKE_CALL:
 		bt_fsm_make_call();
 		break;
-	case BT_OUT_ESTABLISHED:
-		/* call in progress: line-in off, audio from the phone (Bluetooth) */
-		bm83_line_in_set(false);
-		break;
 	case BT_RING_BELL:
 		/* start the ring cadence (synchronised with this entry) */
+		melody = gb_ring;
 		ring_start();
 		break;
 	default:

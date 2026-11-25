@@ -37,6 +37,7 @@
 #include "fsm_main.h"
 #include "pico_io.h"
 #include "bt_fsm.h"
+#include "tone.h"
 #include "ring.h"
 
 LOG_MODULE_REGISTER(fsm_main, LOG_LEVEL_INF);
@@ -174,12 +175,15 @@ static void fsm_enter_state(fsm_state_t new_state)
 	case STATE_S0_IDLE:
 		pico_io_led_set(false);
 		bt_fsm_post_event(BT_EVT_MAIN_IDLE);
+		tone_fsm_post_event(TONE_EVT_MAIN_IDLE);
 		break;
 	case STATE_S1_OFFHOOK:
 		pico_io_led_set(true);
+		tone_fsm_post_event(TONE_EVT_OFFHOOK);
 		break;
 	case STATE_S2_OPEN:
 		pico_io_led_set(false);
+		tone_fsm_post_event(TONE_EVT_OPEN);	/* only from s1_offhook */
 		k_timer_start(&hangup_timer, K_MSEC(HANGUP_TIMER_MS), K_NO_WAIT);
 		break;
 	case STATE_S3_CLOSED:
