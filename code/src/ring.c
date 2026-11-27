@@ -72,7 +72,7 @@ static note_t ger_ring[2] = {
     {  4000000,    00.0,   400.0,  1.0,  false,   false,   true}
 };
 
-static note_t ger_enga[2] = {
+note_t ger_enga[2] = {
     /*	     durat     freq_1 freq_2  tone_on ringer_on skip  */
     {  500000,    00.0,   400.0,   1.0, true,   false,   false},
     {  500000,    00.0,   400.0,  1.0,  false,   false,   true}
